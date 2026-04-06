@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ratcharak Golf Sim</title>
+  
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
   <style>
     body { font-family: 'Kanit', sans-serif; background-color: #f3f4f6; }
     .hidden-section { display: none; }
@@ -17,55 +19,113 @@
 
   <div id="loading" class="flex flex-col items-center justify-center min-h-screen bg-white">
     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mb-4"></div>
-    <p class="text-gray-500">กำลังตรวจสอบข้อมูลผู้ใช้งาน...</p>
+    <p class="text-gray-500">กำลังเชื่อมต่อฐานข้อมูล...</p>
   </div>
 
-  <div id="customerView" class="hidden-section max-w-md mx-auto min-h-screen bg-white shadow-lg flex flex-col relative">...</div>
-  <div id="adminView" class="hidden-section max-w-md mx-auto min-h-screen bg-gray-50 shadow-lg">...</div>
+  <div id="customerView" class="hidden-section max-w-md mx-auto min-h-screen bg-white shadow-lg flex flex-col relative">
+    <div class="bg-green-600 text-white p-6 rounded-b-3xl shadow-md text-center">
+      <img id="cusProfilePic" src="" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-white shadow-sm object-cover">
+      <h2 id="cusName" class="text-xl font-semibold">...</h2>
+      <p class="text-sm opacity-80 mt-1">ยินดีต้อนรับสู่ระบบ</p>
+    </div>
+    <div class="p-6 mt-4">
+      <p class="text-center text-gray-500 text-sm mb-6">ตรวจสอบยอดคงเหลือได้ที่เมนูแชท</p>
+      <button onclick="bookTime()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl shadow-md transition mb-4">
+         📅 จองเวลาใช้บริการ
+      </button>
+      <button onclick="liff.closeWindow()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3.5 rounded-xl shadow-sm transition">
+         ปิดหน้าต่างนี้
+      </button>
+    </div>
+  </div>
+
+  <div id="adminView" class="hidden-section max-w-md mx-auto min-h-screen bg-gray-50 shadow-lg">
+    <div class="bg-gray-800 text-white p-6 text-center shadow-md">
+      <h2 class="text-2xl font-bold text-green-400">Admin Panel</h2>
+      <p id="adminName" class="text-sm text-gray-300 mt-1">ผู้ดูแลระบบ</p>
+    </div>
+    <div class="p-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-4">
+        <h3 class="font-semibold text-lg text-gray-800 mb-4 flex items-center">
+          ⛳ หักชั่วโมงการใช้งาน
+        </h3>
+        
+        <label class="block text-sm text-gray-600 mb-1">UID ลูกค้า</label>
+        <input type="text" id="targetUid" placeholder="เช่น U123456..." class="w-full border border-gray-300 rounded-lg p-2.5 mb-4 focus:ring-2 focus:ring-green-400 focus:outline-none transition">
+        
+        <label class="block text-sm text-gray-600 mb-1">จำนวนชั่วโมงที่ใช้</label>
+        <input type="number" id="useHours" placeholder="ระบุตัวเลข เช่น 1 หรือ 1.5" step="0.5" min="0.5" class="w-full border border-gray-300 rounded-lg p-2.5 mb-6 focus:ring-2 focus:ring-green-400 focus:outline-none transition">
+        
+        <button onclick="submitUsage()" id="btnSubmit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-lg shadow-md transition">
+           บันทึกการหักเวลา
+        </button>
+      </div>
+      <button onclick="liff.closeWindow()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3.5 rounded-lg shadow-sm transition">
+         ออกระบบ
+      </button>
+    </div>
+  </div>
 
   <script>
     // ==========================================
-    // ⚙️ ตั้งค่าระบบ (ต้องเปลี่ยน 2 ค่านี้ของคุณเอง)
+    // ⚙️ [ตั้งค่าระบบ] ต้องเปลี่ยน 2 ค่านี้ของคุณเอง
     // ==========================================
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxVe3O-nSGXRoDJGHP9-wSajYE31rh-X1AFA68VDuY6UAnrhBv25MKKQoyoDCA72rqD/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzZLl6TOrFnKfUdUrmZXtjZSoAPZfFdnSh1TZ4brFOVps5di5Ddh33WJD2xzMG3Rkvw/exec";
+    // ==========================================
 
     let currentUserUid = "";
 
+    // ฟังก์ชันหลัก เริ่มต้นระบบ
     async function main() {
-      await liff.init({ liffId: MY_LIFF_ID });
-      
-      if (!liff.isLoggedIn()) {
-        liff.login();
-        return;
-      }
-      
-      const profile = await liff.getProfile();
-      currentUserUid = profile.userId;
-      
-      // ดึงข้อมูลผ่าน Fetch API แทน google.script.run
       try {
+        await liff.init({ liffId: MY_LIFF_ID });
+        
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+        
+        const profile = await liff.getProfile();
+        currentUserUid = profile.userId;
+        
+        // ยิง Fetch API ไปถาม GAS ว่าคนนี้คือ Admin หรือ Customer
         const response = await fetch(`${GAS_WEB_APP_URL}?action=getUserProfile&uid=${currentUserUid}`);
+        
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         
+        // ปิดหน้า Loading
         document.getElementById('loading').style.display = 'none';
         
         if (data.role === "Admin") {
+          // โหมด Admin
           document.getElementById('adminView').style.display = 'block';
           document.getElementById('adminName').textContent = "ผู้ทำรายการ: " + data.name;
         } else {
+          // โหมด Customer
           document.getElementById('customerView').style.display = 'block';
           document.getElementById('cusName').textContent = profile.displayName;
           document.getElementById('cusProfilePic').src = profile.pictureUrl || "https://via.placeholder.com/150";
         }
+
       } catch (error) {
+        console.error("Error Details:", error);
         document.getElementById('loading').style.display = 'none';
-        Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ฐานข้อมูลได้', 'error');
+        Swal.fire({
+          title: 'ข้อผิดพลาดการเชื่อมต่อ', 
+          text: 'ไม่สามารถโหลดข้อมูลผู้ใช้ได้ (กรุณาตรวจสอบ URL ของ Web App)', 
+          icon: 'error'
+        });
       }
     }
 
+    // เรียกใช้งานเมื่อเปิดเว็บ
     main();
 
+    // ===============================================
+    // ฟังก์ชันส่งข้อมูลหักเวลาไปบันทึกลง Sheet
+    // ===============================================
     async function submitUsage() {
       const targetUid = document.getElementById('targetUid').value.trim();
       const hours = document.getElementById('useHours').value.trim();
@@ -101,6 +161,7 @@
           
           if (res.success) {
             Swal.fire('สำเร็จ!', res.message, 'success').then(() => {
+              // เคลียร์ฟอร์ม
               document.getElementById('targetUid').value = "";
               document.getElementById('useHours').value = "";
             });
@@ -108,6 +169,7 @@
             Swal.fire('ไม่สามารถทำรายการได้', res.message, 'error');
           }
         } catch (error) {
+          console.error("Fetch Error:", error);
           btn.innerHTML = 'บันทึกการหักเวลา';
           btn.disabled = false;
           Swal.fire('ข้อผิดพลาดระบบ', 'การส่งข้อมูลล้มเหลว กรุณาลองใหม่', 'error');
@@ -115,6 +177,9 @@
       }
     }
 
+    // ===============================================
+    // ฟังก์ชัน Placeholder สำหรับลูกค้า
+    // ===============================================
     function bookTime() {
       Swal.fire({
         title: 'ฟีเจอร์กำลังพัฒนา',
