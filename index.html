@@ -50,9 +50,12 @@
   </div>
 
   <div id="viewCustomer" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md">
-    <div class="bg-white p-6 border-b border-slate-200">
-      <h2 id="dashName" class="text-xl font-bold text-slate-800">...</h2>
-      <p id="dashRegDate" class="text-xs text-slate-500 mt-1">วันที่สมัคร: -</p>
+    <div class="bg-white p-6 border-b border-slate-200 flex items-center gap-4">
+      <img id="cusProfilePic" src="" alt="Profile" class="w-16 h-16 rounded-full object-cover border border-slate-200 shadow-sm">
+      <div>
+        <h2 id="dashName" class="text-xl font-bold text-slate-800">...</h2>
+        <p id="dashRegDate" class="text-xs text-slate-500 mt-1">Member Since: -</p>
+      </div>
     </div>
     
     <div class="p-5">
@@ -74,8 +77,12 @@
   </div>
 
   <div id="viewAdmin" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-10">
-    <div class="bg-slate-800 text-white p-5">
-      <h2 class="text-lg font-bold">ระบบจัดการข้อมูลลูกค้า</h2>
+    <div class="bg-slate-800 text-white p-5 flex items-center gap-4">
+      <img id="adminProfilePic" src="" alt="Admin Profile" class="w-12 h-12 rounded-full object-cover border border-slate-500 shadow-sm">
+      <div>
+        <h2 class="text-lg font-bold">ระบบจัดการข้อมูล</h2>
+        <p id="adminDisplayName" class="text-xs text-slate-300 mt-0.5">ผู้ทำรายการ: ...</p>
+      </div>
     </div>
     
     <div class="p-5">
@@ -105,17 +112,19 @@
         <div id="formUsage" class="bg-white p-5 rounded-xl card-shadow border border-slate-100 hidden">
           <h3 class="font-semibold text-slate-800 mb-4 text-sm">⛳ ตัดเวลาการใช้บริการ</h3>
           <label class="block text-xs text-slate-500 mb-1">วันที่</label>
-          <input type="date" id="useDate" class="w-full border border-slate-300 rounded-lg p-2.5 mb-3 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
-          <div class="flex gap-3 mb-5">
-            <div class="w-1/2">
+          <input type="date" id="useDate" class="w-full border border-slate-300 rounded-lg p-2.5 mb-4 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
+          
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
               <label class="block text-xs text-slate-500 mb-1">เวลาเข้า</label>
               <input type="time" id="useIn" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
             </div>
-            <div class="w-1/2">
+            <div>
               <label class="block text-xs text-slate-500 mb-1">เวลาออก</label>
               <input type="time" id="useOut" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
             </div>
           </div>
+          
           <button onclick="adminRecordTime()" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg text-sm transition">บันทึกข้อมูล</button>
         </div>
 
@@ -142,8 +151,18 @@
     async function main() {
       await liff.init({ liffId: MY_LIFF_ID });
       if (!liff.isLoggedIn()) { liff.login(); return; }
+      
       const profile = await liff.getProfile();
       currentUserUid = profile.userId;
+      
+      // ดึงรูปโปรไฟล์ LINE มาตั้งค่า (ใช้ Placeholder กรณีไม่มีรูป)
+      const defaultPic = `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.displayName)}&background=random`;
+      const profilePicUrl = profile.pictureUrl || defaultPic;
+      
+      document.getElementById('cusProfilePic').src = profilePicUrl;
+      document.getElementById('adminProfilePic').src = profilePicUrl;
+      document.getElementById('adminDisplayName').innerText = `ผู้ทำรายการ: ${profile.displayName}`;
+
       loadDashboard();
     }
 
@@ -184,7 +203,8 @@
 
     function renderCustomerDashboard(data) {
       document.getElementById('dashName').innerText = data.name;
-      document.getElementById('dashRegDate').innerText = `วันที่สมัคร: ${data.regDate}`;
+      // อัปเดตคำว่า Member Since แทน วันที่สมัคร
+      document.getElementById('dashRegDate').innerText = `Member Since: ${data.regDate}`;
       
       if(data.package) {
         document.getElementById('dashPkgName').innerText = data.package.name;
