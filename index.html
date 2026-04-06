@@ -4,118 +4,147 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ratcharak Golf Sim</title>
+  
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            golf: {
+              darkest: '#212914', /* เขียวเข้มจัด */
+              dark: '#3d422e',    /* เขียวขี้ม้าเข้ม */
+              base: '#5c6f42',    /* เขียวโอลีฟ (สีหลัก) */
+              cream: '#f3ec99',   /* สีครีมอ่อน */
+              maroon: '#3d060f'   /* แดงเลือดหมูเข้ม */
+            }
+          },
+          fontFamily: {
+            sans: ['Kanit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    body { font-family: 'Kanit', sans-serif; background-color: #f3f4f6; }
-    .page-section { display: none; }
-    .page-active { display: block; }
+    body { background-color: #fbfaf5; } /* สีพื้นหลังแอปออกครีมสว่างๆ */
+    /* บังคับซ่อนหน้าต่างแบบ 100% ป้องกัน Tailwind flex ตีกัน */
+    .hide-me { display: none !important; }
   </style>
 </head>
-<body class="text-gray-800">
+<body class="text-golf-darkest font-sans">
 
-  <div id="viewLoading" class="page-section page-active flex flex-col items-center justify-center min-h-screen bg-white">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mb-4"></div>
-    <p class="text-gray-500">กำลังเชื่อมต่อระบบ...</p>
+  <div id="viewLoading" class="page-section flex flex-col items-center justify-center min-h-screen bg-[#fbfaf5]">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-golf-base mb-4"></div>
+    <p class="text-golf-dark font-medium">กำลังเชื่อมต่อระบบ...</p>
   </div>
 
-  <div id="viewPdpa" class="page-section max-w-md mx-auto min-h-screen bg-white shadow-lg p-6 flex flex-col justify-center">
-    <h2 class="text-2xl font-bold text-center text-green-600 mb-4">ข้อตกลงการใช้งาน</h2>
-    <div class="bg-gray-50 p-4 rounded-lg text-sm text-gray-600 mb-6 h-64 overflow-y-auto border">
+  <div id="viewPdpa" class="page-section hide-me max-w-md mx-auto min-h-screen bg-white shadow-lg p-6 flex flex-col justify-center border-t-8 border-golf-base">
+    <h2 class="text-2xl font-bold text-center text-golf-base mb-4">ข้อตกลงการใช้งาน</h2>
+    <div class="bg-[#fbfaf5] p-5 rounded-lg text-sm text-golf-dark mb-6 h-64 overflow-y-auto border border-golf-base/30 shadow-inner">
       <p>ยินดีต้อนรับสู่ Ratcharak Golf Sim เพื่อการให้บริการที่สมบูรณ์แบบ เราจำเป็นต้องขอจัดเก็บข้อมูลส่วนบุคคลของท่าน ได้แก่ ชื่อ นามสกุล และเบอร์โทรศัพท์ เพื่อใช้ในการยืนยันตัวตน ระบบสมาชิก และการจองเวลาใช้บริการ ข้อมูลของท่านจะถูกเก็บรักษาเป็นความลับตามกฎหมาย PDPA...</p>
     </div>
-    <button onclick="switchView('viewRegister')" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl shadow-md transition mb-3">ยอมรับเงื่อนไข</button>
-    <button onclick="liff.closeWindow()" class="w-full bg-gray-200 text-gray-700 font-bold py-3.5 rounded-xl shadow-sm transition">ไม่ยินยอม (ปิด)</button>
+    <button onclick="switchView('viewRegister')" class="w-full bg-golf-base hover:bg-golf-dark text-golf-cream font-bold py-3.5 rounded-xl shadow-md transition mb-3">
+      ยอมรับเงื่อนไข
+    </button>
+    <button onclick="liff.closeWindow()" class="w-full bg-golf-cream/50 text-golf-darkest font-bold py-3.5 rounded-xl shadow-sm transition border border-golf-dark/20">
+      ไม่ยินยอม (ปิด)
+    </button>
   </div>
 
-  <div id="viewRegister" class="page-section max-w-md mx-auto min-h-screen bg-white shadow-lg p-6 flex flex-col justify-center">
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">สร้างบัญชีผู้ใช้</h2>
-    <p class="text-center text-gray-500 text-sm mb-6">กรุณากรอกข้อมูลเพื่อรับสิทธิพิเศษ</p>
+  <div id="viewRegister" class="page-section hide-me max-w-md mx-auto min-h-screen bg-white shadow-lg p-6 flex flex-col justify-center border-t-8 border-golf-dark">
+    <h2 class="text-2xl font-bold text-center text-golf-darkest mb-2">สร้างบัญชีผู้ใช้</h2>
+    <p class="text-center text-golf-base text-sm mb-6">กรุณากรอกข้อมูลเพื่อรับสิทธิพิเศษ</p>
     
-    <label class="block text-sm text-gray-600 mb-1">ชื่อ-สกุล</label>
-    <input type="text" id="regName" class="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:ring-2 focus:ring-green-400 focus:outline-none">
+    <label class="block text-sm font-medium text-golf-dark mb-1">ชื่อ-สกุล</label>
+    <input type="text" id="regName" class="w-full border border-golf-base/40 rounded-lg p-3 mb-4 focus:ring-2 focus:ring-golf-base focus:outline-none bg-[#fbfaf5]">
     
-    <label class="block text-sm text-gray-600 mb-1">เบอร์โทรศัพท์</label>
-    <input type="tel" id="regPhone" class="w-full border border-gray-300 rounded-lg p-3 mb-8 focus:ring-2 focus:ring-green-400 focus:outline-none">
+    <label class="block text-sm font-medium text-golf-dark mb-1">เบอร์โทรศัพท์</label>
+    <input type="tel" id="regPhone" class="w-full border border-golf-base/40 rounded-lg p-3 mb-8 focus:ring-2 focus:ring-golf-base focus:outline-none bg-[#fbfaf5]">
     
-    <button onclick="submitRegister()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-md transition">ลงทะเบียน</button>
+    <button onclick="submitRegister()" class="w-full bg-golf-dark hover:bg-golf-darkest text-golf-cream font-bold py-3.5 rounded-xl shadow-md transition">
+      ลงทะเบียน
+    </button>
   </div>
 
-  <div id="viewCustomer" class="page-section max-w-md mx-auto min-h-screen bg-gray-50 shadow-lg">
-    <div class="bg-green-600 text-white p-6 rounded-b-3xl shadow-md">
+  <div id="viewCustomer" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#fbfaf5] shadow-lg">
+    <div class="bg-golf-dark text-golf-cream p-6 rounded-b-3xl shadow-md border-b-4 border-golf-base">
       <h2 id="dashName" class="text-xl font-bold">...</h2>
-      <p id="dashRegDate" class="text-xs text-green-100 mt-1">เป็นสมาชิกเมื่อ: -</p>
+      <p id="dashRegDate" class="text-xs text-golf-cream/70 mt-1">เป็นสมาชิกเมื่อ: -</p>
     </div>
     
     <div class="p-5 -mt-4">
-      <div class="bg-white p-5 rounded-xl shadow-md mb-4 border border-gray-100">
-        <h3 class="text-sm font-semibold text-gray-500 mb-2">แพ็กเกจปัจจุบัน</h3>
-        <p id="dashPkgName" class="text-xl font-bold text-gray-800 mb-4">ยังไม่มีแพ็กเกจ</p>
+      <div class="bg-white p-5 rounded-xl shadow-md mb-4 border border-golf-cream">
+        <h3 class="text-sm font-semibold text-golf-dark mb-2">แพ็กเกจปัจจุบัน</h3>
+        <p id="dashPkgName" class="text-xl font-bold text-golf-base mb-4">ยังไม่มีแพ็กเกจ</p>
         
-        <div class="flex justify-between text-center bg-gray-50 p-3 rounded-lg">
-          <div><p class="text-xs text-gray-500">ทั้งหมด</p><p id="dashTotal" class="font-bold text-blue-600">0</p></div>
-          <div><p class="text-xs text-gray-500">ใช้ไป</p><p id="dashUsed" class="font-bold text-red-500">0</p></div>
-          <div><p class="text-xs text-gray-500">คงเหลือ</p><p id="dashRemain" class="font-bold text-green-600 text-lg">0</p></div>
+        <div class="flex justify-between text-center bg-golf-cream/30 p-3 rounded-lg border border-golf-cream">
+          <div><p class="text-xs text-golf-dark">ทั้งหมด</p><p id="dashTotal" class="font-bold text-golf-darkest">0</p></div>
+          <div><p class="text-xs text-golf-dark">ใช้ไป</p><p id="dashUsed" class="font-bold text-golf-maroon">0</p></div>
+          <div><p class="text-xs text-golf-dark">คงเหลือ</p><p id="dashRemain" class="font-bold text-golf-base text-lg">0</p></div>
         </div>
       </div>
 
-      <h3 class="font-bold text-gray-700 mb-3 ml-1">ประวัติการใช้งานล่าสุด</h3>
-      <div id="dashHistory" class="bg-white rounded-xl shadow-sm border border-gray-100 p-2 min-h-[100px]">
+      <h3 class="font-bold text-golf-darkest mb-3 ml-1">ประวัติการใช้งานล่าสุด</h3>
+      <div id="dashHistory" class="bg-white rounded-xl shadow-sm border border-golf-cream p-2 min-h-[100px]">
         </div>
     </div>
   </div>
 
-  <div id="viewAdmin" class="page-section max-w-md mx-auto min-h-screen bg-gray-100 shadow-lg pb-10">
-    <div class="bg-gray-800 text-white p-5 shadow-md">
-      <h2 class="text-xl font-bold text-green-400">Admin Control Panel</h2>
+  <div id="viewAdmin" class="page-section hide-me max-w-md mx-auto min-h-screen bg-white shadow-lg pb-10">
+    <div class="bg-golf-darkest text-golf-cream p-5 shadow-md border-b-4 border-golf-base">
+      <h2 class="text-xl font-bold">Admin Control Panel</h2>
     </div>
     
-    <div class="p-5">
-      <div class="bg-white p-5 rounded-xl shadow-sm mb-5">
-        <h3 class="font-semibold text-gray-700 mb-3">🔍 ค้นหาลูกค้า</h3>
-        <input type="text" id="searchKey" placeholder="พิมพ์ชื่อ หรือ เบอร์โทร" class="w-full border rounded-lg p-3 mb-3 focus:ring-2 focus:ring-blue-400">
-        <button onclick="adminSearch()" class="w-full bg-gray-800 text-white font-bold py-3 rounded-lg shadow-md">ค้นหา</button>
+    <div class="p-5 bg-[#fbfaf5] min-h-screen">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-golf-cream mb-5">
+        <h3 class="font-semibold text-golf-dark mb-3">🔍 ค้นหาลูกค้า</h3>
+        <input type="text" id="searchKey" placeholder="พิมพ์ชื่อ หรือ เบอร์โทร" class="w-full border border-golf-base/40 bg-[#fbfaf5] rounded-lg p-3 mb-3 focus:ring-2 focus:ring-golf-base focus:outline-none">
+        <button onclick="adminSearch()" class="w-full bg-golf-dark text-golf-cream font-bold py-3 rounded-lg shadow-md hover:bg-golf-darkest">ค้นหา</button>
       </div>
 
       <div id="adminActionSection" class="hidden">
         
-        <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl mb-4">
-          <p class="text-sm text-blue-600 font-bold mb-1">ข้อมูลลูกค้า:</p>
-          <p id="resName" class="font-bold text-gray-800"></p>
-          <p id="resPhone" class="text-sm text-gray-600"></p>
-          <hr class="my-2 border-blue-200">
-          <p class="text-sm text-gray-600">แพ็กเกจ: <span id="resPkg" class="font-bold"></span></p>
-          <p class="text-sm text-gray-600">คงเหลือ: <span id="resRemain" class="font-bold text-green-600 text-lg"></span> ชม.</p>
+        <div class="bg-golf-cream/30 border border-golf-base/50 p-4 rounded-xl mb-4 shadow-sm">
+          <p class="text-sm text-golf-base font-bold mb-1">ข้อมูลลูกค้า:</p>
+          <p id="resName" class="font-bold text-golf-darkest text-lg"></p>
+          <p id="resPhone" class="text-sm text-golf-dark"></p>
+          <hr class="my-2 border-golf-base/30">
+          <p class="text-sm text-golf-dark">แพ็กเกจ: <span id="resPkg" class="font-bold text-golf-darkest"></span></p>
+          <p class="text-sm text-golf-dark">คงเหลือ: <span id="resRemain" class="font-bold text-golf-base text-lg"></span> ชม.</p>
         </div>
 
         <div class="grid grid-cols-2 gap-2 mb-4">
-          <button onclick="toggleAction('usage')" class="bg-green-600 text-white py-2 rounded-lg font-bold text-sm">ตัดเวลาเข้า-ออก</button>
-          <button onclick="toggleAction('topup')" class="bg-blue-600 text-white py-2 rounded-lg font-bold text-sm">เติมแพ็กเกจ</button>
+          <button onclick="toggleAction('usage')" class="bg-golf-base text-golf-cream py-2 rounded-lg font-bold text-sm shadow-sm hover:bg-golf-dark">ตัดเวลาเข้า-ออก</button>
+          <button onclick="toggleAction('topup')" class="bg-golf-darkest text-golf-cream py-2 rounded-lg font-bold text-sm shadow-sm hover:bg-[#000]">เติมแพ็กเกจ</button>
         </div>
 
-        <div id="formUsage" class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hidden">
-          <h3 class="font-bold text-green-600 mb-3">⛳ ตัดเวลาเข้า-ออก</h3>
-          <input type="date" id="useDate" class="w-full border rounded-lg p-2 mb-3">
+        <div id="formUsage" class="bg-white p-4 rounded-xl shadow-sm border border-golf-cream hidden">
+          <h3 class="font-bold text-golf-base mb-3">⛳ ตัดเวลาเข้า-ออก</h3>
+          <input type="date" id="useDate" class="w-full border border-golf-base/40 rounded-lg p-2 mb-3 bg-[#fbfaf5] focus:ring-2 focus:ring-golf-base outline-none">
           <div class="flex gap-2 mb-4">
             <div class="w-1/2">
-              <label class="text-xs text-gray-500">เวลาเข้า</label>
-              <input type="time" id="useIn" class="w-full border rounded-lg p-2">
+              <label class="text-xs text-golf-dark font-medium">เวลาเข้า</label>
+              <input type="time" id="useIn" class="w-full border border-golf-base/40 rounded-lg p-2 bg-[#fbfaf5] focus:ring-2 focus:ring-golf-base outline-none">
             </div>
             <div class="w-1/2">
-              <label class="text-xs text-gray-500">เวลาออก</label>
-              <input type="time" id="useOut" class="w-full border rounded-lg p-2">
+              <label class="text-xs text-golf-dark font-medium">เวลาออก</label>
+              <input type="time" id="useOut" class="w-full border border-golf-base/40 rounded-lg p-2 bg-[#fbfaf5] focus:ring-2 focus:ring-golf-base outline-none">
             </div>
           </div>
-          <button onclick="adminRecordTime()" class="w-full bg-green-500 text-white font-bold py-3 rounded-lg">บันทึกการใช้งาน</button>
+          <button onclick="adminRecordTime()" class="w-full bg-golf-base hover:bg-golf-dark text-golf-cream font-bold py-3 rounded-lg shadow-md">บันทึกการใช้งาน</button>
         </div>
 
-        <div id="formTopup" class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hidden">
-          <h3 class="font-bold text-blue-600 mb-3">📦 เติมแพ็กเกจ</h3>
-          <input type="text" id="topPkgName" placeholder="ชื่อแพ็กเกจ (เช่น MEMBER)" class="w-full border rounded-lg p-2 mb-3">
-          <input type="number" id="topHours" placeholder="จำนวนชั่วโมงที่ได้" class="w-full border rounded-lg p-2 mb-4">
-          <button onclick="adminTopup()" class="w-full bg-blue-500 text-white font-bold py-3 rounded-lg">ยืนยันการเติม</button>
+        <div id="formTopup" class="bg-white p-4 rounded-xl shadow-sm border border-golf-cream hidden">
+          <h3 class="font-bold text-golf-darkest mb-3">📦 เติมแพ็กเกจ</h3>
+          <input type="text" id="topPkgName" placeholder="ชื่อแพ็กเกจ (เช่น MEMBER)" class="w-full border border-golf-base/40 rounded-lg p-2 mb-3 bg-[#fbfaf5] focus:ring-2 focus:ring-golf-base outline-none">
+          <input type="number" id="topHours" placeholder="จำนวนชั่วโมงที่ได้" class="w-full border border-golf-base/40 rounded-lg p-2 mb-4 bg-[#fbfaf5] focus:ring-2 focus:ring-golf-base outline-none">
+          <button onclick="adminTopup()" class="w-full bg-golf-darkest hover:bg-[#000] text-golf-cream font-bold py-3 rounded-lg shadow-md">ยืนยันการเติม</button>
         </div>
 
       </div>
@@ -140,13 +169,14 @@
       loadDashboard();
     }
 
-    // ฟังก์ชันจัดการสลับหน้าจอ
+    // ฟังก์ชันจัดการสลับหน้าจอ (แก้ปัญหาทับซ้อน 100%)
     function switchView(viewId) {
-      document.querySelectorAll('.page-section').forEach(el => el.classList.remove('page-active'));
-      document.getElementById(viewId).classList.add('page-active');
+      document.querySelectorAll('.page-section').forEach(el => {
+        el.classList.add('hide-me');
+      });
+      document.getElementById(viewId).classList.remove('hide-me');
     }
 
-    // เรียก API หลังบ้านดึงข้อมูล Dashboard
     async function loadDashboard() {
       try {
         const res = await fetch(`${GAS_WEB_APP_URL}?action=getUserDashboard&uid=${currentUserUid}`);
@@ -166,7 +196,6 @@
       }
     }
 
-    // ลงทะเบียน
     async function submitRegister() {
       const name = document.getElementById('regName').value.trim();
       const phone = document.getElementById('regPhone').value.trim();
@@ -180,7 +209,6 @@
       if(result.success) loadDashboard();
     }
 
-    // วาดหน้า Dashboard ลูกค้า
     function renderCustomerDashboard(data) {
       document.getElementById('dashName').innerText = data.name;
       document.getElementById('dashRegDate').innerText = `เป็นสมาชิกเมื่อ: ${data.regDate}`;
@@ -194,22 +222,18 @@
 
       let historyHtml = "";
       if(data.history.length === 0) {
-        historyHtml = `<p class="text-center text-sm text-gray-400 py-4">ยังไม่มีประวัติการใช้งาน</p>`;
+        historyHtml = `<p class="text-center text-sm text-golf-dark/50 py-4">ยังไม่มีประวัติการใช้งาน</p>`;
       } else {
         data.history.forEach(h => {
           historyHtml += `
-            <div class="flex justify-between items-center p-3 border-b last:border-0">
-              <div><p class="text-sm font-bold text-gray-700">${h.date}</p><p class="text-xs text-gray-500">${h.timeIn} - ${h.timeOut}</p></div>
-              <div class="text-red-500 font-bold text-sm">- ${h.amount} ชม.</div>
+            <div class="flex justify-between items-center p-3 border-b border-golf-cream/50 last:border-0">
+              <div><p class="text-sm font-bold text-golf-darkest">${h.date}</p><p class="text-xs text-golf-dark">${h.timeIn} - ${h.timeOut}</p></div>
+              <div class="text-golf-maroon font-bold text-sm">- ${h.amount} ชม.</div>
             </div>`;
         });
       }
       document.getElementById('dashHistory').innerHTML = historyHtml;
     }
-
-    // ==========================================
-    // ฟังก์ชันฝั่ง Admin
-    // ==========================================
 
     async function adminSearch() {
       const key = document.getElementById('searchKey').value.trim();
@@ -228,7 +252,6 @@
         document.getElementById('resPkg').innerText = cust.package ? cust.package.name : "ไม่มี";
         document.getElementById('resRemain').innerText = cust.package ? cust.package.remain : "0";
         
-        // ตั้งค่าวันที่ปัจจุบันให้ช่อง Input Date
         document.getElementById('useDate').valueAsDate = new Date();
         document.getElementById('adminActionSection').classList.remove('hidden');
       } else {
@@ -257,7 +280,7 @@
       const result = await res.json();
       
       if(result.success) {
-        Swal.fire('สำเร็จ', result.message, 'success').then(()=> adminSearch()); // รีโหลดข้อมูลใหม่
+        Swal.fire('สำเร็จ', result.message, 'success').then(()=> adminSearch()); 
       } else {
         Swal.fire('ผิดพลาด', result.message, 'error');
       }
