@@ -4,146 +4,162 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ratcharak Golf Sim</title>
+  
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    body { font-family: 'Kanit', sans-serif; background-color: #f8fafc; }
+    body { font-family: 'Kanit', sans-serif; background-color: #f8fafc; padding-bottom: 70px; }
     .hide-me { display: none !important; }
     .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
+    
+    /* สไตล์สำหรับแถบเมนูด้านล่าง (Bottom Navigation) */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 10px 0; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+    .nav-item { flex: 1; text-align: center; color: #94a3b8; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+    .nav-item.active { color: #1e293b; font-weight: 600; }
+    .nav-icon { font-size: 1.25rem; margin-bottom: 2px; opacity: 0.7; }
+    .nav-item.active .nav-icon { opacity: 1; color: #16a34a; }
   </style>
 </head>
 <body class="text-slate-800 antialiased">
 
   <div id="viewLoading" class="page-section flex flex-col items-center justify-center min-h-screen bg-white">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-green-600 mb-4"></div>
-    <p class="text-slate-500 font-medium">กำลังประมวลผลข้อมูล...</p>
-  </div>
-
-  <div id="viewPdpa" class="page-section hide-me max-w-md mx-auto min-h-screen bg-white shadow-md p-6 flex flex-col justify-center">
-    <h2 class="text-2xl font-bold text-center text-slate-800 mb-4">ข้อกำหนดและเงื่อนไข</h2>
-    <div class="bg-slate-50 p-5 rounded-lg text-sm text-slate-600 mb-6 h-64 overflow-y-auto border border-slate-200">
-      <p>ยินดีต้อนรับสู่ Ratcharak Golf Sim เพื่อการให้บริการที่สมบูรณ์แบบ เราจำเป็นต้องขอจัดเก็บข้อมูลส่วนบุคคลของท่าน ได้แก่ ชื่อ นามสกุล และเบอร์โทรศัพท์ เพื่อใช้ในการยืนยันตัวตน ระบบสมาชิก และการจองเวลาใช้บริการ ข้อมูลของท่านจะถูกเก็บรักษาเป็นความลับตามกฎหมายการคุ้มครองข้อมูลส่วนบุคคล (PDPA)</p>
-    </div>
-    <button onclick="switchView('viewRegister')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 rounded-lg shadow-sm transition mb-3">
-      ยอมรับเงื่อนไข
-    </button>
-    <button onclick="liff.closeWindow()" class="w-full bg-white text-slate-600 border border-slate-300 font-medium py-3.5 rounded-lg transition">
-      ปฏิเสธ
-    </button>
+    <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-slate-800 mb-4"></div>
+    <p class="text-slate-500 font-medium text-sm">กำลังเชื่อมต่อข้อมูล...</p>
   </div>
 
   <div id="viewRegister" class="page-section hide-me max-w-md mx-auto min-h-screen bg-white shadow-md p-6 flex flex-col justify-center">
     <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">ลงทะเบียนผู้ใช้งาน</h2>
-    <p class="text-center text-slate-500 text-sm mb-8">กรุณาระบุข้อมูลเพื่อเข้าสู่ระบบ</p>
+    <p class="text-center text-slate-500 text-sm mb-6">กรุณาระบุข้อมูลเพื่อเข้าสู่ระบบ</p>
     
     <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อ-นามสกุล</label>
-    <input type="text" id="regName" class="w-full border border-slate-300 rounded-lg p-3 mb-5 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+    <input type="text" id="regName" class="w-full border border-slate-300 rounded-lg p-3 mb-4 focus:ring-2 focus:ring-slate-500 focus:outline-none transition">
     
     <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์โทรศัพท์</label>
-    <input type="tel" id="regPhone" class="w-full border border-slate-300 rounded-lg p-3 mb-8 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+    <input type="tel" id="regPhone" class="w-full border border-slate-300 rounded-lg p-3 mb-4 focus:ring-2 focus:ring-slate-500 focus:outline-none transition">
     
-    <button onclick="submitRegister()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 rounded-lg shadow-sm transition">
-      ยืนยันการลงทะเบียน
+    <div class="bg-slate-50 p-4 rounded-lg text-xs text-slate-500 mb-6 border border-slate-200 leading-relaxed">
+      * เพื่อการให้บริการที่สมบูรณ์แบบ เราจำเป็นต้องขอจัดเก็บข้อมูลส่วนบุคคลของท่านเพื่อใช้ในการยืนยันตัวตน ระบบสมาชิก และการจองเวลาใช้บริการ ข้อมูลจะถูกเก็บเป็นความลับตามกฎหมาย PDPA การกดปุ่มด้านล่างถือเป็นการยอมรับเงื่อนไข
+    </div>
+    
+    <button onclick="submitRegister()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-lg shadow-sm transition">
+      ยอมรับเงื่อนไขและลงทะเบียน
     </button>
   </div>
 
   <div id="viewCustomer" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md">
-    <div class="bg-white p-6 border-b border-slate-200 flex items-center gap-4">
-      <img id="cusProfilePic" src="" alt="Profile" class="w-16 h-16 rounded-full object-cover border border-slate-200 shadow-sm">
-      <div>
-        <h2 id="dashName" class="text-xl font-bold text-slate-800">...</h2>
-        <p id="dashRegDate" class="text-xs text-slate-500 mt-1">Member Since: -</p>
+    <div class="bg-white p-5 border-b border-slate-200 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img id="cusProfilePic" src="" class="w-12 h-12 rounded-full object-cover border border-slate-200 shadow-sm">
+        <div>
+          <h2 id="dashName" class="text-base font-bold text-slate-800 leading-tight">...</h2>
+          <p id="dashRegDate" class="text-xs text-slate-500">Member Since: -</p>
+        </div>
       </div>
+      <button onclick="shortcutBooking()" class="bg-slate-800 text-white text-xs font-medium px-4 py-2 rounded-full shadow-sm hover:bg-slate-900 transition flex items-center gap-1">
+        จองคิว
+      </button>
     </div>
     
-    <div class="p-5">
-      <div class="bg-white p-5 rounded-xl card-shadow border border-slate-100 mb-6">
-        <h3 class="text-sm font-medium text-slate-500 mb-1">ข้อมูลแพ็กเกจปัจจุบัน</h3>
-        <p id="dashPkgName" class="text-lg font-bold text-slate-800 mb-4">ไม่มีข้อมูล</p>
-        
-        <div class="flex justify-between text-center bg-slate-50 border border-slate-100 p-3 rounded-lg">
-          <div><p class="text-xs text-slate-500">รวม (ชม.)</p><p id="dashTotal" class="font-semibold text-slate-800">0</p></div>
-          <div><p class="text-xs text-slate-500">ใช้ไป (ชม.)</p><p id="dashUsed" class="font-semibold text-slate-800">0</p></div>
-          <div><p class="text-xs text-slate-500">คงเหลือ</p><p id="dashRemain" class="font-bold text-green-600 text-lg">0</p></div>
+    <div class="p-4">
+      <div class="bg-slate-800 p-6 rounded-2xl shadow-lg mb-6 text-white text-center relative overflow-hidden">
+        <div class="absolute -right-4 -top-4 opacity-10 text-6xl">⛳</div>
+        <p class="text-sm font-medium text-slate-300 mb-1">ชั่วโมงคงเหลือ</p>
+        <p id="dashRemain" class="text-5xl font-bold mb-3 text-green-400">0</p>
+        <div class="bg-white/10 rounded-lg p-3 flex justify-between text-xs border border-white/10">
+          <span class="text-slate-300">รวมทั้งหมด: <span id="dashTotal" class="font-bold text-white">0</span> ชม.</span>
+          <span class="text-slate-300">ใช้งานไป: <span id="dashUsed" class="font-bold text-white">0</span> ชม.</span>
         </div>
       </div>
 
       <h3 class="font-semibold text-slate-700 mb-3 text-sm">ประวัติการใช้บริการ</h3>
-      <div id="dashHistory" class="bg-white rounded-xl card-shadow border border-slate-100 p-2 min-h-[100px]">
-      </div>
+      <div id="dashHistory" class="bg-white rounded-xl card-shadow border border-slate-100 p-2"></div>
     </div>
   </div>
 
+  <div id="viewMemberDash" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-20">
+    <div id="vipContent" class="p-4">
+      </div>
+  </div>
+
   <div id="viewAdmin" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-10">
-    <div class="bg-slate-800 text-white p-5 flex items-center gap-4">
-      <img id="adminProfilePic" src="" alt="Admin Profile" class="w-12 h-12 rounded-full object-cover border border-slate-500 shadow-sm">
+    <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm">
+      <img id="adminProfilePic" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500">
       <div>
-        <h2 class="text-lg font-bold">ระบบจัดการข้อมูล</h2>
-        <p id="adminDisplayName" class="text-xs text-slate-300 mt-0.5">ผู้ทำรายการ: ...</p>
+        <h2 class="text-base font-bold">ระบบจัดการหลังบ้าน</h2>
+        <p id="adminDisplayName" class="text-xs text-slate-300">...</p>
       </div>
     </div>
     
-    <div class="p-5">
-      <div class="bg-white p-5 rounded-xl card-shadow border border-slate-100 mb-5">
-        <h3 class="font-medium text-slate-700 mb-3 text-sm">ค้นหาข้อมูลลูกค้า</h3>
-        <input type="text" id="searchKey" placeholder="ระบุชื่อ หรือ เบอร์โทรศัพท์" class="w-full border border-slate-300 rounded-lg p-3 mb-3 focus:ring-2 focus:ring-slate-500 focus:outline-none transition text-sm">
-        <button onclick="adminSearch()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 rounded-lg transition text-sm">ค้นหา</button>
+    <div class="p-4">
+      <div class="bg-white p-4 rounded-xl card-shadow border border-slate-100 mb-4">
+        <h3 class="font-medium text-slate-700 mb-2 text-sm">ค้นหาข้อมูลลูกค้า</h3>
+        <input type="text" id="searchKey" placeholder="ระบุชื่อ หรือ เบอร์โทรศัพท์" class="w-full border border-slate-300 rounded-lg p-2.5 mb-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 transition">
+        <button onclick="adminSearch()" class="w-full bg-slate-800 text-white font-medium py-2.5 rounded-lg text-sm transition hover:bg-slate-900">ค้นหา</button>
       </div>
 
       <div id="adminActionSection" class="hidden">
-        <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-4 text-sm">
-          <p class="text-blue-700 font-semibold mb-1">รายละเอียดลูกค้า</p>
+        <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-4 text-sm shadow-sm">
           <p id="resName" class="font-bold text-slate-800 text-base"></p>
-          <p id="resPhone" class="text-slate-600"></p>
-          <div class="h-px bg-blue-200 my-2"></div>
-          <div class="flex justify-between items-center">
+          <p id="resPhone" class="text-slate-600 mb-3"></p>
+          <div class="flex justify-between items-center pt-3 border-t border-blue-200">
             <span class="text-slate-600">แพ็กเกจ: <span id="resPkg" class="font-semibold text-slate-800"></span></span>
             <span class="text-slate-600">คงเหลือ: <span id="resRemain" class="font-bold text-green-600 text-lg"></span> ชม.</span>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3 mb-4">
-          <button onclick="toggleAction('usage')" class="bg-white border border-slate-300 text-slate-700 py-2.5 rounded-lg font-medium text-sm hover:bg-slate-50 transition">ตัดเวลาเข้า-ออก</button>
-          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-2.5 rounded-lg font-medium text-sm hover:bg-slate-900 transition">เติมแพ็กเกจ</button>
+          <button onclick="toggleAction('usage')" class="bg-white border border-slate-300 text-slate-700 py-2.5 rounded-lg font-medium text-sm transition hover:bg-slate-50">ส่งคำขอตัดเวลา</button>
+          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-2.5 rounded-lg font-medium text-sm transition hover:bg-slate-900">เติมแพ็กเกจ</button>
         </div>
 
         <div id="formUsage" class="bg-white p-5 rounded-xl card-shadow border border-slate-100 hidden">
-          <h3 class="font-semibold text-slate-800 mb-4 text-sm">⛳ ตัดเวลาการใช้บริการ</h3>
-          <label class="block text-xs text-slate-500 mb-1">วันที่</label>
-          <input type="date" id="useDate" class="w-full border border-slate-300 rounded-lg p-2.5 mb-4 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
+          <h3 class="font-semibold text-slate-800 mb-4 text-sm">⛳ ส่งคำขอตัดเวลา</h3>
+          <label class="block text-xs text-slate-500 mb-1">วันที่ใช้บริการ</label>
+          <input type="date" id="useDate" class="w-full border border-slate-300 rounded-lg p-2.5 mb-4 text-sm outline-none focus:ring-2 focus:ring-slate-500">
           
-          <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="grid grid-cols-2 gap-4 mb-5">
             <div>
               <label class="block text-xs text-slate-500 mb-1">เวลาเข้า</label>
-              <input type="time" id="useIn" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
+              <input type="time" id="useIn" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-500">
             </div>
             <div>
               <label class="block text-xs text-slate-500 mb-1">เวลาออก</label>
-              <input type="time" id="useOut" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
+              <input type="time" id="useOut" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-500">
             </div>
           </div>
-          
-          <button onclick="adminRecordTime()" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg text-sm transition">บันทึกข้อมูล</button>
+          <button onclick="adminRequestTime()" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg text-sm transition">ส่งคำขอไปที่แชทลูกค้า</button>
         </div>
 
         <div id="formTopup" class="bg-white p-5 rounded-xl card-shadow border border-slate-100 hidden">
-          <h3 class="font-semibold text-slate-800 mb-4 text-sm">เติมแพ็กเกจใหม่</h3>
+          <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มแพ็กเกจ</h3>
           <label class="block text-xs text-slate-500 mb-1">ชื่อแพ็กเกจ</label>
-          <input type="text" id="topPkgName" placeholder="ระบุชื่อแพ็กเกจ" class="w-full border border-slate-300 rounded-lg p-2.5 mb-3 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
+          <input type="text" id="topPkgName" placeholder="เช่น MEMBER VIP" class="w-full border border-slate-300 rounded-lg p-2.5 mb-3 text-sm outline-none focus:ring-2 focus:ring-slate-500">
           <label class="block text-xs text-slate-500 mb-1">จำนวนชั่วโมง</label>
-          <input type="number" id="topHours" placeholder="ระบุจำนวนตัวเลข" class="w-full border border-slate-300 rounded-lg p-2.5 mb-5 text-sm focus:ring-2 focus:ring-slate-500 outline-none">
-          <button onclick="adminTopup()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg text-sm transition">บันทึกข้อมูล</button>
+          <input type="number" id="topHours" placeholder="ระบุตัวเลขชั่วโมง" class="w-full border border-slate-300 rounded-lg p-2.5 mb-5 text-sm outline-none focus:ring-2 focus:ring-slate-500">
+          <button onclick="adminTopup()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3 rounded-lg text-sm transition">บันทึกข้อมูล</button>
         </div>
       </div>
     </div>
   </div>
 
+  <div id="bottomNav" class="bottom-nav hide-me">
+    <div class="nav-item active" onclick="navTo('viewCustomer', this)">
+      <div class="nav-icon">📊</div><div class="mt-1">หน้าหลัก</div>
+    </div>
+    <div class="nav-item" onclick="navTo('viewMemberDash', this)">
+      <div class="nav-icon">👑</div><div class="mt-1">Member VIP</div>
+    </div>
+  </div>
+
   <script>
-    // กรุณาระบุข้อมูลให้ถูกต้องก่อนนำไปใช้งาน
+    // ==========================================
+    // ตั้งค่าระบบ
+    // ==========================================
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxDFwbB-bWd6T54yLHONw_en32a9XgB4HK-WnGUnNehnUEUjSphjyqnoynEdOkjOg4V/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzpWqnwtbXQxYjpTGPLEn9bNmt2REMIDcP4JdT1UkMSd5z21bWyk8xCUX0AYWcHc9Vi/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -155,13 +171,12 @@
       const profile = await liff.getProfile();
       currentUserUid = profile.userId;
       
-      // ดึงรูปโปรไฟล์ LINE มาตั้งค่า (ใช้ Placeholder กรณีไม่มีรูป)
       const defaultPic = `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.displayName)}&background=random`;
       const profilePicUrl = profile.pictureUrl || defaultPic;
       
       document.getElementById('cusProfilePic').src = profilePicUrl;
       document.getElementById('adminProfilePic').src = profilePicUrl;
-      document.getElementById('adminDisplayName').innerText = `ผู้ทำรายการ: ${profile.displayName}`;
+      document.getElementById('adminDisplayName').innerText = profile.displayName;
 
       loadDashboard();
     }
@@ -171,18 +186,26 @@
       document.getElementById(viewId).classList.remove('hide-me');
     }
 
+    function navTo(viewId, el) {
+      switchView(viewId);
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      el.classList.add('active');
+    }
+
     async function loadDashboard() {
       try {
         const res = await fetch(`${GAS_WEB_APP_URL}?action=getUserDashboard&uid=${currentUserUid}`);
         const data = await res.json();
         
         if (!data.isRegistered) {
-          switchView('viewPdpa');
+          switchView('viewRegister');
         } else if (data.role === "Admin") {
           switchView('viewAdmin');
         } else {
           renderCustomerDashboard(data);
+          renderMemberDashboard(data);
           switchView('viewCustomer');
+          document.getElementById('bottomNav').classList.remove('hide-me'); // แสดงเมนูด้านล่าง
         }
       } catch (err) {
         Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้', 'error');
@@ -203,11 +226,9 @@
 
     function renderCustomerDashboard(data) {
       document.getElementById('dashName').innerText = data.name;
-      // อัปเดตคำว่า Member Since แทน วันที่สมัคร
       document.getElementById('dashRegDate').innerText = `Member Since: ${data.regDate}`;
       
       if(data.package) {
-        document.getElementById('dashPkgName').innerText = data.package.name;
         document.getElementById('dashTotal').innerText = data.package.total;
         document.getElementById('dashUsed').innerText = data.package.used;
         document.getElementById('dashRemain').innerText = data.package.remain;
@@ -215,12 +236,12 @@
 
       let historyHtml = "";
       if(data.history.length === 0) {
-        historyHtml = `<p class="text-center text-sm text-slate-400 py-4">ไม่พบประวัติการใช้บริการ</p>`;
+        historyHtml = `<p class="text-center text-xs text-slate-400 py-6">ไม่พบประวัติการใช้บริการ</p>`;
       } else {
         data.history.forEach(h => {
           historyHtml += `
-            <div class="flex justify-between items-center p-3 border-b border-slate-100 last:border-0">
-              <div><p class="text-sm font-medium text-slate-800">${h.date}</p><p class="text-xs text-slate-500">${h.timeIn} - ${h.timeOut}</p></div>
+            <div class="flex justify-between items-center p-3 border-b border-slate-50 last:border-0">
+              <div><p class="text-sm font-medium text-slate-800">${h.date}</p><p class="text-xs text-slate-500 mt-0.5">เวลา: ${h.timeIn} - ${h.timeOut}</p></div>
               <div class="text-slate-800 font-medium text-sm">- ${h.amount} ชม.</div>
             </div>`;
         });
@@ -228,15 +249,115 @@
       document.getElementById('dashHistory').innerHTML = historyHtml;
     }
 
+    // ฟังก์ชันวาดหน้า VIP แบบทางการและสวยงาม
+    function renderMemberDashboard(data) {
+      // เช็คว่าเป็น Yes หรือไม่
+      let isMember = data.memberType === "Yes"; 
+      let remainHr = data.package ? data.package.remain : 0;
+      let remainWash = data.package && data.package.carWash ? data.package.carWash : 0;
+      let exp = data.package && data.package.expiry ? data.package.expiry : "-";
+
+      let html = "";
+      if(isMember) {
+        html = `
+        <div class="bg-slate-800 text-white rounded-2xl p-6 mb-4 shadow-xl">
+          <p class="text-center text-lg font-bold text-yellow-400 mb-4 tracking-wide">MEMBER DASHBOARD</p>
+          <div class="border-y border-slate-600/50 py-4 mb-4 space-y-2 text-sm">
+            <div class="flex justify-between"><span class="text-slate-300">สถานะ</span><span class="font-bold text-green-400">MEMBER</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">ชั่วโมงคงเหลือ</span><span class="font-bold text-white">${remainHr} ชม.</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">สิทธิ์ล้างรถคงเหลือ</span><span class="font-bold text-white">${remainWash} ครั้ง</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">วันหมดอายุ</span><span class="font-bold text-white">${exp}</span></div>
+            <p class="mt-3 text-xs text-yellow-300/80 text-center">ใช้งานได้ทุกช่วงเวลา (ไม่หัก Peak Time)</p>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <p class="font-bold text-sm text-slate-100 mb-1">Private Golf Suite</p>
+              <ul class="list-disc pl-4 text-slate-400 text-xs space-y-1">
+                <li>ห้องส่วนตัวขนาดใหญ่ นั่งสบาย</li>
+                <li>รองรับการเล่นและพักผ่อนในห้องเดียว</li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-bold text-sm text-slate-100 mb-1">Guest & Karaoke Access</p>
+              <ul class="list-disc pl-4 text-slate-400 text-xs space-y-1">
+                <li>สามารถพาผู้ติดตามเข้าใช้บริการได้</li>
+                <li>ใช้ห้องคาราโอเกะได้ภายในห้อง</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="bg-white/10 rounded-lg p-3 text-xs mt-5 border border-white/5">
+            <p class="font-bold text-yellow-400 mb-1">Additional Hours</p>
+            <p class="text-slate-300">ใช้เกินชั่วโมง คิดเพียง 400 บาท / ชม.</p>
+          </div>
+        </div>`;
+      } else {
+        html = `
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 mb-4 shadow-sm text-slate-600">
+          <p class="text-center text-lg font-bold text-slate-800 mb-4 tracking-wide">MEMBER DASHBOARD</p>
+          <div class="border-y border-slate-100 py-4 mb-4 text-center">
+            <p class="text-sm text-slate-500 mb-1">สถานะปัจจุบัน</p>
+            <p class="font-bold text-slate-800 text-base">ยังไม่ได้เป็นสมาชิก</p>
+            <p class="mt-2 text-xs text-blue-600 font-medium bg-blue-50 py-1.5 px-3 rounded-full inline-block">อัปเกรดเพื่อประสบการณ์ที่เหนือกว่า</p>
+          </div>
+          
+          <div class="space-y-4 text-sm">
+            <div>
+              <p class="font-bold text-slate-800 mb-1">Private Golf Suite</p>
+              <ul class="list-disc pl-4 text-xs space-y-1 text-slate-500">
+                <li>ห้องส่วนตัวขนาดใหญ่ กว้างขวาง นั่งสบาย</li>
+                <li>เล่นและพักผ่อนได้อย่างเป็นส่วนตัว</li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-bold text-slate-800 mb-1">Guest & Karaoke</p>
+              <ul class="list-disc pl-4 text-xs space-y-1 text-slate-500">
+                <li>พาผู้ติดตามได้สูงสุด 3 ท่าน</li>
+                <li>ใช้คาราโอเกะได้ภายในห้อง</li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-bold text-slate-800 mb-1">Car Care Privileges</p>
+              <ul class="list-disc pl-4 text-xs space-y-1 text-slate-500">
+                <li>ล้างรถฟรี</li>
+                <li>รับส่วนลดคาร์แคร์ 20%</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 text-xs text-center mt-5 mb-5">
+            <p class="font-bold text-slate-800 mb-1">Member Rate</p>
+            <p class="text-slate-500">ใช้งานต่อเนื่อง คิดเพียง 400 บาท / ชม.</p>
+          </div>
+          
+          <button onclick="applyMembership()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-lg shadow-sm transition">
+            สมัครสมาชิก
+          </button>
+        </div>`;
+      }
+      document.getElementById('vipContent').innerHTML = html;
+    }
+
+    function shortcutBooking() {
+      liff.sendMessages([{ type: 'text', text: 'ติดต่อเรา/จองเวลา' }]).then(() => liff.closeWindow());
+    }
+
+    function applyMembership() {
+      const applyText = `📩 สมัคร Membership\n\nสวัสดีครับ 👋\nกรุณากรอกข้อมูลเพื่อสมัครสมาชิก (คัดลอกแล้วกรอกได้เลย)\n\n━━━━━━━━━━━━━━━\n👤 ชื่อ-นามสกุล:\n📱 เบอร์โทรศัพท์:\n📅 วันที่สะดวกเริ่มใช้งาน:\n👥 ปกติมากับกี่ท่าน:\n━━━━━━━━━━━━━━━\n\n📌 หมายเหตุ\n• ทางร้านจะติดต่อกลับเพื่อยืนยันรายละเอียดครับ`;
+      liff.sendMessages([{ type: 'text', text: applyText }]).then(() => liff.closeWindow());
+    }
+
+    // ==========================================
+    // ฝั่ง Admin
+    // ==========================================
     async function adminSearch() {
       const key = document.getElementById('searchKey').value.trim();
       if(!key) return;
-
       Swal.showLoading();
       const res = await fetch(`${GAS_WEB_APP_URL}?action=searchCustomer&keyword=${key}`);
       const result = await res.json();
       Swal.close();
-
       if(result.success) {
         const cust = result.data;
         selectedCustomerUid = cust.uid;
@@ -246,9 +367,7 @@
         document.getElementById('resRemain').innerText = cust.package ? cust.package.remain : "0";
         document.getElementById('useDate').valueAsDate = new Date();
         document.getElementById('adminActionSection').classList.remove('hidden');
-      } else {
-        Swal.fire('แจ้งเตือน', result.message, 'warning');
-      }
+      } else { Swal.fire('แจ้งเตือน', result.message, 'warning'); }
     }
 
     function toggleAction(type) {
@@ -258,7 +377,7 @@
       if(type === 'topup') document.getElementById('formTopup').classList.remove('hidden');
     }
 
-    async function adminRecordTime() {
+    async function adminRequestTime() {
       const dateStr = document.getElementById('useDate').value;
       const timeIn = document.getElementById('useIn').value;
       const timeOut = document.getElementById('useOut').value;
@@ -267,15 +386,15 @@
       const payload = { adminUid: currentUserUid, customerUid: selectedCustomerUid, date: dateStr, timeIn: timeIn, timeOut: timeOut };
       const btn = event.target; btn.disabled = true; btn.innerText = "กำลังประมวลผล...";
       
-      const res = await fetch(`${GAS_WEB_APP_URL}?action=recordUsageTime&data=${encodeURIComponent(JSON.stringify(payload))}`);
+      const res = await fetch(`${GAS_WEB_APP_URL}?action=requestUsageTime&data=${encodeURIComponent(JSON.stringify(payload))}`);
       const result = await res.json();
       
       if(result.success) {
-        Swal.fire('สำเร็จ', result.message, 'success').then(()=> adminSearch()); 
+        Swal.fire('สำเร็จ', result.message, 'success');
       } else {
         Swal.fire('ข้อผิดพลาด', result.message, 'error');
       }
-      btn.disabled = false; btn.innerText = "บันทึกข้อมูล";
+      btn.disabled = false; btn.innerText = "ส่งคำขอไปที่แชทลูกค้า";
     }
 
     async function adminTopup() {
@@ -290,13 +409,8 @@
       const result = await res.json();
       
       if(result.success) {
-        Swal.fire('สำเร็จ', result.message, 'success').then(()=> {
-          document.getElementById('topPkgName').value = ""; document.getElementById('topHours').value = "";
-          adminSearch(); 
-        });
-      } else {
-        Swal.fire('ข้อผิดพลาด', result.message, 'error');
-      }
+        Swal.fire('สำเร็จ', result.message, 'success').then(()=> adminSearch()); 
+      } else { Swal.fire('ข้อผิดพลาด', result.message, 'error'); }
       btn.disabled = false; btn.innerText = "บันทึกข้อมูล";
     }
 
