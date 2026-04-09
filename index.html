@@ -11,14 +11,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
-    body { font-family: 'Kanit', sans-serif; background-color: #f8fafc; padding-bottom: 70px; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Kanit', sans-serif; background-color: #f8fafc; padding-bottom: 70px; overflow-x: hidden; }
     .hide-me { display: none !important; }
     .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     .nav-item { flex: 1; text-align: center; color: #64748b; cursor: pointer; transition: all 0.3s; padding: 16px 0; font-size: 0.9rem; font-weight: 500; }
     .nav-item.active { color: #16a34a; font-weight: 600; background-color: #f0fdf4; border-top: 2px solid #16a34a; }
-    /* บังคับช่องกรอกข้อมูลทั้งหมดให้อยู่ในกรอบอย่างปลอดภัย */
-    input, select { box-sizing: border-box; width: 100%; max-width: 100%; }
+    input[type="date"], select, input[type="text"], input[type="tel"], input[type="number"] { 
+      width: 100%; min-width: 0; -webkit-appearance: none; appearance: none;
+    }
   </style>
 </head>
 <body class="text-slate-800 antialiased">
@@ -33,10 +35,10 @@
     <p class="text-center text-slate-500 text-sm mb-6">กรุณาระบุข้อมูลเพื่อเข้าสู่ระบบ</p>
     
     <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อ-นามสกุล</label>
-    <input type="text" id="regName" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-green-500 focus:bg-white outline-none transition-all">
+    <input type="text" id="regName" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all">
     
     <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์โทรศัพท์</label>
-    <input type="tel" id="regPhone" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-green-500 focus:bg-white outline-none transition-all">
+    <input type="tel" id="regPhone" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all">
     
     <div class="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 mb-6 border border-slate-200 leading-relaxed">
       * ข้อมูลของท่านจะถูกเก็บเป็นความลับตามกฎหมาย PDPA การกดปุ่มด้านล่างถือเป็นการยอมรับเงื่อนไข
@@ -47,28 +49,26 @@
   <div id="viewCustomer" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md">
     <div class="bg-white p-5 border-b border-slate-200 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img id="cusProfilePic" src="" class="w-12 h-12 rounded-full object-cover border border-slate-200 shadow-sm">
+        <img id="cusProfilePic" src="" class="w-12 h-12 rounded-full object-cover border border-slate-200 shadow-sm bg-slate-100">
         <div>
-          <h2 id="dashName" class="text-base font-bold text-slate-800 leading-tight">...</h2>
-          <p id="dashRegDate" class="text-xs text-slate-500">Member Since: -</p>
+          <h2 id="dashName" class="text-base font-bold text-slate-800 leading-tight">กำลังโหลด...</h2>
+          <p id="dashRegDate" class="text-xs text-slate-500">Member Since: ...</p>
         </div>
       </div>
     </div>
     
-    <div class="p-4">
+    <div class="p-4 w-full overflow-hidden">
       <div class="text-center mb-4">
-        <span class="bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-full border border-slate-200">
-          ⏰ เวลาทำการ: 08:00 - 22:00 น.
-        </span>
+        <span class="bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-full border border-slate-200">⏰ เวลาทำการ: 08:00 - 22:00 น.</span>
       </div>
 
       <div class="bg-slate-800 p-6 rounded-2xl shadow-lg mb-5 text-white text-center relative overflow-hidden">
         <div class="absolute -right-4 -top-4 opacity-10 text-6xl">⛳</div>
         <p class="text-sm font-medium text-slate-300 mb-1">ชั่วโมงคงเหลือ</p>
-        <p id="dashRemain" class="text-5xl font-bold mb-3 text-green-400">0</p>
+        <p id="dashRemain" class="text-5xl font-bold mb-3 text-green-400">...</p>
         <div class="bg-white/10 rounded-lg p-3 flex justify-between text-xs border border-white/10">
-          <span class="text-slate-300">รวมทั้งหมด: <span id="dashTotal" class="font-bold text-white">0</span> ชม.</span>
-          <span class="text-slate-300">ใช้งานไป: <span id="dashUsed" class="font-bold text-white">0</span> ชม.</span>
+          <span class="text-slate-300">รวมทั้งหมด: <span id="dashTotal" class="font-bold text-white">...</span> ชม.</span>
+          <span class="text-slate-300">ใช้งานไป: <span id="dashUsed" class="font-bold text-white">...</span> ชม.</span>
         </div>
       </div>
 
@@ -76,8 +76,13 @@
         📅 จองคิวใช้บริการ
       </button>
 
-      <h3 class="font-semibold text-slate-700 mb-3 text-sm">ประวัติการใช้บริการ</h3>
-      <div id="dashHistory" class="bg-white rounded-xl card-shadow border border-slate-100 p-2 mb-6"></div>
+      <h3 class="font-semibold text-slate-800 mb-3 text-sm">📅 คิวจองของคุณ</h3>
+      <div id="dashUpcomingBookings" class="mb-6 space-y-2"></div>
+
+      <h3 class="font-semibold text-slate-800 mb-3 text-sm">ประวัติการใช้บริการ</h3>
+      <div id="dashHistory" class="bg-white rounded-xl card-shadow border border-slate-100 p-2 mb-6">
+        <p class="text-center text-xs text-slate-400 py-6">กำลังดึงข้อมูล...</p>
+      </div>
     </div>
   </div>
 
@@ -85,49 +90,31 @@
     <button onclick="navTo('viewCustomer')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> ย้อนกลับ
     </button>
-    <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100">
+    <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 w-full">
       <h2 class="text-xl font-bold text-slate-800 mb-2 text-center">📅 จองคิวใช้บริการ</h2>
       <p class="text-center text-xs text-slate-500 mb-5">⏰ เวลาทำการ: 08:00 - 22:00 น.</p>
       
       <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ต้องการจอง</label>
-      <input type="date" id="bookDate" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-green-500 focus:bg-white outline-none transition-all">
+      <input type="date" id="bookDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all">
       
       <div class="grid grid-cols-2 gap-3 mb-4">
-        <div>
+        <div class="w-full overflow-hidden">
           <label class="block text-sm font-medium text-slate-700 mb-1">เวลาเริ่ม (เข้า)</label>
-          <select id="bookTimeStart" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:bg-white outline-none transition-all">
-            <option value="" disabled selected>เลือกเวลา...</option>
-            <script>
-              for(let h=8; h<=21; h++) {
-                let hh = h < 10 ? '0'+h : h;
-                document.write(`<option value="${hh}:00">${hh}:00</option>`);
-                document.write(`<option value="${hh}:30">${hh}:30</option>`);
-              }
-            </script>
-          </select>
+          <select id="bookTimeIn" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+            </select>
         </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">ระยะเวลาใช้งาน</label>
-          <select id="bookDuration" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 focus:ring-2 focus:ring-green-500 focus:bg-white outline-none transition-all">
-            <option value="" disabled selected>กี่ชั่วโมง...</option>
-            <option value="1">1 ชั่วโมง</option>
-            <option value="1.5">1.5 ชั่วโมง</option>
-            <option value="2">2 ชั่วโมง</option>
-            <option value="2.5">2.5 ชั่วโมง</option>
-            <option value="3">3 ชั่วโมง</option>
-            <option value="3.5">3.5 ชั่วโมง</option>
-            <option value="4">4 ชั่วโมง</option>
-          </select>
+        <div class="w-full overflow-hidden">
+          <label class="block text-sm font-medium text-slate-700 mb-1">เวลาสิ้นสุด (ออก)</label>
+          <select id="bookTimeOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+            </select>
         </div>
       </div>
       
-      <input type="hidden" id="bookTimeOut">
-      
       <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนผู้เข้าใช้งาน (ท่าน)</label>
-      <input type="number" id="bookPax" placeholder="ระบุจำนวนคน" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-green-500 focus:bg-white outline-none transition-all">
+      <input type="number" id="bookPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all">
       
       <div class="bg-red-50 border border-red-100 p-4 rounded-xl mb-6">
-        <p class="text-xs text-red-600 leading-relaxed">📌 <b>เงื่อนไขการจอง:</b> หากต้องการยกเลิกหรือเลื่อนเวลา กรุณาแจ้งแอดมินล่วงหน้าอย่างน้อย 1 ชั่วโมงก่อนถึงคิวจอง มิฉะนั้นระบบจะทำการตัดชั่วโมงอัตโนมัติ</p>
+        <p class="text-xs text-red-600 leading-relaxed">📌 <b>เงื่อนไขการยกเลิก:</b> กรุณากดยกเลิกล่วงหน้าอย่างน้อย 1 ชั่วโมงก่อนถึงคิวจอง หากเกินกำหนดจะไม่สามารถยกเลิกผ่านระบบได้ครับ</p>
       </div>
 
       <button onclick="submitBookingForm()" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยืนยันการจองคิว</button>
@@ -138,42 +125,49 @@
     <button onclick="navTo('viewMemberDash')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> ย้อนกลับ
     </button>
-    <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100">
+    <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 w-full">
       <h2 class="text-xl font-bold text-slate-800 mb-6 text-center">📩 สมัคร Membership</h2>
-      
       <label class="block text-sm font-medium text-slate-700 mb-1">วันที่สะดวกเริ่มใช้งาน</label>
-      <input type="date" id="applyDate" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 focus:bg-white outline-none transition-all">
-      
+      <input type="date" id="applyDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all">
       <label class="block text-sm font-medium text-slate-700 mb-1">ปกติมาใช้บริการกี่ท่าน</label>
-      <input type="number" id="applyPax" placeholder="ระบุจำนวนคน" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 focus:bg-white outline-none transition-all">
-      
+      <input type="number" id="applyPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all">
       <div class="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 mb-6 border border-slate-200 leading-relaxed">
         📌 ทางร้านจะติดต่อกลับเพื่อยืนยันรายละเอียดและแจ้งอัตราค่าบริการให้ท่านทราบโดยเร็วที่สุดครับ
       </div>
-      
       <button onclick="submitApplyMemberForm()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ส่งคำขอสมัครสมาชิก</button>
     </div>
   </div>
 
   <div id="viewMemberDash" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-20">
-    <div id="vipContent" class="p-4"></div>
+    <div id="vipContent" class="p-4">
+      <p class="text-center text-xs text-slate-400 py-10">กำลังตรวจสอบสถานะ...</p>
+    </div>
   </div>
 
   <div id="viewAdmin" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-10">
     <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm">
-      <img id="adminProfilePic" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500">
-      <div><h2 class="text-base font-bold">ระบบจัดการหลังบ้าน</h2><p id="adminDisplayName" class="text-xs text-slate-300">...</p></div>
+      <img id="adminProfilePic" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500 bg-slate-700">
+      <div><h2 class="text-base font-bold">Admin Tool สำหรับผู้ดูแล</h2><p id="adminDisplayName" class="text-xs text-slate-300">...</p></div>
     </div>
     
-    <div class="p-4">
+    <div class="p-4 w-full">
+      <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-5">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-medium text-slate-700 text-sm">📅 ตารางคิวจองลูกค้า</h3>
+          <input type="date" id="adminViewDate" onchange="loadAdminDailyBookings()" class="border border-slate-300 rounded p-1 text-xs w-32 outline-none">
+        </div>
+        <div id="adminDailyBookings" class="space-y-2 mt-2">
+          </div>
+      </div>
+
       <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-4">
         <h3 class="font-medium text-slate-700 mb-2 text-sm">ค้นหาข้อมูลลูกค้า</h3>
-        <input type="text" id="searchKey" placeholder="ระบุชื่อ หรือ เบอร์โทรศัพท์" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-slate-500 focus:bg-white outline-none transition-all">
+        <input type="text" id="searchKey" placeholder="ระบุชื่อ หรือ เบอร์โทรศัพท์" class="border border-slate-300 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
         <button onclick="adminSearch()" class="w-full bg-slate-800 text-white font-medium py-3 rounded-xl text-sm transition hover:bg-slate-900">ค้นหา</button>
       </div>
 
       <div id="adminActionSection" class="hidden">
-        <div class="bg-blue-50 border border-blue-100 p-5 rounded-2xl mb-4 text-sm shadow-sm">
+        <div class="bg-blue-50 border border-blue-100 p-5 rounded-2xl mb-4 text-sm shadow-sm w-full">
           <p id="resName" class="font-bold text-slate-800 text-base"></p>
           <p id="resPhone" class="text-slate-600 mb-3"></p>
           <div class="flex justify-between items-center pt-3 border-t border-blue-200">
@@ -184,33 +178,37 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3 mb-4">
-          <button onclick="toggleAction('usage')" class="bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-sm transition hover:bg-slate-50 shadow-sm">ตัดเวลาใช้บริการ</button>
-          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm">เติมแพ็กเกจ</button>
+          <button onclick="toggleAction('usage')" class="bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-sm transition hover:bg-slate-50 shadow-sm w-full">ตัดเวลาใช้บริการ</button>
+          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm w-full">เติมแพ็กเกจ</button>
         </div>
 
-        <div id="formUsage" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden">
+        <div id="formUsage" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden w-full">
           <h3 class="font-semibold text-slate-800 mb-4 text-sm">⛳ บันทึกตัดเวลาทันที</h3>
-          
           <label class="block text-xs text-slate-500 mb-1">วันที่ใช้บริการ</label>
-          <input type="date" id="useDate" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 focus:bg-white outline-none transition-all">
+          <input type="date" id="useDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
           
           <div class="grid grid-cols-2 gap-3 mb-4">
-            <div><label class="block text-xs text-slate-500 mb-1">เวลาเข้า</label><input type="time" id="useIn" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 focus:bg-white outline-none transition-all"></div>
-            <div><label class="block text-xs text-slate-500 mb-1">เวลาออก</label><input type="time" id="useOut" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 focus:bg-white outline-none transition-all"></div>
+            <div class="w-full overflow-hidden">
+              <label class="block text-xs text-slate-500 mb-1">เวลาเข้า</label>
+              <select id="useIn" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"></select>
+            </div>
+            <div class="w-full overflow-hidden">
+              <label class="block text-xs text-slate-500 mb-1">เวลาออก</label>
+              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"></select>
+            </div>
           </div>
 
           <label class="block text-xs font-bold text-red-600 mb-1 mt-2">จำนวนชั่วโมงที่ต้องการหัก (กรอกเอง)</label>
-          <input type="number" step="0.5" id="useDeduct" placeholder="เช่น 1.5, 2" class="bg-red-50 border border-red-200 text-slate-800 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-red-500 focus:bg-white outline-none transition-all">
-          
+          <input type="number" step="0.5" id="useDeduct" placeholder="เช่น 1.5, 2" class="bg-red-50 border border-red-200 text-slate-800 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-red-500 focus:bg-white outline-none transition-all w-full">
           <button onclick="adminRecordTime()" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3.5 rounded-xl shadow-sm transition">บันทึกและตัดเวลาทันที</button>
         </div>
 
-        <div id="formTopup" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden">
+        <div id="formTopup" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden w-full">
           <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มแพ็กเกจ</h3>
           <label class="block text-xs text-slate-500 mb-1">ชื่อแพ็กเกจ</label>
-          <input type="text" id="topPkgName" placeholder="เช่น MEMBER VIP" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 focus:bg-white outline-none transition-all">
+          <input type="text" id="topPkgName" placeholder="เช่น MEMBER VIP" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
           <label class="block text-xs text-slate-500 mb-1">จำนวนชั่วโมง</label>
-          <input type="number" id="topHours" placeholder="ระบุตัวเลขชั่วโมง" class="bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 focus:bg-white outline-none transition-all">
+          <input type="number" id="topHours" placeholder="ระบุตัวเลขชั่วโมง" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
           <button onclick="adminTopup()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">บันทึกข้อมูล</button>
         </div>
       </div>
@@ -227,12 +225,26 @@
     // ใส่ข้อมูลของคุณที่นี่
     // ==========================================
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz_Ysz4Q_BI7lI0PcXWmhixii3ZoeKePKwEXvNFqag-jhNkZ0pdm5UwKgxAN4zSraEm/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx1gKYhZ1Fjroj7PJlez6VOZfuX5XJfzI5VyLSPlg4uld9sYkZh6a99SAYOBhmVZpaf/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
 
+    function populateTimeDropdowns() {
+      let options = '<option value="" disabled selected>เลือกเวลา...</option>';
+      for(let h=8; h<=22; h++) {
+        let hh = h < 10 ? '0'+h : h;
+        options += `<option value="${hh}:00">${hh}:00</option>`;
+        if (h !== 22) options += `<option value="${hh}:30">${hh}:30</option>`;
+      }
+      document.getElementById('bookTimeIn').innerHTML = options;
+      document.getElementById('bookTimeOut').innerHTML = options;
+      document.getElementById('useIn').innerHTML = options;
+      document.getElementById('useOut').innerHTML = options;
+    }
+
     async function main() {
+      populateTimeDropdowns(); 
       await liff.init({ liffId: MY_LIFF_ID });
       if (!liff.isLoggedIn()) { liff.login(); return; }
       
@@ -244,7 +256,14 @@
       
       document.getElementById('cusProfilePic').src = profilePicUrl;
       document.getElementById('adminProfilePic').src = profilePicUrl;
+      document.getElementById('dashName').innerText = profile.displayName;
       document.getElementById('adminDisplayName').innerText = profile.displayName;
+
+      // เซ็ตวันที่ปัจจุบันให้แอดมินล่วงหน้า
+      document.getElementById('adminViewDate').valueAsDate = new Date();
+
+      switchView('viewCustomer');
+      document.getElementById('bottomNav').classList.remove('hide-me');
 
       loadDashboard();
     }
@@ -273,13 +292,14 @@
         
         if (!data.isRegistered) {
           switchView('viewRegister');
+          document.getElementById('bottomNav').classList.add('hide-me');
         } else if (data.role === "Admin") {
           switchView('viewAdmin');
+          document.getElementById('bottomNav').classList.add('hide-me');
+          loadAdminDailyBookings(); // โหลดคิววันนี้อัตโนมัติ
         } else {
           renderCustomerDashboard(data);
           renderMemberDashboard(data);
-          switchView('viewCustomer');
-          document.getElementById('bottomNav').classList.remove('hide-me');
         }
       } catch (err) { Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้', 'error'); }
     }
@@ -299,11 +319,41 @@
     function renderCustomerDashboard(data) {
       document.getElementById('dashName').innerText = data.name;
       document.getElementById('dashRegDate').innerText = `Member Since: ${data.regDate}`;
+      
       if(data.package) {
         document.getElementById('dashTotal').innerText = data.package.total;
         document.getElementById('dashUsed').innerText = data.package.used;
         document.getElementById('dashRemain').innerText = data.package.remain;
+      } else {
+        document.getElementById('dashTotal').innerText = "0";
+        document.getElementById('dashUsed').innerText = "0";
+        document.getElementById('dashRemain').innerText = "0";
       }
+
+      // วาดคิวจองล่วงหน้า
+      let upHtml = "";
+      if(data.bookings && data.bookings.length > 0) {
+        data.bookings.forEach(b => {
+          let statusBadge = b.status === "ยืนยันแล้ว" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700";
+          upHtml += `
+          <div class="bg-white p-4 rounded-xl card-shadow border border-slate-100 flex flex-col gap-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-bold text-slate-800 text-sm">${b.date}</p>
+                <p class="text-xs text-slate-500 mt-1">⏰ ${b.timeIn} - ${b.timeOut}</p>
+                <p class="text-xs text-slate-500">👥 จำนวน: ${b.pax} ท่าน</p>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-1 rounded-full ${statusBadge}">${b.status}</span>
+            </div>
+            <button onclick="requestCancelBooking(${b.row})" class="w-full text-xs font-bold text-red-500 border border-red-200 py-2 rounded-lg hover:bg-red-50 transition">❌ ยกเลิกคิวนี้</button>
+          </div>`;
+        });
+      } else {
+        upHtml = `<div class="bg-white p-4 rounded-xl border border-slate-100 text-center"><p class="text-xs text-slate-400">ยังไม่มีคิวจองล่วงหน้า</p></div>`;
+      }
+      document.getElementById('dashUpcomingBookings').innerHTML = upHtml;
+
+      // วาดประวัติย้อนหลัง
       let historyHtml = "";
       if(data.history.length === 0) {
         historyHtml = `<p class="text-center text-xs text-slate-400 py-6">ไม่พบประวัติการใช้บริการ</p>`;
@@ -324,12 +374,37 @@
       document.getElementById('dashHistory').innerHTML = historyHtml;
     }
 
+    // ฟังก์ชันลูกค้ายกเลิกจอง
+    async function requestCancelBooking(rowIdx) {
+      Swal.fire({
+        title: 'ยืนยันการยกเลิก?',
+        text: "คุณต้องการยกเลิกคิวจองนี้ใช่หรือไม่?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'ใช่, ยกเลิกคิว',
+        cancelButtonText: 'ปิด'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.showLoading();
+          const res = await fetch(`${GAS_WEB_APP_URL}?action=cancelBooking&uid=${currentUserUid}&row=${rowIdx}`);
+          const data = await res.json();
+          Swal.close();
+          if(data.success) {
+            Swal.fire('สำเร็จ', data.message, 'success').then(() => loadDashboard());
+          } else {
+            Swal.fire('ไม่สามารถยกเลิกได้', data.message, 'error');
+          }
+        }
+      });
+    }
+
     function renderMemberDashboard(data) {
       let isMember = data.memberType === "Yes"; 
       let remainHr = data.package ? data.package.remain : 0;
       let remainWash = data.package && data.package.carWash ? data.package.carWash : 0;
       let exp = data.package && data.package.expiry ? data.package.expiry : "-";
-
       let html = "";
       if(isMember) {
         html = `
@@ -369,46 +444,24 @@
       document.getElementById('vipContent').innerHTML = html;
     }
 
-    function calculateEndTime() {
-      const startStr = document.getElementById('bookTimeStart').value;
-      const durationStr = document.getElementById('bookDuration').value;
-      if(startStr && durationStr) {
-        let [h, m] = startStr.split(':').map(Number);
-        let durationMin = parseFloat(durationStr) * 60;
-        let totalMin = (h * 60) + m + durationMin;
-        let endH = Math.floor(totalMin / 60);
-        let endM = totalMin % 60;
-        let formattedH = endH < 10 ? '0' + endH : endH;
-        let formattedM = endM < 10 ? '0' + endM : endM;
-        document.getElementById('bookTimeOut').value = `${formattedH}:${formattedM}`;
-      }
-    }
-    document.getElementById('bookTimeStart').addEventListener('change', calculateEndTime);
-    document.getElementById('bookDuration').addEventListener('change', calculateEndTime);
-
     async function submitBookingForm() {
       const date = document.getElementById('bookDate').value;
-      const timeIn = document.getElementById('bookTimeStart').value;
+      const timeIn = document.getElementById('bookTimeIn').value;
       const timeOut = document.getElementById('bookTimeOut').value;
       const pax = document.getElementById('bookPax').value;
-      
       if(!date || !timeIn || !timeOut || !pax) return Swal.fire('แจ้งเตือน', 'กรุณาระบุข้อมูลให้ครบถ้วน', 'warning');
-      
       const payload = { uid: currentUserUid, date: date, timeIn: timeIn, timeOut: timeOut, pax: pax };
-      
       Swal.showLoading();
       const res = await fetch(`${GAS_WEB_APP_URL}?action=submitBooking&data=${encodeURIComponent(JSON.stringify(payload))}`);
       const result = await res.json();
       Swal.close();
-      
       if(result.success) {
         Swal.fire('สำเร็จ', 'ระบบได้รับเรื่องจองคิวเรียบร้อยแล้ว กรุณารอแอดมินยืนยันผ่านทางแชทครับ', 'success').then(() => {
           document.getElementById('bookDate').value = '';
-          document.getElementById('bookTimeStart').value = '';
-          document.getElementById('bookDuration').value = '';
+          document.getElementById('bookTimeIn').value = '';
           document.getElementById('bookTimeOut').value = '';
           document.getElementById('bookPax').value = '';
-          navTo('viewCustomer');
+          loadDashboard(); // รีเฟรชเพื่อโชว์คิวในหน้าแรก
         });
       }
     }
@@ -417,14 +470,11 @@
       const date = document.getElementById('applyDate').value;
       const pax = document.getElementById('applyPax').value;
       if(!date || !pax) return Swal.fire('แจ้งเตือน', 'กรุณาระบุข้อมูลให้ครบถ้วน', 'warning');
-      
       const payload = { uid: currentUserUid, date: date, pax: pax };
-      
       Swal.showLoading();
       const res = await fetch(`${GAS_WEB_APP_URL}?action=applyMember&data=${encodeURIComponent(JSON.stringify(payload))}`);
       const result = await res.json();
       Swal.close();
-      
       if(result.success) {
         Swal.fire('สำเร็จ', 'ทางร้านได้รับข้อมูลแล้ว จะรีบติดต่อกลับโดยเร็วที่สุดครับ', 'success').then(() => {
           document.getElementById('applyDate').value = '';
@@ -437,6 +487,34 @@
     // ==========================================
     // ฝั่ง Admin 
     // ==========================================
+    async function loadAdminDailyBookings() {
+      const dateStr = document.getElementById('adminViewDate').value;
+      if(!dateStr) return;
+      document.getElementById('adminDailyBookings').innerHTML = '<p class="text-xs text-slate-400 text-center py-2">กำลังดึงข้อมูล...</p>';
+      
+      const res = await fetch(`${GAS_WEB_APP_URL}?action=getAdminBookings&date=${dateStr}`);
+      const bookings = await res.json();
+      
+      let html = "";
+      if(bookings.length === 0) {
+        html = '<p class="text-xs text-slate-400 text-center py-2">ไม่มีคิวจองในวันนี้</p>';
+      } else {
+        bookings.forEach(b => {
+          let badgeColor = b.status === "ยืนยันแล้ว" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700";
+          html += `
+          <div class="flex justify-between items-center p-3 border border-slate-100 rounded-lg bg-slate-50">
+            <div>
+              <p class="font-bold text-slate-800 text-sm">⏰ ${b.timeIn} - ${b.timeOut}</p>
+              <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">📞 ${b.phone}</p>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
+          </div>`;
+        });
+      }
+      document.getElementById('adminDailyBookings').innerHTML = html;
+    }
+
     async function adminSearch() {
       const key = document.getElementById('searchKey').value.trim();
       if(!key) return;
@@ -476,23 +554,20 @@
       const timeIn = document.getElementById('useIn').value;
       const timeOut = document.getElementById('useOut').value;
       const deductHours = document.getElementById('useDeduct').value; 
-      
       if(!dateStr || !timeIn || !timeOut || !deductHours) return Swal.fire('แจ้งเตือน', 'กรุณาระบุข้อมูลและชั่วโมงที่ต้องการหักให้ครบถ้วน', 'warning');
-      
       const payload = { adminUid: currentUserUid, customerUid: selectedCustomerUid, date: dateStr, timeIn: timeIn, timeOut: timeOut, deductHours: deductHours };
       const btn = event.target; btn.disabled = true; btn.innerText = "กำลังบันทึกข้อมูล...";
-      
       const res = await fetch(`${GAS_WEB_APP_URL}?action=recordUsageTime&data=${encodeURIComponent(JSON.stringify(payload))}`);
       const result = await res.json();
-      
       if(result.success) {
         Swal.fire('สำเร็จ', result.message, 'success').then(()=> {
+           document.getElementById('useIn').value = "";
+           document.getElementById('useOut').value = "";
            document.getElementById('useDeduct').value = "";
            adminSearch(); 
         });
       }
       else Swal.fire('ข้อผิดพลาด', result.message, 'error');
-      
       btn.disabled = false; btn.innerText = "บันทึกและตัดเวลาทันที";
     }
 
@@ -500,24 +575,20 @@
       const pkgName = document.getElementById('topPkgName').value.trim();
       const hours = document.getElementById('topHours').value;
       if(!pkgName || !hours) return Swal.fire('แจ้งเตือน', 'กรุณาระบุข้อมูลให้ครบถ้วน', 'warning');
-      
       const payload = { adminUid: currentUserUid, customerUid: selectedCustomerUid, pkgName: pkgName, hours: hours };
       const btn = event.target; btn.disabled = true; btn.innerText = "กำลังประมวลผล...";
-      
       const res = await fetch(`${GAS_WEB_APP_URL}?action=topupPackage&data=${encodeURIComponent(JSON.stringify(payload))}`);
       const result = await res.json();
-      
       if(result.success) Swal.fire('สำเร็จ', result.message, 'success').then(()=> {
         document.getElementById('topPkgName').value = "";
         document.getElementById('topHours').value = "";
         adminSearch(); 
       }); 
       else Swal.fire('ข้อผิดพลาด', result.message, 'error');
-      
       btn.disabled = false; btn.innerText = "บันทึกข้อมูล";
     }
 
-    main();
+    window.onload = main;
   </script>
 </body>
 </html>
