@@ -18,6 +18,10 @@
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     .nav-item { flex: 1; text-align: center; color: #64748b; cursor: pointer; transition: all 0.3s; padding: 16px 0; font-size: 0.9rem; font-weight: 500; }
     .nav-item.active { color: #16a34a; font-weight: 600; background-color: #f0fdf4; border-top: 2px solid #16a34a; }
+    
+    /* สไตล์สีของแถบเมนูแอดมิน */
+    .admin-nav-active { color: #1e293b !important; font-weight: 600; background-color: #f1f5f9 !important; border-top: 2px solid #1e293b !important; }
+    
     input[type="date"], select, input[type="text"], input[type="tel"], input[type="number"] { 
       width: 100%; min-width: 0; -webkit-appearance: none; appearance: none;
     }
@@ -89,7 +93,7 @@
 
   <div id="viewBookingForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md p-5 pb-20">
     <button onclick="navTo('viewCustomer')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> ย้อนกลับ
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
     </button>
     <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 w-full">
       <h2 class="text-xl font-bold text-slate-800 mb-2 text-center">📅 จองห้องตอนนี้</h2>
@@ -111,7 +115,7 @@
         </div>
       </div>
       
-      <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนผู้ใช้บริการ (ท่าน)</label>
+      <label class="block text-sm font-medium text-slate-700 mb-1">ผู้ใช้บริการ (ท่าน)</label>
       <input type="number" id="bookPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all">
       
       <div class="bg-red-50 border border-red-100 p-4 rounded-xl mb-6">
@@ -124,7 +128,7 @@
 
   <div id="viewApplyMemberForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md p-5 pb-20">
     <button onclick="navTo('viewMemberDash')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> ย้อนกลับ
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
     </button>
     <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 w-full">
       <h2 class="text-xl font-bold text-slate-800 mb-6 text-center">📩 สมัคร Elite Member</h2>
@@ -145,23 +149,23 @@
     </div>
   </div>
 
-  <div id="viewAdmin" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-10">
+  <div id="viewAdminSearch" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-20">
     <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm">
-      <img id="adminProfilePic" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500 bg-slate-700">
-      <div><h2 class="text-base font-bold">Admin Tool สำหรับผู้ดูแล</h2><p id="adminDisplayName" class="text-xs text-slate-300">...</p></div>
+      <img id="adminProfilePic1" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500 bg-slate-700">
+      <div><h2 class="text-base font-bold">Admin Tool สำหรับผู้ดูแล</h2><p id="adminDisplayName1" class="text-xs text-slate-300">...</p></div>
     </div>
     
     <div class="p-4 w-full">
       <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-5">
         <div class="flex justify-between items-center mb-3">
-          <h3 class="font-medium text-slate-700 text-sm">📅 ตารางคิวจองลูกค้า</h3>
+          <h3 class="font-medium text-slate-700 text-sm">📅 เช็คคิวประจำวัน</h3>
           <input type="date" id="adminViewDate" onchange="loadAdminDailyBookings()" class="border border-slate-300 rounded p-1 text-xs w-32 outline-none">
         </div>
         <div id="adminDailyBookings" class="space-y-2 mt-2"></div>
       </div>
 
       <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-4">
-        <h3 class="font-medium text-slate-700 mb-2 text-sm">ค้นหาข้อมูลลูกค้า</h3>
+        <h3 class="font-medium text-slate-700 mb-2 text-sm">ค้นหาข้อมูลลูกค้า (หักเวลา/เติมแพ็กเกจ)</h3>
         <input type="text" id="searchKey" placeholder="ระบุชื่อ หรือ เบอร์โทรศัพท์" class="border border-slate-300 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
         <button onclick="adminSearch()" class="w-full bg-slate-800 text-white font-medium py-3 rounded-xl text-sm transition hover:bg-slate-900">ค้นหา</button>
       </div>
@@ -215,14 +219,45 @@
     </div>
   </div>
 
-  <div id="bottomNav" class="bottom-nav hide-me">
-    <div id="navHome" class="nav-item active flex items-center justify-center" onclick="navTo('viewCustomer', this)">Home</div>
-    <div id="navMember" class="nav-item flex items-center justify-center" onclick="navTo('viewMemberDash', this)">Privileges</div>
+  <div id="viewAdminManageBookings" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-20">
+    <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm">
+      <img id="adminProfilePic2" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500 bg-slate-700">
+      <div><h2 class="text-base font-bold">จัดการคำขอจองคิว</h2><p id="adminDisplayName2" class="text-xs text-slate-300">...</p></div>
+    </div>
+    
+    <div class="p-4 w-full">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-slate-800">รายการการจองล่าสุด</h3>
+        <select id="adminBookingFilter" onchange="loadAdminAllBookings()" class="border border-slate-300 rounded-lg p-1.5 text-xs outline-none bg-white font-medium">
+          <option value="ทั้งหมด">ทั้งหมด</option>
+          <option value="กำลังตรวจสอบ">รอตรวจสอบ</option>
+          <option value="ยืนยันแล้ว">ยืนยันแล้ว</option>
+          <option value="ยกเลิก">ยกเลิกแล้ว</option>
+        </select>
+      </div>
+
+      <div id="adminAllBookingsList" class="space-y-3">
+        <p class="text-center text-xs text-slate-400 py-10">กำลังโหลดข้อมูล...</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="customerBottomNav" class="bottom-nav hide-me">
+    <div id="navHome" class="nav-item active flex items-center justify-center" onclick="navTo('viewCustomer', this, 'customerBottomNav')">Home</div>
+    <div id="navMember" class="nav-item flex items-center justify-center" onclick="navTo('viewMemberDash', this, 'customerBottomNav')">Privileges</div>
+  </div>
+
+  <div id="adminBottomNav" class="bottom-nav hide-me">
+    <div id="navAdminSearch" class="nav-item active admin-nav-active flex items-center justify-center" onclick="navTo('viewAdminSearch', this, 'adminBottomNav')">ค้นหาลูกค้า</div>
+    <div id="navAdminManage" class="nav-item flex items-center justify-center" onclick="navTo('viewAdminManageBookings', this, 'adminBottomNav'); loadAdminAllBookings();">จัดการคิว</div>
   </div>
 
   <script>
+    // ==========================================
+    // ใส่ข้อมูลของคุณที่นี่
+    // ==========================================
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbygszPEd-T6FMIXqqarheGjeGPA6Nt06QudJ7dhtl0acw6MHTSBz6yKlglGoxsCeIlm/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyyVWupgs55jftXcDfS8can9AeEHwswCEoQgZFaHnsl61ba592c531GIuxpYTYjv2n6/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -270,15 +305,15 @@
       const profilePicUrl = profile.pictureUrl || defaultPic;
       
       document.getElementById('cusProfilePic').src = profilePicUrl;
-      document.getElementById('adminProfilePic').src = profilePicUrl;
+      document.getElementById('adminProfilePic1').src = profilePicUrl;
+      document.getElementById('adminProfilePic2').src = profilePicUrl;
       document.getElementById('dashName').innerText = profile.displayName;
-      document.getElementById('adminDisplayName').innerText = profile.displayName;
+      document.getElementById('adminDisplayName1').innerText = profile.displayName;
+      document.getElementById('adminDisplayName2').innerText = profile.displayName;
 
       document.getElementById('adminViewDate').valueAsDate = new Date();
 
       switchView('viewCustomer');
-      document.getElementById('bottomNav').classList.remove('hide-me');
-
       loadDashboard();
     }
 
@@ -287,15 +322,18 @@
       document.getElementById(viewId).classList.remove('hide-me');
     }
 
-    function navTo(viewId, el = null) {
+    function navTo(viewId, el = null, navContainerId = 'customerBottomNav') {
       switchView(viewId);
-      if (!el) {
-        if(viewId === 'viewCustomer') el = document.getElementById('navHome');
-        if(viewId === 'viewMemberDash') el = document.getElementById('navMember');
-      }
+      
+      // อัปเดตสถานะ Active ของปุ่มใน Nav ที่ใช้งานอยู่
       if (el && el.classList.contains('nav-item')) {
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        const navContainer = document.getElementById(navContainerId);
+        navContainer.querySelectorAll('.nav-item').forEach(nav => {
+           nav.classList.remove('active');
+           nav.classList.remove('admin-nav-active'); // สำหรับแอดมิน
+        });
         el.classList.add('active');
+        if(navContainerId === 'adminBottomNav') el.classList.add('admin-nav-active');
       }
     }
 
@@ -306,12 +344,18 @@
         
         if (!data.isRegistered) {
           switchView('viewRegister');
-          document.getElementById('bottomNav').classList.add('hide-me');
+          document.getElementById('customerBottomNav').classList.add('hide-me');
+          document.getElementById('adminBottomNav').classList.add('hide-me');
         } else if (data.role === "Admin") {
-          switchView('viewAdmin');
-          document.getElementById('bottomNav').classList.add('hide-me');
+          document.getElementById('customerBottomNav').classList.add('hide-me');
+          document.getElementById('adminBottomNav').classList.remove('hide-me');
+          
+          switchView('viewAdminSearch');
           loadAdminDailyBookings(); 
         } else {
+          document.getElementById('adminBottomNav').classList.add('hide-me');
+          document.getElementById('customerBottomNav').classList.remove('hide-me');
+          
           renderCustomerDashboard(data);
           renderMemberDashboard(data);
         }
@@ -350,17 +394,13 @@
         document.getElementById('progressSection').classList.add('hide-me');
       }
 
-      // วาดคิวจองล่วงหน้า
       let upHtml = "";
       if(data.bookings && data.bookings.length > 0) {
         data.bookings.forEach(b => {
-          // ถ้าสถานะเป็น ยืนยันแล้ว ให้เป็นสีเขียว
           let statusBadge = b.status === "ยืนยันแล้ว" 
             ? "bg-green-100 text-green-700" 
             : "bg-yellow-100 text-yellow-700";
             
-          let statusText = b.status === "ยืนยันแล้ว" ? "✅ ยืนยันแล้ว" : "⏳ กำลังตรวจสอบ";
-
           upHtml += `
           <div class="bg-white p-4 rounded-xl card-shadow border border-slate-100 flex flex-col gap-3">
             <div class="flex justify-between items-start">
@@ -369,7 +409,7 @@
                 <p class="text-xs text-slate-500 mt-1">⏰ ${b.timeIn} - ${b.timeOut}</p>
                 <p class="text-xs text-slate-500 mt-0.5">👥 ผู้ใช้บริการ ${b.pax} ท่าน</p>
               </div>
-              <span class="text-[10px] font-bold px-2 py-1 rounded-full ${statusBadge}">${statusText}</span>
+              <span class="text-[10px] font-bold px-2 py-1 rounded-full ${statusBadge}">${b.status}</span>
             </div>
             <button onclick="requestCancelBooking(${b.row})" class="w-full text-xs font-bold text-red-500 border border-red-200 py-2 rounded-lg hover:bg-red-50 transition">❌ ยกเลิกการจอง</button>
           </div>`;
@@ -431,7 +471,6 @@
       let remainDrink = data.package && data.package.drinks ? data.package.drinks : 0;
       let exp = data.package && data.package.expiry ? data.package.expiry : "-";
       
-      // เงื่อนไขทำสีจางถ้าเป็น 0
       let washText = remainWash > 0 ? `<span class="font-bold text-white">${remainWash} ครั้ง</span>` : `<span class="font-medium text-slate-500">0 ครั้ง</span>`;
       let drinkText = remainDrink > 0 ? `<span class="font-bold text-white">${remainDrink} แก้ว</span>` : `<span class="font-medium text-slate-500">0 แก้ว</span>`;
 
@@ -540,7 +579,95 @@
     }
 
     // ==========================================
-    // ฝั่ง Admin 
+    // ฝั่ง Admin : จัดการคิว (ใหม่)
+    // ==========================================
+    async function loadAdminAllBookings() {
+      const filter = document.getElementById('adminBookingFilter').value;
+      document.getElementById('adminAllBookingsList').innerHTML = '<p class="text-xs text-slate-400 text-center py-10">กำลังโหลดข้อมูล...</p>';
+      
+      const res = await fetch(`${GAS_WEB_APP_URL}?action=getAllBookingsForAdmin`);
+      const bookings = await res.json();
+      
+      let html = "";
+      let count = 0;
+
+      bookings.forEach(b => {
+        // กรองข้อมูลตามที่เลือก
+        if(filter !== "ทั้งหมด" && b.status !== filter) return;
+        
+        count++;
+        let badgeColor = "";
+        if (b.status === "กำลังตรวจสอบ") badgeColor = "bg-yellow-100 text-yellow-700";
+        else if (b.status === "ยืนยันแล้ว") badgeColor = "bg-green-100 text-green-700";
+        else badgeColor = "bg-red-100 text-red-700";
+
+        // แสดงปุ่มอนุมัติ/ปฏิเสธ เฉพาะที่กำลังตรวจสอบ
+        let actionButtons = "";
+        if(b.status === "กำลังตรวจสอบ") {
+          actionButtons = `
+          <div class="flex gap-2 mt-3 pt-3 border-t border-slate-100">
+            <button onclick="adminConfirmBookingStatus(${b.row}, 'ยืนยันแล้ว')" class="flex-1 bg-green-600 text-white text-xs font-bold py-2 rounded shadow-sm hover:bg-green-700">✅ ยืนยัน</button>
+            <button onclick="adminConfirmBookingStatus(${b.row}, 'ยกเลิก')" class="flex-1 bg-white border border-red-200 text-red-600 text-xs font-bold py-2 rounded hover:bg-red-50">❌ ปฏิเสธ</button>
+          </div>`;
+        }
+
+        html += `
+        <div class="bg-white p-4 rounded-2xl card-shadow border border-slate-100 flex flex-col">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="font-bold text-slate-800 text-sm">📅 ${b.date}</p>
+              <p class="text-xs text-slate-600 mt-1">⏰ ${b.timeIn} - ${b.timeOut}</p>
+              <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">📞 ${b.phone}</p>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
+              <p class="text-[9px] text-slate-400 mt-2">Row: ${b.row}</p>
+            </div>
+          </div>
+          ${actionButtons}
+        </div>`;
+      });
+
+      if(count === 0) html = '<p class="text-xs text-slate-400 text-center py-10">ไม่พบรายการตามเงื่อนไขที่เลือก</p>';
+      document.getElementById('adminAllBookingsList').innerHTML = html;
+    }
+
+    // แอดมินกดยืนยัน หรือ ปฏิเสธ
+    function adminConfirmBookingStatus(rowIdx, newStatus) {
+      let title = newStatus === 'ยืนยันแล้ว' ? 'อนุมัติการจอง?' : 'ปฏิเสธ/ยกเลิก การจอง?';
+      let text = newStatus === 'ยืนยันแล้ว' ? 'คุณแน่ใจหรือไม่ว่าต้องการอนุมัติคิวนี้ ลูกค้าจะได้รับข้อความยืนยันทางแชท' : 'คุณแน่ใจหรือไม่ว่าต้องการปฏิเสธคิวนี้ ลูกค้าจะได้รับข้อความแจ้งเตือนทางแชท';
+      let confirmBtn = newStatus === 'ยืนยันแล้ว' ? 'ใช่, อนุมัติคิว' : 'ใช่, ปฏิเสธคิว';
+      let color = newStatus === 'ยืนยันแล้ว' ? '#16a34a' : '#dc2626';
+
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: color,
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: confirmBtn,
+        cancelButtonText: 'กลับ'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.showLoading();
+          const payload = { adminUid: currentUserUid, row: rowIdx, status: newStatus };
+          const res = await fetch(`${GAS_WEB_APP_URL}?action=updateBookingStatus&data=${encodeURIComponent(JSON.stringify(payload))}`);
+          const data = await res.json();
+          Swal.close();
+          
+          if(data.success) {
+            Swal.fire('สำเร็จ', data.message, 'success').then(() => loadAdminAllBookings());
+          } else {
+            Swal.fire('ข้อผิดพลาด', data.message, 'error');
+          }
+        }
+      });
+    }
+
+    // ==========================================
+    // ฝั่ง Admin : ค้นหาลูกค้า (หน้าเดิม)
     // ==========================================
     async function loadAdminDailyBookings() {
       const dateStr = document.getElementById('adminViewDate').value;
@@ -559,7 +686,6 @@
             <div>
               <p class="font-bold text-slate-800 text-sm">⏰ ${b.timeIn} - ${b.timeOut}</p>
               <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
-              <p class="text-[10px] text-slate-400 mt-0.5">📞 ${b.phone}</p>
             </div>
             <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
           </div>`;
@@ -619,7 +745,8 @@
            document.getElementById('useDeduct').value = "";
            adminSearch(); 
         });
-      } else Swal.fire('ข้อผิดพลาด', result.message, 'error');
+      }
+      else Swal.fire('ข้อผิดพลาด', result.message, 'error');
       btn.disabled = false; btn.innerText = "บันทึกและตัดเวลาทันที";
     }
 
@@ -635,7 +762,8 @@
         document.getElementById('topPkgName').value = "";
         document.getElementById('topHours').value = "";
         adminSearch(); 
-      }); else Swal.fire('ข้อผิดพลาด', result.message, 'error');
+      }); 
+      else Swal.fire('ข้อผิดพลาด', result.message, 'error');
       btn.disabled = false; btn.innerText = "บันทึกข้อมูล";
     }
 
