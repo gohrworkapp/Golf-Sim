@@ -19,7 +19,6 @@
     .nav-item { flex: 1; text-align: center; color: #64748b; cursor: pointer; transition: all 0.3s; padding: 16px 0; font-size: 0.9rem; font-weight: 500; }
     .nav-item.active { color: #16a34a; font-weight: 600; background-color: #f0fdf4; border-top: 2px solid #16a34a; }
     
-    /* สไตล์สีของแถบเมนูแอดมิน */
     .admin-nav-active { color: #1e293b !important; font-weight: 600; background-color: #f1f5f9 !important; border-top: 2px solid #1e293b !important; }
     
     input[type="date"], select, input[type="text"], input[type="tel"], input[type="number"] { 
@@ -63,7 +62,7 @@
 
       <div class="bg-slate-800 p-6 rounded-2xl shadow-lg mb-5 text-white text-center relative overflow-hidden">
         <div class="absolute -right-4 -top-4 opacity-10 text-6xl">⛳</div>
-        <p class="text-sm font-medium text-slate-300 mb-1">ชั่วโมงคงเหลือ</p>
+        <p class="text-sm font-medium text-slate-300 mb-1">เครดิต</p>
         <p id="dashRemain" class="text-5xl font-bold mb-4 text-green-400">...</p>
         
         <div id="progressSection" class="w-full text-left hide-me">
@@ -137,7 +136,7 @@
       <label class="block text-sm font-medium text-slate-700 mb-1">ปกติมาใช้บริการกี่ท่าน</label>
       <input type="number" id="applyPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all">
       <div class="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 mb-6 border border-slate-200 leading-relaxed">
-        📌 ทางร้านจะติดต่อกลับเพื่อยืนยันรายละเอียดและแจ้งอัตราค่าบริการให้ท่านทราบโดยเร็วที่สุดครับ
+        📌 ทางคลับจะติดต่อกลับเพื่อยืนยันรายละเอียดและแจ้งอัตราค่าบริการให้ท่านทราบโดยเร็วที่สุดครับ
       </div>
       <button onclick="submitApplyMemberForm()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ส่งคำขอสมัครสมาชิก</button>
     </div>
@@ -165,7 +164,7 @@
       </div>
 
       <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-4">
-        <h3 class="font-medium text-slate-700 mb-2 text-sm">ค้นหาข้อมูลลูกค้า (หักเวลา/เติมแพ็กเกจ)</h3>
+        <h3 class="font-medium text-slate-700 mb-2 text-sm">ค้นหาข้อมูลลูกค้า (หักเครดิต/เติมแพ็กเกจ)</h3>
         <input type="text" id="searchKey" placeholder="ระบุชื่อ หรือ เบอร์โทรศัพท์" class="border border-slate-300 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
         <button onclick="adminSearch()" class="w-full bg-slate-800 text-white font-medium py-3 rounded-xl text-sm transition hover:bg-slate-900">ค้นหา</button>
       </div>
@@ -176,7 +175,7 @@
           <p id="resPhone" class="text-slate-600 mb-3"></p>
           <div class="flex justify-between items-center pt-3 border-t border-blue-200">
             <span class="text-slate-600">แพ็กเกจ: <span id="resPkg" class="font-semibold text-slate-800"></span></span>
-            <span class="text-slate-600">คงเหลือ: <span id="resRemain" class="font-bold text-green-600 text-lg"></span> ชม.</span>
+            <span class="text-slate-600">เครดิต: <span id="resRemain" class="font-bold text-green-600 text-lg"></span> ชม.</span>
           </div>
           <p id="adminVipStatus" class="mt-3 text-xs font-bold text-slate-700 bg-white/50 p-2 rounded"></p>
         </div>
@@ -325,12 +324,11 @@
     function navTo(viewId, el = null, navContainerId = 'customerBottomNav') {
       switchView(viewId);
       
-      // อัปเดตสถานะ Active ของปุ่มใน Nav ที่ใช้งานอยู่
       if (el && el.classList.contains('nav-item')) {
         const navContainer = document.getElementById(navContainerId);
         navContainer.querySelectorAll('.nav-item').forEach(nav => {
            nav.classList.remove('active');
-           nav.classList.remove('admin-nav-active'); // สำหรับแอดมิน
+           nav.classList.remove('admin-nav-active'); 
         });
         el.classList.add('active');
         if(navContainerId === 'adminBottomNav') el.classList.add('admin-nav-active');
@@ -401,6 +399,8 @@
             ? "bg-green-100 text-green-700" 
             : "bg-yellow-100 text-yellow-700";
             
+          let statusText = b.status === "ยืนยันแล้ว" ? "✅ ยืนยันแล้ว" : "⏳ กำลังตรวจสอบ";
+
           upHtml += `
           <div class="bg-white p-4 rounded-xl card-shadow border border-slate-100 flex flex-col gap-3">
             <div class="flex justify-between items-start">
@@ -409,7 +409,7 @@
                 <p class="text-xs text-slate-500 mt-1">⏰ ${b.timeIn} - ${b.timeOut}</p>
                 <p class="text-xs text-slate-500 mt-0.5">👥 ผู้ใช้บริการ ${b.pax} ท่าน</p>
               </div>
-              <span class="text-[10px] font-bold px-2 py-1 rounded-full ${statusBadge}">${b.status}</span>
+              <span class="text-[10px] font-bold px-2 py-1 rounded-full ${statusBadge}">${statusText}</span>
             </div>
             <button onclick="requestCancelBooking(${b.row})" class="w-full text-xs font-bold text-red-500 border border-red-200 py-2 rounded-lg hover:bg-red-50 transition">❌ ยกเลิกการจอง</button>
           </div>`;
@@ -471,8 +471,8 @@
       let remainDrink = data.package && data.package.drinks ? data.package.drinks : 0;
       let exp = data.package && data.package.expiry ? data.package.expiry : "-";
       
-      let washText = remainWash > 0 ? `<span class="font-bold text-white">${remainWash} ครั้ง</span>` : `<span class="font-medium text-slate-500">0 ครั้ง</span>`;
-      let drinkText = remainDrink > 0 ? `<span class="font-bold text-white">${remainDrink} แก้ว</span>` : `<span class="font-medium text-slate-500">0 แก้ว</span>`;
+      let washText = remainWash > 0 ? `<span class="font-bold text-white">${remainWash}</span>` : `<span class="font-medium text-slate-500">0</span>`;
+      let drinkText = remainDrink > 0 ? `<span class="font-bold text-white">${remainDrink}</span>` : `<span class="font-medium text-slate-500">0</span>`;
 
       let html = "";
       if(isMember) {
@@ -486,9 +486,9 @@
           
           <div class="border-y border-slate-600/50 py-4 mb-4 space-y-3 text-sm">
             <div class="flex justify-between items-center"><span class="text-slate-300">สถานะ</span><span class="font-bold text-green-400 bg-green-400/10 px-2 py-0.5 rounded text-xs">ELITE MEMBER</span></div>
-            <div class="flex justify-between"><span class="text-slate-300">ชั่วโมงคงเหลือ</span><span class="font-bold text-white">${remainHr} ชม.</span></div>
-            <div class="flex justify-between"><span class="text-slate-300">สิทธิ์ล้างรถคงเหลือ</span>${washText}</div>
-            <div class="flex justify-between"><span class="text-slate-300">สิทธิ์รับเครื่องดื่มคงเหลือ</span>${drinkText}</div>
+            <div class="flex justify-between"><span class="text-slate-300">เครดิต</span><span class="font-bold text-white">${remainHr} ชม.</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">สิทธิ์ล้างรถ</span>${washText}</div>
+            <div class="flex justify-between"><span class="text-slate-300">สิทธิ์รับเครื่องดื่ม</span>${drinkText}</div>
             <div class="flex justify-between"><span class="text-slate-300">วันหมดอายุ</span><span class="font-bold text-white">${exp}</span></div>
           </div>
           
@@ -503,17 +503,17 @@
             <div>
               <p class="font-bold text-sm text-yellow-400 mb-1">🎤 Private Entertainment Access</p>
               <ul class="list-disc pl-4 text-slate-300 text-xs space-y-1">
-                <li>สามารถพาผู้ติดตามเข้าใช้บริการได้</li>
-                <li>ใช้ห้องคาราโอเกะได้ภายในห้องแบบเป็นส่วนตัว</li>
+                <li>สามารถพาผู้ติดตามเข้าใช้บริการได้ (ไม่เกิน 3 ท่าน)</li>
+                <li>คาราโอเกะภายในห้องส่วนตัว</li>
               </ul>
             </div>
           </div>
           
           <div class="bg-gradient-to-r from-yellow-500/20 to-transparent rounded-xl p-4 text-xs mt-6 border border-yellow-500/20">
-            <p class="font-bold text-yellow-400 mb-1">👉 Unlimited Access Across All Time Slots</p>
+            <p class="font-bold text-yellow-400 mb-1">⭐ Unlimited Access Across All Time Slots:</p>
             <p class="text-slate-300 mb-3">ใช้งานได้ทุกช่วงเวลา (ไม่หัก Peak Time)</p>
             <hr class="border-yellow-500/20 my-3">
-            <p class="font-bold text-yellow-400 mb-1">👉 Extended Play Rate:</p>
+            <p class="font-bold text-yellow-400 mb-1">⭐ Extended Play Rate:</p>
             <p class="text-slate-300">Only 400 THB / Hour</p>
           </div>
         </div>`;
@@ -528,10 +528,10 @@
           </div>
           <div class="space-y-4 text-sm">
             <div><p class="font-bold text-slate-800 mb-1">🏌️‍♂️ Private Suite with Spacious Comfort</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>Seamless Play & Relaxation Experience</li><li>ห้องส่วนตัวกว้างขวาง นั่งสบาย</li></ul></div>
-            <div><p class="font-bold text-slate-800 mb-1">🎤 Private Entertainment Access</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>พาผู้ติดตามได้สูงสุด 3 ท่าน</li><li>ใช้คาราโอเกะได้ภายในห้อง</li></ul></div>
+            <div><p class="font-bold text-slate-800 mb-1">🎤 Private Entertainment Access</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>สามารถพาผู้ติดตามเข้าใช้บริการได้ (ไม่เกิน 3 ท่าน)</li><li>คาราโอเกะภายในห้องส่วนตัว</li></ul></div>
             <div><p class="font-bold text-slate-800 mb-1">🚗 Car Care & Drinks</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>สิทธิ์ล้างรถฟรี และส่วนลดคาร์แคร์ 20%</li><li>รับเครื่องดื่มฟรีทุกสัปดาห์</li></ul></div>
           </div>
-          <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs text-center mt-5 mb-5"><p class="font-bold text-slate-800 mb-1">Extended Play Rate</p><p class="text-slate-500">Only 400 THB / Hour</p></div>
+          <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs text-center mt-5 mb-5"><p class="font-bold text-slate-800 mb-1">⭐ Extended Play Rate:</p><p class="text-slate-500">Only 400 THB / Hour</p></div>
           <button onclick="navTo('viewApplyMemberForm')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">สมัคร Elite Member</button>
         </div>`;
       }
@@ -570,7 +570,7 @@
       const result = await res.json();
       Swal.close();
       if(result.success) {
-        Swal.fire('สำเร็จ', 'ทางร้านได้รับข้อมูลแล้ว จะรีบติดต่อกลับโดยเร็วที่สุดครับ', 'success').then(() => {
+        Swal.fire('สำเร็จ', 'ทางคลับได้รับข้อมูลแล้ว จะรีบติดต่อกลับโดยเร็วที่สุดครับ', 'success').then(() => {
           document.getElementById('applyDate').value = '';
           document.getElementById('applyPax').value = '';
           navTo('viewMemberDash');
@@ -579,8 +579,36 @@
     }
 
     // ==========================================
-    // ฝั่ง Admin : จัดการคิว (ใหม่)
+    // ฝั่ง Admin 
     // ==========================================
+    async function loadAdminDailyBookings() {
+      const dateStr = document.getElementById('adminViewDate').value;
+      if(!dateStr) return;
+      document.getElementById('adminDailyBookings').innerHTML = '<p class="text-xs text-slate-400 text-center py-2">กำลังดึงข้อมูล...</p>';
+      
+      const res = await fetch(`${GAS_WEB_APP_URL}?action=getAdminBookings&date=${dateStr}`);
+      const bookings = await res.json();
+      
+      let html = "";
+      if(bookings.length === 0) {
+        html = '<p class="text-xs text-slate-400 text-center py-2">ไม่มีคิวจองในวันนี้</p>';
+      } else {
+        bookings.forEach(b => {
+          let badgeColor = b.status === "กำลังตรวจสอบ" ? "bg-yellow-100 text-yellow-700" : "bg-green-100 text-green-700";
+          html += `
+          <div class="flex justify-between items-center p-3 border border-slate-100 rounded-lg bg-slate-50">
+            <div>
+              <p class="font-bold text-slate-800 text-sm">⏰ ${b.timeIn} - ${b.timeOut}</p>
+              <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">📞 ${b.phone}</p>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
+          </div>`;
+        });
+      }
+      document.getElementById('adminDailyBookings').innerHTML = html;
+    }
+
     async function loadAdminAllBookings() {
       const filter = document.getElementById('adminBookingFilter').value;
       document.getElementById('adminAllBookingsList').innerHTML = '<p class="text-xs text-slate-400 text-center py-10">กำลังโหลดข้อมูล...</p>';
@@ -592,7 +620,6 @@
       let count = 0;
 
       bookings.forEach(b => {
-        // กรองข้อมูลตามที่เลือก
         if(filter !== "ทั้งหมด" && b.status !== filter) return;
         
         count++;
@@ -601,7 +628,6 @@
         else if (b.status === "ยืนยันแล้ว") badgeColor = "bg-green-100 text-green-700";
         else badgeColor = "bg-red-100 text-red-700";
 
-        // แสดงปุ่มอนุมัติ/ปฏิเสธ เฉพาะที่กำลังตรวจสอบ
         let actionButtons = "";
         if(b.status === "กำลังตรวจสอบ") {
           actionButtons = `
@@ -633,7 +659,6 @@
       document.getElementById('adminAllBookingsList').innerHTML = html;
     }
 
-    // แอดมินกดยืนยัน หรือ ปฏิเสธ
     function adminConfirmBookingStatus(rowIdx, newStatus) {
       let title = newStatus === 'ยืนยันแล้ว' ? 'อนุมัติการจอง?' : 'ปฏิเสธ/ยกเลิก การจอง?';
       let text = newStatus === 'ยืนยันแล้ว' ? 'คุณแน่ใจหรือไม่ว่าต้องการอนุมัติคิวนี้ ลูกค้าจะได้รับข้อความยืนยันทางแชท' : 'คุณแน่ใจหรือไม่ว่าต้องการปฏิเสธคิวนี้ ลูกค้าจะได้รับข้อความแจ้งเตือนทางแชท';
@@ -664,34 +689,6 @@
           }
         }
       });
-    }
-
-    // ==========================================
-    // ฝั่ง Admin : ค้นหาลูกค้า (หน้าเดิม)
-    // ==========================================
-    async function loadAdminDailyBookings() {
-      const dateStr = document.getElementById('adminViewDate').value;
-      if(!dateStr) return;
-      document.getElementById('adminDailyBookings').innerHTML = '<p class="text-xs text-slate-400 text-center py-2">กำลังดึงข้อมูล...</p>';
-      const res = await fetch(`${GAS_WEB_APP_URL}?action=getAdminBookings&date=${dateStr}`);
-      const bookings = await res.json();
-      let html = "";
-      if(bookings.length === 0) {
-        html = '<p class="text-xs text-slate-400 text-center py-2">ไม่มีคิวจองในวันนี้</p>';
-      } else {
-        bookings.forEach(b => {
-          let badgeColor = b.status === "กำลังตรวจสอบ" ? "bg-yellow-100 text-yellow-700" : "bg-green-100 text-green-700";
-          html += `
-          <div class="flex justify-between items-center p-3 border border-slate-100 rounded-lg bg-slate-50">
-            <div>
-              <p class="font-bold text-slate-800 text-sm">⏰ ${b.timeIn} - ${b.timeOut}</p>
-              <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
-            </div>
-            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
-          </div>`;
-        });
-      }
-      document.getElementById('adminDailyBookings').innerHTML = html;
     }
 
     async function adminSearch() {
