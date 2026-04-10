@@ -83,7 +83,7 @@
       <h3 class="font-semibold text-slate-800 mb-3 text-sm">📅 การจองของคุณ</h3>
       <div id="dashUpcomingBookings" class="mb-6 space-y-2"></div>
 
-      <h3 class="font-semibold text-slate-800 mb-3 text-sm">ประวัติการใช้บริการ</h3>
+      <h3 class="font-semibold text-slate-800 mb-3 text-sm">📋 ประวัติการใช้บริการ</h3>
       <div id="dashHistory" class="bg-white rounded-xl card-shadow border border-slate-100 p-2 mb-6">
         <p class="text-center text-xs text-slate-400 py-6">กำลังดึงข้อมูล...</p>
       </div>
@@ -471,8 +471,8 @@
       let remainDrink = data.package && data.package.drinks ? data.package.drinks : 0;
       let exp = data.package && data.package.expiry ? data.package.expiry : "-";
       
-      let washText = remainWash > 0 ? `<span class="font-bold text-white">${remainWash}</span>` : `<span class="font-medium text-slate-500">0</span>`;
-      let drinkText = remainDrink > 0 ? `<span class="font-bold text-white">${remainDrink}</span>` : `<span class="font-medium text-slate-500">0</span>`;
+      let washText = remainWash > 0 ? `<span class="font-bold text-white">${remainWash} ครั้ง</span>` : `<span class="font-medium text-slate-500">0 ครั้ง</span>`;
+      let drinkText = remainDrink > 0 ? `<span class="font-bold text-white">${remainDrink} แก้ว</span>` : `<span class="font-medium text-slate-500">0 แก้ว</span>`;
 
       let html = "";
       if(isMember) {
@@ -485,7 +485,7 @@
           </div>
           
           <div class="border-y border-slate-600/50 py-4 mb-4 space-y-3 text-sm">
-            <div class="flex justify-between items-center"><span class="text-slate-300">สถานะ</span><span class="font-bold text-green-400 bg-green-400/10 px-2 py-0.5 rounded text-xs">ELITE MEMBER</span></div>
+            <div class="flex justify-between items-center"><span class="text-slate-300">สถานะ</span><span class="font-bold text-slate-900 bg-gradient-to-r from-yellow-300 to-yellow-500 px-2 py-0.5 rounded text-xs shadow-sm">ELITE MEMBER</span></div>
             <div class="flex justify-between"><span class="text-slate-300">เครดิต</span><span class="font-bold text-white">${remainHr} ชม.</span></div>
             <div class="flex justify-between"><span class="text-slate-300">สิทธิ์ล้างรถ</span>${washText}</div>
             <div class="flex justify-between"><span class="text-slate-300">สิทธิ์รับเครื่องดื่ม</span>${drinkText}</div>
@@ -503,7 +503,7 @@
             <div>
               <p class="font-bold text-sm text-yellow-400 mb-1">🎤 Private Entertainment Access</p>
               <ul class="list-disc pl-4 text-slate-300 text-xs space-y-1">
-                <li>สามารถพาผู้ติดตามเข้าใช้บริการได้ (ไม่เกิน 3 ท่าน)</li>
+                <li>รองรับผู้ติดตามได้สูงสุด 3 ท่าน</li>
                 <li>คาราโอเกะภายในห้องส่วนตัว</li>
               </ul>
             </div>
@@ -528,7 +528,7 @@
           </div>
           <div class="space-y-4 text-sm">
             <div><p class="font-bold text-slate-800 mb-1">🏌️‍♂️ Private Suite with Spacious Comfort</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>Seamless Play & Relaxation Experience</li><li>ห้องส่วนตัวกว้างขวาง นั่งสบาย</li></ul></div>
-            <div><p class="font-bold text-slate-800 mb-1">🎤 Private Entertainment Access</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>สามารถพาผู้ติดตามเข้าใช้บริการได้ (ไม่เกิน 3 ท่าน)</li><li>คาราโอเกะภายในห้องส่วนตัว</li></ul></div>
+            <div><p class="font-bold text-slate-800 mb-1">🎤 Private Entertainment Access</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>รองรับผู้ติดตามได้สูงสุด 3 ท่าน</li><li>คาราโอเกะภายในห้องส่วนตัว</li></ul></div>
             <div><p class="font-bold text-slate-800 mb-1">🚗 Car Care & Drinks</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>สิทธิ์ล้างรถฟรี และส่วนลดคาร์แคร์ 20%</li><li>รับเครื่องดื่มฟรีทุกสัปดาห์</li></ul></div>
           </div>
           <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs text-center mt-5 mb-5"><p class="font-bold text-slate-800 mb-1">⭐ Extended Play Rate:</p><p class="text-slate-500">Only 400 THB / Hour</p></div>
@@ -711,7 +711,7 @@
           ? "👑 ลูกค้ารายนี้เป็น ELITE MEMBER (หักเวลา 1:1 ทุกช่วงเวลา)"
           : "👤 ลูกค้าทั่วไป (Peak time 17:00-22:00 น. ระวังหัก 1:1.5 เท่า)";
         document.getElementById('adminVipStatus').innerText = statusText;
-        document.getElementById('adminVipStatus').className = isVIP ? "mt-2 text-xs font-bold text-green-600 bg-green-50 p-2 rounded-lg" : "mt-2 text-xs font-bold text-amber-600 bg-amber-50 p-2 rounded-lg";
+        document.getElementById('adminVipStatus').className = isVIP ? "mt-2 text-xs font-bold text-yellow-700 bg-yellow-50 p-2 rounded-lg border border-yellow-200" : "mt-2 text-xs font-bold text-amber-600 bg-amber-50 p-2 rounded-lg border border-amber-200";
 
         document.getElementById('useDate').valueAsDate = new Date();
         document.getElementById('adminActionSection').classList.remove('hidden');
