@@ -18,9 +18,7 @@
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     .nav-item { flex: 1; text-align: center; color: #64748b; cursor: pointer; transition: all 0.3s; padding: 16px 0; font-size: 0.9rem; font-weight: 500; }
     .nav-item.active { color: #16a34a; font-weight: 600; background-color: #f0fdf4; border-top: 2px solid #16a34a; }
-    
     .admin-nav-active { color: #1e293b !important; font-weight: 600; background-color: #f1f5f9 !important; border-top: 2px solid #1e293b !important; }
-    
     input[type="date"], select, input[type="text"], input[type="tel"], input[type="number"] { 
       width: 100%; min-width: 0; -webkit-appearance: none; appearance: none;
     }
@@ -31,6 +29,7 @@
   <div id="viewLoading" class="page-section flex flex-col items-center justify-center min-h-screen bg-white">
     <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-slate-800 mb-4"></div>
     <p class="text-slate-500 font-medium text-sm">กำลังประมวลผล...</p>
+    <div id="errorLog" class="text-red-500 text-xs mt-4 text-center px-4 w-full"></div>
   </div>
 
   <div id="viewRegister" class="page-section hide-me max-w-md mx-auto min-h-screen bg-white shadow-md p-6 flex flex-col justify-center">
@@ -61,6 +60,7 @@
       <div class="text-center mb-4"><span class="bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-full border border-slate-200">⏰ เวลาทำการ: 08:00 - 22:00 น.</span></div>
 
       <div class="bg-slate-800 p-6 rounded-2xl shadow-lg mb-5 text-white text-center relative overflow-hidden">
+        <div class="absolute -right-4 -top-4 opacity-10 text-6xl">⛳</div>
         <p class="text-sm font-medium text-slate-300 mb-1">เครดิต</p>
         <div class="flex items-baseline justify-center gap-1 mb-4">
           <p id="dashRemain" class="text-5xl font-bold text-green-400">...</p>
@@ -74,6 +74,9 @@
           </div>
           <div class="w-full bg-slate-700/50 rounded-full h-2">
             <div id="dashProgressBar" class="bg-green-400 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+          </div>
+          <div class="text-right mt-1.5">
+            <span class="text-slate-400 text-[10px]">ใช้งานไป <span id="dashUsed" class="font-bold text-white">0</span> ชม.</span>
           </div>
         </div>
       </div>
@@ -222,7 +225,9 @@
             </div>
             <div class="w-full overflow-hidden">
               <label class="block text-xs text-slate-500 mb-1">เวลาออก</label>
-              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"><option value="" disabled selected>เลือกเวลาเริ่มก่อน</option></select>
+              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+                <option value="" disabled selected>เลือกเวลาเริ่มก่อน</option>
+              </select>
             </div>
           </div>
           <label class="block text-xs font-bold text-red-600 mb-1 mt-2">จำนวนชั่วโมงที่ต้องการหัก (กรอกเอง)</label>
@@ -273,8 +278,8 @@
   </div>
 
   <script>
-    const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzfR8DgtKLzp964ugmaZT7d3ImFtmNVePuxas_eA2DFeBRb5jYJ35ptCtMIM9NqPS7R/exec";
+    const MY_LIFF_ID = "2009708459-aHFsBA00"; // นำ LIFF ID ของคุณมาใส่ที่นี่
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzfR8DgtKLzp964ugmaZT7d3ImFtmNVePuxas_eA2DFeBRb5jYJ35ptCtMIM9NqPS7R/exec"; // นำ URL ของคุณมาใส่ที่นี่
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -291,13 +296,18 @@
       for(let i=0; i<timeSlots.length-1; i++) { 
         inHtml += `<option value="${timeSlots[i]}">${timeSlots[i]}</option>`;
       }
-      document.getElementById('bookTimeIn').innerHTML = inHtml;
-      document.getElementById('useIn').innerHTML = inHtml;
-      document.getElementById('walkinTimeIn').innerHTML = inHtml;
+      
+      // อัปเดต Dropdown ป้องกัน Error หาก Element หายไป
+      const setHTML = (id, html) => { let el = document.getElementById(id); if(el) el.innerHTML = html; }
+      setHTML('bookTimeIn', inHtml);
+      setHTML('useIn', inHtml);
+      setHTML('walkinTimeIn', inHtml);
     }
 
     function updateOutDropdown(inElementId, outElementId) {
-      const val = document.getElementById(inElementId).value;
+      const el = document.getElementById(inElementId);
+      if(!el) return;
+      const val = el.value;
       let outHtml = '<option value="" disabled selected>เลือกเวลาสิ้นสุด...</option>';
       if(val) {
         let startIndex = timeSlots.indexOf(val) + 1;
@@ -305,50 +315,71 @@
           outHtml += `<option value="${timeSlots[i]}">${timeSlots[i]}</option>`;
         }
       }
-      document.getElementById(outElementId).innerHTML = outHtml;
+      let outEl = document.getElementById(outElementId);
+      if(outEl) outEl.innerHTML = outHtml;
     }
 
-    document.getElementById('bookTimeIn').addEventListener('change', () => updateOutDropdown('bookTimeIn', 'bookTimeOut'));
-    document.getElementById('useIn').addEventListener('change', () => updateOutDropdown('useIn', 'useOut'));
-    document.getElementById('walkinTimeIn').addEventListener('change', () => updateOutDropdown('walkinTimeIn', 'walkinTimeOut'));
+    // ผูก Event Listeners แบบปลอดภัย
+    document.getElementById('bookTimeIn')?.addEventListener('change', () => updateOutDropdown('bookTimeIn', 'bookTimeOut'));
+    document.getElementById('useIn')?.addEventListener('change', () => updateOutDropdown('useIn', 'useOut'));
+    document.getElementById('walkinTimeIn')?.addEventListener('change', () => updateOutDropdown('walkinTimeIn', 'walkinTimeOut'));
 
+    // ฟังก์ชันเริ่มการทำงานหลัก พร้อมระบบ Try-Catch ดักจับ Error
     async function main() {
-      initDropdowns(); 
-      await liff.init({ liffId: MY_LIFF_ID });
-      if (!liff.isLoggedIn()) { liff.login(); return; }
-      
-      const profile = await liff.getProfile();
-      currentUserUid = profile.userId;
-      
-      const defaultPic = `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.displayName)}&background=random`;
-      const profilePicUrl = profile.pictureUrl || defaultPic;
-      
-      document.getElementById('cusProfilePic').src = profilePicUrl;
-      document.getElementById('adminProfilePic1').src = profilePicUrl;
-      document.getElementById('adminProfilePic2').src = profilePicUrl;
-      document.getElementById('dashName').innerText = profile.displayName;
-      document.getElementById('adminDisplayName1').innerText = profile.displayName;
-      document.getElementById('adminDisplayName2').innerText = profile.displayName;
+      try {
+        initDropdowns(); 
+        await liff.init({ liffId: MY_LIFF_ID });
+        
+        if (!liff.isLoggedIn()) { 
+           liff.login(); 
+           return; 
+        }
+        
+        const profile = await liff.getProfile();
+        currentUserUid = profile.userId;
+        
+        const defaultPic = `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.displayName)}&background=random`;
+        const profilePicUrl = profile.pictureUrl || defaultPic;
+        
+        const setSrc = (id, url) => { let el = document.getElementById(id); if(el) el.src = url; }
+        const setText = (id, text) => { let el = document.getElementById(id); if(el) el.innerText = text; }
+        
+        setSrc('cusProfilePic', profilePicUrl);
+        setSrc('adminProfilePic1', profilePicUrl);
+        setSrc('adminProfilePic2', profilePicUrl);
+        setText('dashName', profile.displayName);
+        setText('adminDisplayName1', profile.displayName);
+        setText('adminDisplayName2', profile.displayName);
 
-      document.getElementById('adminViewDate').valueAsDate = new Date();
+        let dateEl = document.getElementById('adminViewDate');
+        if(dateEl) dateEl.valueAsDate = new Date();
 
-      switchView('viewCustomer');
-      loadDashboard();
+        switchView('viewCustomer');
+        loadDashboard();
+        
+      } catch (err) {
+        // หากเกิดข้อผิดพลาด จะแสดงตรงนี้แทนที่จะเป็นหน้าขาวค้าง
+        Swal.fire('การเชื่อมต่อล้มเหลว', 'เกิดข้อผิดพลาดในการโหลดระบบ LIFF: ' + err.toString(), 'error');
+        document.getElementById('errorLog').innerText = `Error: ${err.message || err.toString()}`;
+      }
     }
 
     function switchView(viewId) {
       document.querySelectorAll('.page-section').forEach(el => el.classList.add('hide-me'));
-      document.getElementById(viewId).classList.remove('hide-me');
+      let target = document.getElementById(viewId);
+      if(target) target.classList.remove('hide-me');
     }
 
     function navTo(viewId, el = null, navContainerId = 'customerBottomNav') {
       switchView(viewId);
       if (el && el.classList.contains('nav-item')) {
         const navContainer = document.getElementById(navContainerId);
-        navContainer.querySelectorAll('.nav-item').forEach(nav => {
-           nav.classList.remove('active');
-           nav.classList.remove('admin-nav-active'); 
-        });
+        if(navContainer) {
+          navContainer.querySelectorAll('.nav-item').forEach(nav => {
+             nav.classList.remove('active');
+             nav.classList.remove('admin-nav-active'); 
+          });
+        }
         el.classList.add('active');
         if(navContainerId === 'adminBottomNav') el.classList.add('admin-nav-active');
       }
@@ -357,6 +388,8 @@
     async function loadDashboard() {
       try {
         const res = await fetch(`${GAS_WEB_APP_URL}?action=getUserDashboard&uid=${currentUserUid}`);
+        
+        if (!res.ok) throw new Error("ไม่สามารถโหลดข้อมูลจากเซิร์ฟเวอร์ได้");
         const data = await res.json();
         
         if (!data.isRegistered) {
@@ -367,13 +400,18 @@
           document.getElementById('customerBottomNav').classList.add('hide-me');
           document.getElementById('adminBottomNav').classList.remove('hide-me');
           switchView('viewAdminSearch');
+          // ให้โหลดคิวแอดมินอัตโนมัติ
+          loadAdminDailyBookings();
         } else {
           document.getElementById('adminBottomNav').classList.add('hide-me');
           document.getElementById('customerBottomNav').classList.remove('hide-me');
           renderCustomerDashboard(data);
           renderMemberDashboard(data);
         }
-      } catch (err) { Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้', 'error'); }
+      } catch (err) { 
+        Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้: ' + err.message, 'error'); 
+        document.getElementById('errorLog').innerText = `API Error: ${err.message}`;
+      }
     }
 
     async function submitRegister() {
@@ -395,7 +433,6 @@
       let used = data.package ? parseFloat(data.package.used) : 0;
       let remain = data.package ? parseFloat(data.package.remain) : 0;
       
-      // Progress Bar แบบแสดงพลังงานที่เหลืออยู่ (ถอยหลัง)
       let remainPercent = total > 0 ? (remain / total) * 100 : 0;
       if(remainPercent > 100) remainPercent = 100;
       
@@ -483,7 +520,6 @@
       });
     }
 
-    // ฟังก์ชันใช้คูปองล้างรถ/กาแฟ
     function redeemCoupon(type, remain) {
       if(remain <= 0) return Swal.fire('แจ้งเตือน', 'สิทธิ์ของคุณหมดแล้ว', 'warning');
       let typeName = type === 'CarWash' ? 'ล้างรถ' : 'เครื่องดื่ม';
@@ -612,7 +648,6 @@
       }
     }
 
-    // ฟังก์ชัน Walk-in มีการเช็คทับซ้อนคิว
     async function submitWalkinForm() {
       const timeIn = document.getElementById('walkinTimeIn').value;
       const timeOut = document.getElementById('walkinTimeOut').value;
@@ -639,13 +674,12 @@
               cancelButtonText: 'ยกเลิก'
             });
             if(!conf.isConfirmed) return;
-            finalTimeOut = checkData.limitTime; // ปรับเวลาออกให้ตามลิมิต
+            finalTimeOut = checkData.limitTime; 
          } else {
             return Swal.fire('คิวเต็ม', checkData.message, 'error');
          }
       }
 
-      // ดึงวันที่ปัจจุบัน
       let today = new Date();
       let yyyy = today.getFullYear();
       let mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -686,9 +720,6 @@
       }
     }
 
-    // ==========================================
-    // ฝั่ง Admin 
-    // ==========================================
     async function loadAdminAllBookings() {
       const filter = document.getElementById('adminBookingFilter').value;
       document.getElementById('adminAllBookingsList').innerHTML = '<p class="text-xs text-slate-400 text-center py-10">กำลังโหลดข้อมูล...</p>';
