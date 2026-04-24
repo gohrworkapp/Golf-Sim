@@ -61,26 +61,33 @@
       <div class="text-center mb-4"><span class="bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-full border border-slate-200">⏰ เวลาทำการ: 08:00 - 22:00 น.</span></div>
 
       <div class="bg-slate-800 p-6 rounded-2xl shadow-lg mb-5 text-white text-center relative overflow-hidden">
-        <div class="absolute -right-4 -top-4 opacity-10 text-6xl">⛳</div>
         <p class="text-sm font-medium text-slate-300 mb-1">เครดิต</p>
-        <p id="dashRemain" class="text-5xl font-bold mb-4 text-green-400">...</p>
+        <div class="flex items-baseline justify-center gap-1 mb-4">
+          <p id="dashRemain" class="text-5xl font-bold text-green-400">...</p>
+          <span class="text-slate-400 text-sm font-medium">ชม.</span>
+        </div>
         
         <div id="progressSection" class="w-full text-left hide-me">
-          <div class="w-full bg-slate-700/50 rounded-full h-2 mb-2">
-            <div id="dashProgressBar" class="bg-green-400 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
-          </div>
-          <div class="flex justify-between text-xs">
-            <span class="text-slate-400">ใช้งานไป <span id="dashUsed" class="font-bold text-white">0</span> ชม.</span>
+          <div class="flex justify-between text-xs mb-1.5">
+            <span class="text-slate-400">หลอดเครดิตคงเหลือ</span>
             <span class="text-slate-400">รวม <span id="dashTotal" class="font-bold text-white">0</span> ชม.</span>
+          </div>
+          <div class="w-full bg-slate-700/50 rounded-full h-2">
+            <div id="dashProgressBar" class="bg-green-400 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
           </div>
         </div>
       </div>
 
-      <button onclick="navTo('viewBookingForm')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-md transition-all mb-6 flex items-center justify-center gap-2 text-base">
-        📅 จองห้องตอนนี้
-      </button>
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        <button onclick="navTo('viewBookingForm')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
+          <span class="text-sm font-bold">จองห้องล่วงหน้า</span>
+        </button>
+        <button onclick="navTo('viewWalkinForm')" class="w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
+          <span class="text-sm font-bold">Walk-in หน้าร้าน</span>
+        </button>
+      </div>
 
-      <h3 class="font-semibold text-slate-800 mb-3 text-sm">📅 การจองของคุณ</h3>
+      <h3 class="font-semibold text-slate-800 mb-3 text-sm">การจองของคุณ</h3>
       <div id="dashUpcomingBookings" class="mb-6 space-y-2"></div>
 
       <h3 class="font-semibold text-slate-800 mb-3 text-sm">📋 ประวัติการใช้บริการ</h3>
@@ -95,33 +102,68 @@
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
     </button>
     <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 w-full">
-      <h2 class="text-xl font-bold text-slate-800 mb-2 text-center">📅 จองห้องตอนนี้</h2>
+      <h2 class="text-xl font-bold text-slate-800 mb-2 text-center">จองห้อง</h2>
       <p class="text-center text-xs text-slate-500 mb-5">⏰ เวลาทำการ: 08:00 - 22:00 น.</p>
       
       <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ต้องการจอง</label>
-      <input type="date" id="bookDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all">
+      <input type="date" id="bookDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-800 bg-slate-50 focus:bg-white outline-none transition-all">
       
       <div class="grid grid-cols-2 gap-3 mb-4">
         <div class="w-full overflow-hidden">
           <label class="block text-sm font-medium text-slate-700 mb-1">เวลาเริ่ม</label>
-          <select id="bookTimeIn" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"></select>
+          <select id="bookTimeIn" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-800 bg-slate-50 focus:bg-white outline-none transition-all w-full"></select>
         </div>
         <div class="w-full overflow-hidden">
           <label class="block text-sm font-medium text-slate-700 mb-1">เวลาสิ้นสุด</label>
-          <select id="bookTimeOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+          <select id="bookTimeOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-800 bg-slate-50 focus:bg-white outline-none transition-all w-full">
              <option value="" disabled selected>เลือกเวลาเริ่มก่อน</option>
           </select>
         </div>
       </div>
       
       <label class="block text-sm font-medium text-slate-700 mb-1">ผู้ใช้บริการ (ท่าน)</label>
-      <input type="number" id="bookPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-green-500 bg-slate-50 focus:bg-white outline-none transition-all">
+      <input type="number" id="bookPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-800 bg-slate-50 focus:bg-white outline-none transition-all">
       
-      <div class="bg-red-50 border border-red-100 p-4 rounded-xl mb-6">
-        <p class="text-xs text-red-600 leading-relaxed">📌 <b>เงื่อนไขการยกเลิก:</b> เพื่อให้สิทธิ์แก่ลูกค้าท่านอื่น กรุณาแจ้งยกเลิกก่อนเวลาจองอย่างน้อย 1 ชม. ขอบคุณครับ</p>
+      <button onclick="submitBookingForm('Advance')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยืนยันการจอง</button>
+    </div>
+  </div>
+
+  <div id="viewWalkinForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md p-5 pb-20">
+    <button onclick="navTo('viewCustomer')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
+    </button>
+    <div class="bg-white p-6 rounded-2xl card-shadow border border-yellow-500/30 w-full relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-yellow-400"></div>
+      <h2 class="text-xl font-bold text-slate-800 mb-2 text-center">Walk-in หน้าร้าน</h2>
+      <p class="text-center text-xs text-slate-500 mb-5">สำหรับเปิดใช้บริการทันที ณ วันนี้</p>
+      
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div class="w-full overflow-hidden">
+          <label class="block text-sm font-medium text-slate-700 mb-1">เวลาเริ่ม</label>
+          <select id="walkinTimeIn" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-yellow-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"></select>
+        </div>
+        <div class="w-full overflow-hidden">
+          <label class="block text-sm font-medium text-slate-700 mb-1">เวลาสิ้นสุด</label>
+          <select id="walkinTimeOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-yellow-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+             <option value="" disabled selected>เลือกเวลาเริ่มก่อน</option>
+          </select>
+        </div>
+      </div>
+      
+      <label class="block text-sm font-medium text-slate-700 mb-1">ผู้ใช้บริการ (ท่าน)</label>
+      <input type="number" id="walkinPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-yellow-500 bg-slate-50 focus:bg-white outline-none transition-all">
+      
+      <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl mb-6">
+        <p class="text-xs text-yellow-700 leading-relaxed">📌 <b>หมายเหตุ:</b> คิว Walk-in จะไม่สามารถกดยกเลิกผ่านระบบได้ หากกดผิดกรุณาแจ้งแอดมินหน้าร้านครับ</p>
       </div>
 
-      <button onclick="submitBookingForm()" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยืนยันการจอง</button>
+      <button onclick="submitWalkinForm()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3.5 rounded-xl shadow-sm transition">ยืนยันการเปิดห้อง</button>
+    </div>
+  </div>
+
+  <div id="viewMemberDash" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-20">
+    <div id="vipContent" class="p-4">
+      <p class="text-center text-xs text-slate-400 py-10">กำลังตรวจสอบสถานะ...</p>
     </div>
   </div>
 
@@ -135,16 +177,7 @@
       <input type="date" id="applyDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all">
       <label class="block text-sm font-medium text-slate-700 mb-1">ปกติมาใช้บริการกี่ท่าน</label>
       <input type="number" id="applyPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all">
-      <div class="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 mb-6 border border-slate-200 leading-relaxed">
-        📌 ทางคลับจะติดต่อกลับเพื่อยืนยันรายละเอียดและแจ้งอัตราค่าบริการให้ท่านทราบโดยเร็วที่สุดครับ
-      </div>
       <button onclick="submitApplyMemberForm()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ส่งคำขอสมัครสมาชิก</button>
-    </div>
-  </div>
-
-  <div id="viewMemberDash" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-20">
-    <div id="vipContent" class="p-4">
-      <p class="text-center text-xs text-slate-400 py-10">กำลังตรวจสอบสถานะ...</p>
     </div>
   </div>
 
@@ -155,24 +188,17 @@
     </div>
     
     <div class="p-4 w-full">
-      <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-5">
-        <div class="flex justify-between items-center mb-3">
-          <h3 class="font-medium text-slate-700 text-sm">📅 เช็คคิวประจำวัน</h3>
-          <input type="date" id="adminViewDate" onchange="loadAdminDailyBookings()" class="border border-slate-300 rounded p-1 text-xs w-32 outline-none">
-        </div>
-        <div id="adminDailyBookings" class="space-y-2 mt-2"></div>
-      </div>
-
       <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-4">
-        <h3 class="font-medium text-slate-700 mb-2 text-sm">ค้นหาข้อมูลลูกค้า (หักเครดิต/เติมแพ็กเกจ)</h3>
-        <input type="text" id="searchKey" placeholder="ระบุชื่อ หรือ เบอร์โทรศัพท์" class="border border-slate-300 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+        <h3 class="font-medium text-slate-700 mb-2 text-sm">🔍 ค้นหาข้อมูลลูกค้า (หักเครดิต/เติมสิทธิ์)</h3>
+        <input type="text" id="searchKey" placeholder="ระบุชื่อ เบอร์โทร หรือ ชื่อเล่น" class="border border-slate-300 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
         <button onclick="adminSearch()" class="w-full bg-slate-800 text-white font-medium py-3 rounded-xl text-sm transition hover:bg-slate-900">ค้นหา</button>
       </div>
 
       <div id="adminActionSection" class="hidden">
         <div class="bg-blue-50 border border-blue-100 p-5 rounded-2xl mb-4 text-sm shadow-sm w-full">
           <p id="resName" class="font-bold text-slate-800 text-base"></p>
-          <p id="resPhone" class="text-slate-600 mb-3"></p>
+          <p id="resPhone" class="text-slate-600 mb-1"></p>
+          <p id="resNickname" class="text-xs text-slate-500 mb-3"></p>
           <div class="flex justify-between items-center pt-3 border-t border-blue-200">
             <span class="text-slate-600">แพ็กเกจ: <span id="resPkg" class="font-semibold text-slate-800"></span></span>
             <span class="text-slate-600">เครดิต: <span id="resRemain" class="font-bold text-green-600 text-lg"></span> ชม.</span>
@@ -182,7 +208,7 @@
 
         <div class="grid grid-cols-2 gap-3 mb-4">
           <button onclick="toggleAction('usage')" class="bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-sm transition hover:bg-slate-50 shadow-sm w-full">ตัดเวลาใช้บริการ</button>
-          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm w-full">เติมแพ็กเกจ</button>
+          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm w-full">เพิ่มเครดิต/แพ็กเกจ</button>
         </div>
 
         <div id="formUsage" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden w-full">
@@ -196,9 +222,7 @@
             </div>
             <div class="w-full overflow-hidden">
               <label class="block text-xs text-slate-500 mb-1">เวลาออก</label>
-              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
-                <option value="" disabled selected>เลือกเวลาเริ่มก่อน</option>
-              </select>
+              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"><option value="" disabled selected>เลือกเวลาเริ่มก่อน</option></select>
             </div>
           </div>
           <label class="block text-xs font-bold text-red-600 mb-1 mt-2">จำนวนชั่วโมงที่ต้องการหัก (กรอกเอง)</label>
@@ -207,7 +231,7 @@
         </div>
 
         <div id="formTopup" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden w-full">
-          <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มแพ็กเกจ</h3>
+          <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มแพ็กเกจ (เพิ่มเครดิต)</h3>
           <label class="block text-xs text-slate-500 mb-1">ชื่อแพ็กเกจ</label>
           <input type="text" id="topPkgName" placeholder="เช่น ELITE MEMBER" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
           <label class="block text-xs text-slate-500 mb-1">จำนวนชั่วโมง</label>
@@ -221,12 +245,12 @@
   <div id="viewAdminManageBookings" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md pb-20">
     <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm">
       <img id="adminProfilePic2" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500 bg-slate-700">
-      <div><h2 class="text-base font-bold">จัดการคำขอจองคิว</h2><p id="adminDisplayName2" class="text-xs text-slate-300">...</p></div>
+      <div><h2 class="text-base font-bold">จัดการคำขอจองห้อง</h2><p id="adminDisplayName2" class="text-xs text-slate-300">...</p></div>
     </div>
     
     <div class="p-4 w-full">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-slate-800">รายการการจองล่าสุด</h3>
+        <h3 class="font-bold text-slate-800">รายการล่าสุด</h3>
         <select id="adminBookingFilter" onchange="loadAdminAllBookings()" class="border border-slate-300 rounded-lg p-1.5 text-xs outline-none bg-white font-medium">
           <option value="ทั้งหมด">ทั้งหมด</option>
           <option value="กำลังตรวจสอบ">รอตรวจสอบ</option>
@@ -234,10 +258,7 @@
           <option value="ยกเลิก">ยกเลิกแล้ว</option>
         </select>
       </div>
-
-      <div id="adminAllBookingsList" class="space-y-3">
-        <p class="text-center text-xs text-slate-400 py-10">กำลังโหลดข้อมูล...</p>
-      </div>
+      <div id="adminAllBookingsList" class="space-y-3"><p class="text-center text-xs text-slate-400 py-10">กำลังโหลดข้อมูล...</p></div>
     </div>
   </div>
 
@@ -252,11 +273,8 @@
   </div>
 
   <script>
-    // ==========================================
-    // ใส่ข้อมูลของคุณที่นี่
-    // ==========================================
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyyVWupgs55jftXcDfS8can9AeEHwswCEoQgZFaHnsl61ba592c531GIuxpYTYjv2n6/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzfR8DgtKLzp964ugmaZT7d3ImFtmNVePuxas_eA2DFeBRb5jYJ35ptCtMIM9NqPS7R/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -275,6 +293,7 @@
       }
       document.getElementById('bookTimeIn').innerHTML = inHtml;
       document.getElementById('useIn').innerHTML = inHtml;
+      document.getElementById('walkinTimeIn').innerHTML = inHtml;
     }
 
     function updateOutDropdown(inElementId, outElementId) {
@@ -291,6 +310,7 @@
 
     document.getElementById('bookTimeIn').addEventListener('change', () => updateOutDropdown('bookTimeIn', 'bookTimeOut'));
     document.getElementById('useIn').addEventListener('change', () => updateOutDropdown('useIn', 'useOut'));
+    document.getElementById('walkinTimeIn').addEventListener('change', () => updateOutDropdown('walkinTimeIn', 'walkinTimeOut'));
 
     async function main() {
       initDropdowns(); 
@@ -323,7 +343,6 @@
 
     function navTo(viewId, el = null, navContainerId = 'customerBottomNav') {
       switchView(viewId);
-      
       if (el && el.classList.contains('nav-item')) {
         const navContainer = document.getElementById(navContainerId);
         navContainer.querySelectorAll('.nav-item').forEach(nav => {
@@ -347,13 +366,10 @@
         } else if (data.role === "Admin") {
           document.getElementById('customerBottomNav').classList.add('hide-me');
           document.getElementById('adminBottomNav').classList.remove('hide-me');
-          
           switchView('viewAdminSearch');
-          loadAdminDailyBookings(); 
         } else {
           document.getElementById('adminBottomNav').classList.add('hide-me');
           document.getElementById('customerBottomNav').classList.remove('hide-me');
-          
           renderCustomerDashboard(data);
           renderMemberDashboard(data);
         }
@@ -378,8 +394,10 @@
       let total = data.package ? parseFloat(data.package.total) : 0;
       let used = data.package ? parseFloat(data.package.used) : 0;
       let remain = data.package ? parseFloat(data.package.remain) : 0;
-      let percent = total > 0 ? (used / total) * 100 : 0;
-      if(percent > 100) percent = 100;
+      
+      // Progress Bar แบบแสดงพลังงานที่เหลืออยู่ (ถอยหลัง)
+      let remainPercent = total > 0 ? (remain / total) * 100 : 0;
+      if(remainPercent > 100) remainPercent = 100;
       
       document.getElementById('dashRemain').innerText = remain;
       
@@ -387,7 +405,7 @@
         document.getElementById('progressSection').classList.remove('hide-me');
         document.getElementById('dashTotal').innerText = total;
         document.getElementById('dashUsed').innerText = used;
-        document.getElementById('dashProgressBar').style.width = `${percent}%`;
+        document.getElementById('dashProgressBar').style.width = `${remainPercent}%`;
       } else {
         document.getElementById('progressSection').classList.add('hide-me');
       }
@@ -395,11 +413,8 @@
       let upHtml = "";
       if(data.bookings && data.bookings.length > 0) {
         data.bookings.forEach(b => {
-          let statusBadge = b.status === "ยืนยันแล้ว" 
-            ? "bg-green-100 text-green-700" 
-            : "bg-yellow-100 text-yellow-700";
-            
-          let statusText = b.status === "ยืนยันแล้ว" ? "✅ ยืนยันแล้ว" : "⏳ กำลังตรวจสอบ";
+          let statusBadge = b.status === "ยืนยันแล้ว" ? "bg-green-100 text-green-700" : (b.status === "Walk-in" ? "bg-yellow-200 text-yellow-800" : "bg-yellow-50 text-yellow-600 border border-yellow-200");
+          let statusText = b.status === "ยืนยันแล้ว" ? "✅ ยืนยันแล้ว" : (b.status === "Walk-in" ? "🏃 Walk-in" : "⏳ กำลังตรวจสอบ");
 
           upHtml += `
           <div class="bg-white p-4 rounded-xl card-shadow border border-slate-100 flex flex-col gap-3">
@@ -411,11 +426,11 @@
               </div>
               <span class="text-[10px] font-bold px-2 py-1 rounded-full ${statusBadge}">${statusText}</span>
             </div>
-            <button onclick="requestCancelBooking(${b.row})" class="w-full text-xs font-bold text-red-500 border border-red-200 py-2 rounded-lg hover:bg-red-50 transition">❌ ยกเลิกการจอง</button>
+            <button onclick="requestCancelBooking(${b.row})" class="w-full text-xs font-bold text-red-500 border border-red-200 py-2 rounded-lg hover:bg-red-50 transition">ยืนยันการยกเลิก</button>
           </div>`;
         });
       } else {
-        upHtml = `<div class="bg-white p-4 rounded-xl border border-slate-100 text-center"><p class="text-xs text-slate-400">ยังไม่มีการจองคิวล่วงหน้า</p></div>`;
+        upHtml = `<div class="bg-white p-4 rounded-xl border border-slate-100 text-center"><p class="text-xs text-slate-400">ยังไม่มีการจองล่วงหน้า</p></div>`;
       }
       document.getElementById('dashUpcomingBookings').innerHTML = upHtml;
 
@@ -424,14 +439,18 @@
         historyHtml = `<p class="text-center text-xs text-slate-400 py-6">ไม่พบประวัติการใช้บริการ</p>`;
       } else {
         data.history.forEach(h => {
+          let typeLabel = h.type === "ชั่วโมง" ? "ใช้ไป" : "คูปอง";
+          let unitLabel = h.type === "ชั่วโมง" ? "ชม." : (h.type === "ล้างรถ" ? "ครั้ง" : "แก้ว");
+          let timeText = h.timeIn === "-" ? h.type : `เวลา: ${h.timeIn} - ${h.timeOut}`;
+          
           historyHtml += `
           <div class="flex justify-between items-center p-3 border-b border-slate-50 last:border-0">
             <div>
               <p class="text-sm font-medium text-slate-800">${h.date}</p>
-              <p class="text-xs text-slate-500 mt-0.5">เวลา: ${h.timeIn} - ${h.timeOut}</p>
+              <p class="text-xs text-slate-500 mt-0.5">${timeText}</p>
             </div>
             <div class="text-slate-800 font-medium text-sm text-right">
-              <span class="text-xs text-slate-400 block mb-0.5">ใช้ไป</span>${h.amount} ชม.
+              <span class="text-xs text-slate-400 block mb-0.5">${typeLabel}</span>${h.amount} ${unitLabel}
             </div>
           </div>`;
         });
@@ -458,8 +477,33 @@
           if(data.success) {
             Swal.fire('สำเร็จ', data.message, 'success').then(() => loadDashboard());
           } else {
-            Swal.fire('ไม่สามารถยกเลิกได้', data.message, 'error');
+            Swal.fire(data.title || 'ข้อผิดพลาด', data.message, 'error');
           }
+        }
+      });
+    }
+
+    // ฟังก์ชันใช้คูปองล้างรถ/กาแฟ
+    function redeemCoupon(type, remain) {
+      if(remain <= 0) return Swal.fire('แจ้งเตือน', 'สิทธิ์ของคุณหมดแล้ว', 'warning');
+      let typeName = type === 'CarWash' ? 'ล้างรถ' : 'เครื่องดื่ม';
+      Swal.fire({
+        title: `ยืนยันใช้สิทธิ์${typeName}?`,
+        text: "กรุณากดต่อหน้าพนักงาน (ใช้ได้ 1 ครั้ง/วัน)",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d4af37',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: 'ยืนยันการใช้สิทธิ์',
+        cancelButtonText: 'กลับ'
+      }).then(async (result) => {
+        if(result.isConfirmed) {
+          Swal.showLoading();
+          const res = await fetch(`${GAS_WEB_APP_URL}?action=redeemCoupon&data=${encodeURIComponent(JSON.stringify({uid: currentUserUid, type: type}))}`);
+          const data = await res.json();
+          Swal.close();
+          if(data.success) Swal.fire('สำเร็จ', data.message, 'success').then(() => loadDashboard());
+          else Swal.fire('แจ้งเตือน', data.message, 'error');
         }
       });
     }
@@ -467,41 +511,49 @@
     function renderMemberDashboard(data) {
       let isMember = data.memberType === "Yes"; 
       let remainHr = data.package ? data.package.remain : 0;
-      let remainWash = data.package && data.package.carWash ? data.package.carWash : 0;
-      let remainDrink = data.package && data.package.drinks ? data.package.drinks : 0;
+      let remainWash = data.package && data.package.carWash ? parseInt(data.package.carWash) : 0;
+      let remainDrink = data.package && data.package.drinks ? parseInt(data.package.drinks) : 0;
       let exp = data.package && data.package.expiry ? data.package.expiry : "-";
-      
-      let washText = remainWash > 0 ? `<span class="font-bold text-white">${remainWash} ครั้ง</span>` : `<span class="font-medium text-slate-500">0 ครั้ง</span>`;
-      let drinkText = remainDrink > 0 ? `<span class="font-bold text-white">${remainDrink} แก้ว</span>` : `<span class="font-medium text-slate-500">0 แก้ว</span>`;
 
       let html = "";
       if(isMember) {
         html = `
-        <div class="bg-slate-800 text-white rounded-3xl p-6 mb-4 shadow-xl border border-yellow-500/30">
-          <p class="text-center text-lg font-bold text-yellow-400 mb-2 tracking-wide uppercase">Member Privileges</p>
+        <div class="bg-[#0f172a] text-white rounded-3xl p-6 mb-4 shadow-2xl border border-[#d4af37]/30">
+          <p class="text-center text-lg font-bold text-[#d4af37] mb-2 tracking-wide uppercase">Member Privileges</p>
           <div class="text-center mb-5">
-            <p class="text-xs text-yellow-200/80 uppercase tracking-widest">Priority Access Privileges</p>
+            <p class="text-xs text-[#d4af37]/80 uppercase tracking-widest">Priority Access Privileges</p>
             <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Exclusive Member Benefits</p>
           </div>
           
           <div class="border-y border-slate-600/50 py-4 mb-4 space-y-3 text-sm">
-            <div class="flex justify-between items-center"><span class="text-slate-300">สถานะ</span><span class="font-bold text-slate-900 bg-gradient-to-r from-yellow-300 to-yellow-500 px-2 py-0.5 rounded text-xs shadow-sm">ELITE MEMBER</span></div>
-            <div class="flex justify-between"><span class="text-slate-300">เครดิต</span><span class="font-bold text-white">${remainHr} ชม.</span></div>
-            <div class="flex justify-between"><span class="text-slate-300">สิทธิ์ล้างรถ</span>${washText}</div>
-            <div class="flex justify-between"><span class="text-slate-300">สิทธิ์รับเครื่องดื่ม</span>${drinkText}</div>
+            <div class="flex justify-between items-center"><span class="text-slate-300">สถานะ</span><span class="font-bold text-black bg-gradient-to-r from-[#fcd34d] to-[#d4af37] px-3 py-1 rounded-full text-xs shadow-md">ELITE MEMBER</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">เครดิต</span><span class="font-bold text-white">${remainHr} <span class="text-xs font-normal">ชม.</span></span></div>
             <div class="flex justify-between"><span class="text-slate-300">วันหมดอายุ</span><span class="font-bold text-white">${exp}</span></div>
           </div>
           
-          <div class="space-y-5">
+          <div class="mt-4 grid grid-cols-2 gap-3">
+             <div class="bg-gradient-to-br from-slate-700 to-slate-800 border border-[#d4af37]/30 p-3 rounded-xl text-center relative overflow-hidden">
+               <p class="text-xs text-[#d4af37] font-bold mb-1">สิทธิ์ล้างรถ</p>
+               <p class="text-lg font-bold text-white mb-2">${remainWash} <span class="text-[10px] text-slate-400 font-normal">ครั้ง</span></p>
+               <button onclick="redeemCoupon('CarWash', ${remainWash})" class="w-full bg-[#d4af37]/10 hover:bg-[#d4af37]/20 border border-[#d4af37]/30 text-[#d4af37] text-[11px] font-bold py-1.5 rounded-lg transition" ${remainWash<=0?'disabled opacity-50':''}>กดใช้สิทธิ์</button>
+             </div>
+             <div class="bg-gradient-to-br from-slate-700 to-slate-800 border border-[#d4af37]/30 p-3 rounded-xl text-center relative overflow-hidden">
+               <p class="text-xs text-[#d4af37] font-bold mb-1">เครื่องดื่มฟรี</p>
+               <p class="text-lg font-bold text-white mb-2">${remainDrink} <span class="text-[10px] text-slate-400 font-normal">แก้ว</span></p>
+               <button onclick="redeemCoupon('Drink', ${remainDrink})" class="w-full bg-[#d4af37]/10 hover:bg-[#d4af37]/20 border border-[#d4af37]/30 text-[#d4af37] text-[11px] font-bold py-1.5 rounded-lg transition" ${remainDrink<=0?'disabled opacity-50':''}>กดใช้สิทธิ์</button>
+             </div>
+          </div>
+
+          <div class="space-y-5 mt-6">
             <div>
-              <p class="font-bold text-sm text-yellow-400 mb-1">🏌️‍♂️ Private Suite with Spacious Comfort</p>
+              <p class="font-bold text-sm text-[#d4af37] mb-1">🏌️‍♂️ Private Suite with Spacious Comfort</p>
               <ul class="list-disc pl-4 text-slate-300 text-xs space-y-1">
                 <li>Seamless Play & Relaxation Experience</li>
                 <li>ห้องกอล์ฟส่วนตัวขนาดใหญ่ พื้นที่กว้างขวาง นั่งสบาย</li>
               </ul>
             </div>
             <div>
-              <p class="font-bold text-sm text-yellow-400 mb-1">🎤 Private Entertainment Access</p>
+              <p class="font-bold text-sm text-[#d4af37] mb-1">🎤 Private Entertainment Access</p>
               <ul class="list-disc pl-4 text-slate-300 text-xs space-y-1">
                 <li>รองรับผู้ติดตามได้สูงสุด 3 ท่าน</li>
                 <li>คาราโอเกะภายในห้องส่วนตัว</li>
@@ -509,11 +561,11 @@
             </div>
           </div>
           
-          <div class="bg-gradient-to-r from-yellow-500/20 to-transparent rounded-xl p-4 text-xs mt-6 border border-yellow-500/20">
-            <p class="font-bold text-yellow-400 mb-1">⭐ Unlimited Access Across All Time Slots:</p>
+          <div class="bg-gradient-to-r from-[#d4af37]/10 to-transparent rounded-xl p-4 text-xs mt-6 border border-[#d4af37]/20">
+            <p class="font-bold text-[#d4af37] mb-1">⭐ Unlimited Access Across All Time Slots:</p>
             <p class="text-slate-300 mb-3">ใช้งานได้ทุกช่วงเวลา (ไม่หัก Peak Time)</p>
-            <hr class="border-yellow-500/20 my-3">
-            <p class="font-bold text-yellow-400 mb-1">⭐ Extended Play Rate:</p>
+            <hr class="border-[#d4af37]/20 my-3">
+            <p class="font-bold text-[#d4af37] mb-1">⭐ Extended Play Rate:</p>
             <p class="text-slate-300">Only 400 THB / Hour</p>
           </div>
         </div>`;
@@ -529,7 +581,7 @@
           <div class="space-y-4 text-sm">
             <div><p class="font-bold text-slate-800 mb-1">🏌️‍♂️ Private Suite with Spacious Comfort</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>Seamless Play & Relaxation Experience</li><li>ห้องส่วนตัวกว้างขวาง นั่งสบาย</li></ul></div>
             <div><p class="font-bold text-slate-800 mb-1">🎤 Private Entertainment Access</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>รองรับผู้ติดตามได้สูงสุด 3 ท่าน</li><li>คาราโอเกะภายในห้องส่วนตัว</li></ul></div>
-            <div><p class="font-bold text-slate-800 mb-1">🚗 Car Care & Drinks</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>สิทธิ์ล้างรถฟรี และส่วนลดคาร์แคร์ 20%</li><li>รับเครื่องดื่มฟรีทุกสัปดาห์</li></ul></div>
+            <div><p class="font-bold text-slate-800 mb-1">🚗 Car Care & Drinks</p><ul class="list-disc pl-4 text-xs space-y-1 text-slate-500"><li>สิทธิ์ล้างรถฟรี และส่วนลดคาร์แคร์ 20%</li><li>รับเครื่องดื่มฟรีแบบพิเศษ</li></ul></div>
           </div>
           <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs text-center mt-5 mb-5"><p class="font-bold text-slate-800 mb-1">⭐ Extended Play Rate:</p><p class="text-slate-500">Only 400 THB / Hour</p></div>
           <button onclick="navTo('viewApplyMemberForm')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">สมัคร Elite Member</button>
@@ -538,24 +590,80 @@
       document.getElementById('vipContent').innerHTML = html;
     }
 
-    async function submitBookingForm() {
+    async function submitBookingForm(type) {
       const date = document.getElementById('bookDate').value;
       const timeIn = document.getElementById('bookTimeIn').value;
       const timeOut = document.getElementById('bookTimeOut').value;
       const pax = document.getElementById('bookPax').value;
       if(!date || !timeIn || !timeOut || !pax) return Swal.fire('แจ้งเตือน', 'กรุณาระบุข้อมูลให้ครบถ้วน', 'warning');
-      const payload = { uid: currentUserUid, date: date, timeIn: timeIn, timeOut: timeOut, pax: pax };
+      const payload = { uid: currentUserUid, date: date, timeIn: timeIn, timeOut: timeOut, pax: pax, type: "Advance" };
       Swal.showLoading();
       const res = await fetch(`${GAS_WEB_APP_URL}?action=submitBooking&data=${encodeURIComponent(JSON.stringify(payload))}`);
       const result = await res.json();
       Swal.close();
       if(result.success) {
-        Swal.fire('สำเร็จ', 'ส่งคำขอการจองเรียบร้อยแล้ว กรุณารอแอดมินยืนยันครับ', 'success').then(() => {
+        Swal.fire('สำเร็จ', 'ระบบได้รับข้อมูลการจองเรียบร้อยแล้ว กรุณารอระบบตรวจสอบครับ', 'success').then(() => {
           document.getElementById('bookDate').value = '';
           document.getElementById('bookTimeIn').value = '';
           document.getElementById('bookTimeOut').value = '';
           document.getElementById('bookPax').value = '';
           loadDashboard(); 
+        });
+      }
+    }
+
+    // ฟังก์ชัน Walk-in มีการเช็คทับซ้อนคิว
+    async function submitWalkinForm() {
+      const timeIn = document.getElementById('walkinTimeIn').value;
+      const timeOut = document.getElementById('walkinTimeOut').value;
+      const pax = document.getElementById('walkinPax').value;
+      if(!timeIn || !timeOut || !pax) return Swal.fire('แจ้งเตือน', 'กรุณาระบุเวลาให้ครบถ้วน', 'warning');
+
+      Swal.showLoading();
+      const checkRes = await fetch(`${GAS_WEB_APP_URL}?action=checkWalkIn&data=${encodeURIComponent(JSON.stringify({timeIn, timeOut}))}`);
+      const checkData = await checkRes.json();
+      Swal.close();
+
+      let finalTimeOut = timeOut;
+
+      if(checkData.conflict) {
+         if(checkData.limitTime) {
+            const conf = await Swal.fire({
+              title: 'คิวจองทับซ้อน',
+              text: `${checkData.message}\nคุณต้องการ Walk-in ถึงเวลานี้หรือไม่?`,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#eab308',
+              cancelButtonColor: '#94a3b8',
+              confirmButtonText: 'ตกลง ใช้ถึงเวลานี้',
+              cancelButtonText: 'ยกเลิก'
+            });
+            if(!conf.isConfirmed) return;
+            finalTimeOut = checkData.limitTime; // ปรับเวลาออกให้ตามลิมิต
+         } else {
+            return Swal.fire('คิวเต็ม', checkData.message, 'error');
+         }
+      }
+
+      // ดึงวันที่ปัจจุบัน
+      let today = new Date();
+      let yyyy = today.getFullYear();
+      let mm = String(today.getMonth() + 1).padStart(2, '0');
+      let dd = String(today.getDate()).padStart(2, '0');
+      let dStr = `${yyyy}-${mm}-${dd}`;
+
+      const payload = { uid: currentUserUid, date: dStr, timeIn: timeIn, timeOut: finalTimeOut, pax: pax, type: "Walk-in" };
+      Swal.showLoading();
+      const res = await fetch(`${GAS_WEB_APP_URL}?action=submitBooking&data=${encodeURIComponent(JSON.stringify(payload))}`);
+      const result = await res.json();
+      Swal.close();
+      
+      if(result.success) {
+        Swal.fire('สำเร็จ', 'บันทึกการเปิดห้องแบบ Walk-in เรียบร้อยแล้ว', 'success').then(() => {
+          document.getElementById('walkinTimeIn').value = '';
+          document.getElementById('walkinTimeOut').value = '';
+          document.getElementById('walkinPax').value = '';
+          loadDashboard();
         });
       }
     }
@@ -581,34 +689,6 @@
     // ==========================================
     // ฝั่ง Admin 
     // ==========================================
-    async function loadAdminDailyBookings() {
-      const dateStr = document.getElementById('adminViewDate').value;
-      if(!dateStr) return;
-      document.getElementById('adminDailyBookings').innerHTML = '<p class="text-xs text-slate-400 text-center py-2">กำลังดึงข้อมูล...</p>';
-      
-      const res = await fetch(`${GAS_WEB_APP_URL}?action=getAdminBookings&date=${dateStr}`);
-      const bookings = await res.json();
-      
-      let html = "";
-      if(bookings.length === 0) {
-        html = '<p class="text-xs text-slate-400 text-center py-2">ไม่มีคิวจองในวันนี้</p>';
-      } else {
-        bookings.forEach(b => {
-          let badgeColor = b.status === "กำลังตรวจสอบ" ? "bg-yellow-100 text-yellow-700" : "bg-green-100 text-green-700";
-          html += `
-          <div class="flex justify-between items-center p-3 border border-slate-100 rounded-lg bg-slate-50">
-            <div>
-              <p class="font-bold text-slate-800 text-sm">⏰ ${b.timeIn} - ${b.timeOut}</p>
-              <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
-              <p class="text-[10px] text-slate-400 mt-0.5">📞 ${b.phone}</p>
-            </div>
-            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
-          </div>`;
-        });
-      }
-      document.getElementById('adminDailyBookings').innerHTML = html;
-    }
-
     async function loadAdminAllBookings() {
       const filter = document.getElementById('adminBookingFilter').value;
       document.getElementById('adminAllBookingsList').innerHTML = '<p class="text-xs text-slate-400 text-center py-10">กำลังโหลดข้อมูล...</p>';
@@ -626,6 +706,7 @@
         let badgeColor = "";
         if (b.status === "กำลังตรวจสอบ") badgeColor = "bg-yellow-100 text-yellow-700";
         else if (b.status === "ยืนยันแล้ว") badgeColor = "bg-green-100 text-green-700";
+        else if (b.status === "Walk-in") badgeColor = "bg-purple-100 text-purple-700";
         else badgeColor = "bg-red-100 text-red-700";
 
         let actionButtons = "";
@@ -648,7 +729,7 @@
             </div>
             <div class="text-right">
               <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
-              <p class="text-[9px] text-slate-400 mt-2">Row: ${b.row}</p>
+              <p class="text-[9px] text-slate-400 mt-2">เวลาทำรายการ: ${b.timestampStr}</p>
             </div>
           </div>
           ${actionButtons}
@@ -691,6 +772,31 @@
       });
     }
 
+    async function loadAdminDailyBookings() {
+      const dateStr = document.getElementById('adminViewDate').value;
+      if(!dateStr) return;
+      document.getElementById('adminDailyBookings').innerHTML = '<p class="text-xs text-slate-400 text-center py-2">กำลังดึงข้อมูล...</p>';
+      const res = await fetch(`${GAS_WEB_APP_URL}?action=getAdminBookings&date=${dateStr}`);
+      const bookings = await res.json();
+      let html = "";
+      if(bookings.length === 0) {
+        html = '<p class="text-xs text-slate-400 text-center py-2">ไม่มีคิวจองในวันนี้</p>';
+      } else {
+        bookings.forEach(b => {
+          let badgeColor = b.status === "กำลังตรวจสอบ" ? "bg-yellow-100 text-yellow-700" : (b.status === "Walk-in" ? "bg-purple-100 text-purple-700" : "bg-green-100 text-green-700");
+          html += `
+          <div class="flex justify-between items-center p-3 border border-slate-100 rounded-lg bg-slate-50">
+            <div>
+              <p class="font-bold text-slate-800 text-sm">⏰ ${b.timeIn} - ${b.timeOut}</p>
+              <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
+          </div>`;
+        });
+      }
+      document.getElementById('adminDailyBookings').innerHTML = html;
+    }
+
     async function adminSearch() {
       const key = document.getElementById('searchKey').value.trim();
       if(!key) return;
@@ -702,7 +808,15 @@
         const cust = result.data;
         selectedCustomerUid = cust.uid;
         document.getElementById('resName').innerText = cust.name;
-        document.getElementById('resPhone').innerText = `โทร: ${cust.phone}`;
+        document.getElementById('resPhone').innerText = `📞 โทร: ${cust.phone}`;
+        
+        if (cust.nickname) {
+          document.getElementById('resNickname').innerText = `📝 ชื่อเล่น/หมายเหตุ: ${cust.nickname}`;
+          document.getElementById('resNickname').classList.remove('hidden');
+        } else {
+          document.getElementById('resNickname').classList.add('hidden');
+        }
+
         document.getElementById('resPkg').innerText = cust.package ? cust.package.name : "-";
         document.getElementById('resRemain').innerText = cust.package ? cust.package.remain : "0";
         
@@ -711,7 +825,7 @@
           ? "👑 ลูกค้ารายนี้เป็น ELITE MEMBER (หักเวลา 1:1 ทุกช่วงเวลา)"
           : "👤 ลูกค้าทั่วไป (Peak time 17:00-22:00 น. ระวังหัก 1:1.5 เท่า)";
         document.getElementById('adminVipStatus').innerText = statusText;
-        document.getElementById('adminVipStatus').className = isVIP ? "mt-2 text-xs font-bold text-yellow-700 bg-yellow-50 p-2 rounded-lg border border-yellow-200" : "mt-2 text-xs font-bold text-amber-600 bg-amber-50 p-2 rounded-lg border border-amber-200";
+        document.getElementById('adminVipStatus').className = isVIP ? "mt-3 text-xs font-bold text-yellow-700 bg-yellow-50 p-2 rounded-lg border border-yellow-200" : "mt-3 text-xs font-bold text-amber-600 bg-amber-50 p-2 rounded-lg border border-amber-200";
 
         document.getElementById('useDate').valueAsDate = new Date();
         document.getElementById('adminActionSection').classList.remove('hidden');
