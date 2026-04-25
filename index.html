@@ -18,7 +18,9 @@
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
     .nav-item { flex: 1; text-align: center; color: #64748b; cursor: pointer; transition: all 0.3s; padding: 16px 0; font-size: 0.9rem; font-weight: 500; }
     .nav-item.active { color: #16a34a; font-weight: 600; background-color: #f0fdf4; border-top: 2px solid #16a34a; }
+    
     .admin-nav-active { color: #1e293b !important; font-weight: 600; background-color: #f1f5f9 !important; border-top: 2px solid #1e293b !important; }
+    
     input[type="date"], select, input[type="text"], input[type="tel"], input[type="number"] { 
       width: 100%; min-width: 0; -webkit-appearance: none; appearance: none;
     }
@@ -69,7 +71,7 @@
         
         <div id="progressSection" class="w-full text-left hide-me">
           <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-slate-400">หลอดเครดิตคงเหลือ</span>
+            <span class="text-slate-400">เครดิตคงเหลือ <span id="dashRemainProgress" class="font-bold text-white">0</span> ช.ม.</span>
             <span class="text-slate-400">รวม <span id="dashTotal" class="font-bold text-white">0</span> ชม.</span>
           </div>
           <div class="w-full bg-slate-700/50 rounded-full h-2">
@@ -192,7 +194,7 @@
     
     <div class="p-4 w-full">
       <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-4">
-        <h3 class="font-medium text-slate-700 mb-2 text-sm">🔍 ค้นหาข้อมูลลูกค้า (หักเครดิต/เติมสิทธิ์)</h3>
+        <h3 class="font-medium text-slate-700 mb-2 text-sm">🔍 ค้นหาข้อมูลลูกค้า</h3>
         <input type="text" id="searchKey" placeholder="ระบุชื่อ เบอร์โทร หรือ ชื่อเล่น" class="border border-slate-300 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
         <button onclick="adminSearch()" class="w-full bg-slate-800 text-white font-medium py-3 rounded-xl text-sm transition hover:bg-slate-900">ค้นหา</button>
       </div>
@@ -211,7 +213,9 @@
 
         <div class="grid grid-cols-2 gap-3 mb-4">
           <button onclick="toggleAction('usage')" class="bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-sm transition hover:bg-slate-50 shadow-sm w-full">ตัดเวลาใช้บริการ</button>
-          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm w-full">เพิ่มเครดิต/แพ็กเกจ</button>
+          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm w-full">เพิ่มเครดิต (เวลา)</button>
+          <button onclick="toggleAction('addCarWash')" class="bg-blue-50 border border-blue-200 text-blue-700 py-3 rounded-xl font-medium text-sm transition hover:bg-blue-100 shadow-sm w-full">🚗 เพิ่มสิทธิ์ล้างรถ</button>
+          <button onclick="toggleAction('addDrink')" class="bg-amber-50 border border-amber-200 text-amber-700 py-3 rounded-xl font-medium text-sm transition hover:bg-amber-100 shadow-sm w-full">☕ เพิ่มสิทธิ์เครื่องดื่ม</button>
         </div>
 
         <div id="formUsage" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden w-full">
@@ -225,9 +229,7 @@
             </div>
             <div class="w-full overflow-hidden">
               <label class="block text-xs text-slate-500 mb-1">เวลาออก</label>
-              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
-                <option value="" disabled selected>เลือกเวลาเริ่มก่อน</option>
-              </select>
+              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"><option value="" disabled selected>เลือกเวลาเริ่มก่อน</option></select>
             </div>
           </div>
           <label class="block text-xs font-bold text-red-600 mb-1 mt-2">จำนวนชั่วโมงที่ต้องการหัก (กรอกเอง)</label>
@@ -236,12 +238,26 @@
         </div>
 
         <div id="formTopup" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden w-full">
-          <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มแพ็กเกจ (เพิ่มเครดิต)</h3>
+          <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มเครดิต (เวลา)</h3>
           <label class="block text-xs text-slate-500 mb-1">ชื่อแพ็กเกจ</label>
           <input type="text" id="topPkgName" placeholder="เช่น ELITE MEMBER" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
           <label class="block text-xs text-slate-500 mb-1">จำนวนชั่วโมง</label>
           <input type="number" id="topHours" placeholder="ระบุตัวเลขชั่วโมง" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
           <button onclick="adminTopup()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">บันทึกข้อมูล</button>
+        </div>
+
+        <div id="formAddCarWash" class="bg-white p-5 rounded-2xl card-shadow border border-blue-200 hidden w-full">
+          <h3 class="font-bold text-blue-700 mb-4 text-sm">🚗 เพิ่มสิทธิ์ล้างรถ</h3>
+          <label class="block text-xs text-slate-500 mb-1">จำนวนสิทธิ์ที่ต้องการเพิ่ม</label>
+          <input type="number" id="addCarWashAmount" placeholder="จำนวนครั้ง" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-blue-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+          <button onclick="adminAddPrivilege('CarWash')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยืนยันการเพิ่มสิทธิ์</button>
+        </div>
+
+        <div id="formAddDrink" class="bg-white p-5 rounded-2xl card-shadow border border-amber-200 hidden w-full">
+          <h3 class="font-bold text-amber-700 mb-4 text-sm">☕ เพิ่มสิทธิ์เครื่องดื่ม</h3>
+          <label class="block text-xs text-slate-500 mb-1">จำนวนสิทธิ์ที่ต้องการเพิ่ม</label>
+          <input type="number" id="addDrinkAmount" placeholder="จำนวนแก้ว" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-amber-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+          <button onclick="adminAddPrivilege('Drink')" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยืนยันการเพิ่มสิทธิ์</button>
         </div>
       </div>
     </div>
@@ -254,6 +270,14 @@
     </div>
     
     <div class="p-4 w-full">
+      <div class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 mb-5">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-medium text-slate-700 text-sm">📅 เช็คคิวประจำวัน</h3>
+          <input type="date" id="adminViewDate" onchange="loadAdminDailyBookings()" class="border border-slate-300 rounded p-1 text-xs w-32 outline-none">
+        </div>
+        <div id="adminDailyBookings" class="space-y-2 mt-2"></div>
+      </div>
+
       <div class="flex items-center justify-between mb-4">
         <h3 class="font-bold text-slate-800">รายการล่าสุด</h3>
         <select id="adminBookingFilter" onchange="loadAdminAllBookings()" class="border border-slate-300 rounded-lg p-1.5 text-xs outline-none bg-white font-medium">
@@ -278,8 +302,8 @@
   </div>
 
   <script>
-    const MY_LIFF_ID = "2009708459-aHFsBA00"; // นำ LIFF ID ของคุณมาใส่ที่นี่
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzfR8DgtKLzp964ugmaZT7d3ImFtmNVePuxas_eA2DFeBRb5jYJ35ptCtMIM9NqPS7R/exec"; // นำ URL ของคุณมาใส่ที่นี่
+    const MY_LIFF_ID = "2009708459-aHFsBA00"; 
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzAvfeicBdx189BzB4qBxvzk2JfJD8mDR95IIFJ8qzDiIT25fT_HqC6vt6FoeToB8_k/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -296,8 +320,6 @@
       for(let i=0; i<timeSlots.length-1; i++) { 
         inHtml += `<option value="${timeSlots[i]}">${timeSlots[i]}</option>`;
       }
-      
-      // อัปเดต Dropdown ป้องกัน Error หาก Element หายไป
       const setHTML = (id, html) => { let el = document.getElementById(id); if(el) el.innerHTML = html; }
       setHTML('bookTimeIn', inHtml);
       setHTML('useIn', inHtml);
@@ -319,21 +341,16 @@
       if(outEl) outEl.innerHTML = outHtml;
     }
 
-    // ผูก Event Listeners แบบปลอดภัย
     document.getElementById('bookTimeIn')?.addEventListener('change', () => updateOutDropdown('bookTimeIn', 'bookTimeOut'));
     document.getElementById('useIn')?.addEventListener('change', () => updateOutDropdown('useIn', 'useOut'));
     document.getElementById('walkinTimeIn')?.addEventListener('change', () => updateOutDropdown('walkinTimeIn', 'walkinTimeOut'));
 
-    // ฟังก์ชันเริ่มการทำงานหลัก พร้อมระบบ Try-Catch ดักจับ Error
     async function main() {
       try {
         initDropdowns(); 
         await liff.init({ liffId: MY_LIFF_ID });
         
-        if (!liff.isLoggedIn()) { 
-           liff.login(); 
-           return; 
-        }
+        if (!liff.isLoggedIn()) { liff.login(); return; }
         
         const profile = await liff.getProfile();
         currentUserUid = profile.userId;
@@ -356,9 +373,7 @@
 
         switchView('viewCustomer');
         loadDashboard();
-        
       } catch (err) {
-        // หากเกิดข้อผิดพลาด จะแสดงตรงนี้แทนที่จะเป็นหน้าขาวค้าง
         Swal.fire('การเชื่อมต่อล้มเหลว', 'เกิดข้อผิดพลาดในการโหลดระบบ LIFF: ' + err.toString(), 'error');
         document.getElementById('errorLog').innerText = `Error: ${err.message || err.toString()}`;
       }
@@ -388,7 +403,6 @@
     async function loadDashboard() {
       try {
         const res = await fetch(`${GAS_WEB_APP_URL}?action=getUserDashboard&uid=${currentUserUid}`);
-        
         if (!res.ok) throw new Error("ไม่สามารถโหลดข้อมูลจากเซิร์ฟเวอร์ได้");
         const data = await res.json();
         
@@ -400,7 +414,6 @@
           document.getElementById('customerBottomNav').classList.add('hide-me');
           document.getElementById('adminBottomNav').classList.remove('hide-me');
           switchView('viewAdminSearch');
-          // ให้โหลดคิวแอดมินอัตโนมัติ
           loadAdminDailyBookings();
         } else {
           document.getElementById('adminBottomNav').classList.add('hide-me');
@@ -442,6 +455,7 @@
         document.getElementById('progressSection').classList.remove('hide-me');
         document.getElementById('dashTotal').innerText = total;
         document.getElementById('dashUsed').innerText = used;
+        document.getElementById('dashRemainProgress').innerText = remain;
         document.getElementById('dashProgressBar').style.width = `${remainPercent}%`;
       } else {
         document.getElementById('progressSection').classList.add('hide-me');
@@ -720,6 +734,46 @@
       }
     }
 
+    // ==========================================
+    // ฝั่ง Admin 
+    // ==========================================
+    function toggleAction(type) {
+      document.getElementById('formUsage').classList.add('hidden');
+      document.getElementById('formTopup').classList.add('hidden');
+      document.getElementById('formAddCarWash').classList.add('hidden');
+      document.getElementById('formAddDrink').classList.add('hidden');
+      
+      if(type === 'usage') document.getElementById('formUsage').classList.remove('hidden');
+      if(type === 'topup') document.getElementById('formTopup').classList.remove('hidden');
+      if(type === 'addCarWash') document.getElementById('formAddCarWash').classList.remove('hidden');
+      if(type === 'addDrink') document.getElementById('formAddDrink').classList.remove('hidden');
+    }
+
+    async function loadAdminDailyBookings() {
+      const dateStr = document.getElementById('adminViewDate').value;
+      if(!dateStr) return;
+      document.getElementById('adminDailyBookings').innerHTML = '<p class="text-xs text-slate-400 text-center py-2">กำลังดึงข้อมูล...</p>';
+      const res = await fetch(`${GAS_WEB_APP_URL}?action=getAdminBookings&date=${dateStr}`);
+      const bookings = await res.json();
+      let html = "";
+      if(bookings.length === 0) {
+        html = '<p class="text-xs text-slate-400 text-center py-2">ไม่มีคิวจองในวันนี้</p>';
+      } else {
+        bookings.forEach(b => {
+          let badgeColor = b.status === "กำลังตรวจสอบ" ? "bg-yellow-100 text-yellow-700" : (b.status === "Walk-in" ? "bg-purple-100 text-purple-700" : "bg-green-100 text-green-700");
+          html += `
+          <div class="flex justify-between items-center p-3 border border-slate-100 rounded-lg bg-slate-50">
+            <div>
+              <p class="font-bold text-slate-800 text-sm">⏰ ${b.timeIn} - ${b.timeOut}</p>
+              <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
+          </div>`;
+        });
+      }
+      document.getElementById('adminDailyBookings').innerHTML = html;
+    }
+
     async function loadAdminAllBookings() {
       const filter = document.getElementById('adminBookingFilter').value;
       document.getElementById('adminAllBookingsList').innerHTML = '<p class="text-xs text-slate-400 text-center py-10">กำลังโหลดข้อมูล...</p>';
@@ -803,31 +857,6 @@
       });
     }
 
-    async function loadAdminDailyBookings() {
-      const dateStr = document.getElementById('adminViewDate').value;
-      if(!dateStr) return;
-      document.getElementById('adminDailyBookings').innerHTML = '<p class="text-xs text-slate-400 text-center py-2">กำลังดึงข้อมูล...</p>';
-      const res = await fetch(`${GAS_WEB_APP_URL}?action=getAdminBookings&date=${dateStr}`);
-      const bookings = await res.json();
-      let html = "";
-      if(bookings.length === 0) {
-        html = '<p class="text-xs text-slate-400 text-center py-2">ไม่มีคิวจองในวันนี้</p>';
-      } else {
-        bookings.forEach(b => {
-          let badgeColor = b.status === "กำลังตรวจสอบ" ? "bg-yellow-100 text-yellow-700" : (b.status === "Walk-in" ? "bg-purple-100 text-purple-700" : "bg-green-100 text-green-700");
-          html += `
-          <div class="flex justify-between items-center p-3 border border-slate-100 rounded-lg bg-slate-50">
-            <div>
-              <p class="font-bold text-slate-800 text-sm">⏰ ${b.timeIn} - ${b.timeOut}</p>
-              <p class="text-xs text-slate-600 mt-0.5">👤 ${b.name} (${b.pax} ท่าน)</p>
-            </div>
-            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${badgeColor}">${b.status}</span>
-          </div>`;
-        });
-      }
-      document.getElementById('adminDailyBookings').innerHTML = html;
-    }
-
     async function adminSearch() {
       const key = document.getElementById('searchKey').value.trim();
       if(!key) return;
@@ -860,14 +889,8 @@
 
         document.getElementById('useDate').valueAsDate = new Date();
         document.getElementById('adminActionSection').classList.remove('hidden');
+        toggleAction(''); // ซ่อนฟอร์มทั้งหมดรอแอดมินเลือก
       } else { Swal.fire('แจ้งเตือน', result.message, 'warning'); }
-    }
-
-    function toggleAction(type) {
-      document.getElementById('formUsage').classList.add('hidden');
-      document.getElementById('formTopup').classList.add('hidden');
-      if(type === 'usage') document.getElementById('formUsage').classList.remove('hidden');
-      if(type === 'topup') document.getElementById('formTopup').classList.remove('hidden');
     }
 
     async function adminRecordTime() {
@@ -907,6 +930,29 @@
       }); 
       else Swal.fire('ข้อผิดพลาด', result.message, 'error');
       btn.disabled = false; btn.innerText = "บันทึกข้อมูล";
+    }
+
+    // ฟังก์ชันใหม่ให้แอดมินเติมสิทธิ์เครื่องดื่ม/ล้างรถ
+    async function adminAddPrivilege(type) {
+      let amountStr = type === 'CarWash' ? document.getElementById('addCarWashAmount').value : document.getElementById('addDrinkAmount').value;
+      if(!amountStr) return Swal.fire('แจ้งเตือน', 'กรุณาระบุจำนวนสิทธิ์ที่ต้องการเพิ่ม', 'warning');
+      
+      const payload = { adminUid: currentUserUid, customerUid: selectedCustomerUid, type: type, amount: parseInt(amountStr) };
+      const btn = event.target; btn.disabled = true; btn.innerText = "กำลังประมวลผล...";
+      
+      const res = await fetch(`${GAS_WEB_APP_URL}?action=addPrivilege&data=${encodeURIComponent(JSON.stringify(payload))}`);
+      const result = await res.json();
+      
+      if(result.success) {
+        Swal.fire('สำเร็จ', result.message, 'success').then(()=> {
+          if(type === 'CarWash') document.getElementById('addCarWashAmount').value = "";
+          else document.getElementById('addDrinkAmount').value = "";
+          adminSearch(); 
+        });
+      } else {
+        Swal.fire('ข้อผิดพลาด', result.message, 'error');
+      }
+      btn.disabled = false; btn.innerText = "ยืนยันการเพิ่มสิทธิ์";
     }
 
     window.onload = main;
