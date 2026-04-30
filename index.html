@@ -65,17 +65,7 @@
           <p id="dashRemain" class="text-5xl font-bold text-green-400">...</p>
           <span class="text-slate-400 text-sm font-medium">ชั่วโมง</span>
         </div>
-        <p id="dashExpDate" class="text-xs text-slate-400 mb-4 font-medium">วันหมดอายุ: ...</p>
-        
-        <div id="progressSection" class="w-full text-left hide-me">
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-slate-400">ใช้งานไป <span id="dashUsed" class="font-bold text-white">0</span> ชม.</span>
-            <span class="text-slate-400">รวม <span id="dashTotal" class="font-bold text-white">0</span> ชม.</span>
-          </div>
-          <div class="w-full bg-slate-700/50 rounded-full h-2">
-            <div id="dashProgressBar" class="bg-green-400 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
-          </div>
-        </div>
+        <p id="dashExpDate" class="text-xs text-slate-400 font-medium">วันหมดอายุ: ...</p>
       </div>
 
       <div class="grid grid-cols-2 gap-3 mb-6" id="actionButtonsContainer">
@@ -100,7 +90,7 @@
   <!-- ==================== หน้า Booking Form ==================== -->
   <div id="viewBookingForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md p-5 pb-20">
     <button onclick="navTo('viewCustomer')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg กลับ
     </button>
     <div class="bg-white p-6 rounded-2xl card-shadow border border-slate-100 w-full">
       <h2 class="text-xl font-bold text-slate-800 mb-2 text-center">จองห้อง</h2>
@@ -215,13 +205,13 @@
           <p id="resNickname" class="text-xs text-slate-500 mb-3"></p>
           <div class="flex justify-between items-center pt-3 border-t border-blue-200">
             <span class="text-slate-600">แพ็กเกจ: <span id="resPkg" class="font-semibold text-slate-800"></span></span>
-            <span class="text-slate-600">เครดิต: <span id="resRemain" class="font-bold text-green-600 text-lg"></span> ชม.</span>
+            <span class="text-slate-600">ชั่วโมงคงเหลือ: <span id="resRemain" class="font-bold text-green-600 text-lg"></span> ชม.</span>
           </div>
           <p id="adminVipStatus" class="mt-3 text-xs font-bold text-slate-700 bg-white/50 p-2 rounded"></p>
         </div>
         <div class="grid grid-cols-2 gap-3 mb-4">
           <button onclick="toggleAction('usage')" class="bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-sm transition hover:bg-slate-50 shadow-sm w-full">ตัดเวลาใช้บริการ</button>
-          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm w-full">เพิ่มแพ็กเกจ/เครดิต</button>
+          <button onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm w-full">เพิ่มแพ็กเกจ/ชั่วโมง</button>
           <button onclick="toggleAction('addCarWash')" class="bg-blue-50 border border-blue-200 text-blue-700 py-3 rounded-xl font-medium text-sm transition hover:bg-blue-100 shadow-sm w-full">🚗 เพิ่มสิทธิ์ล้างรถ</button>
           <button onclick="toggleAction('addDrink')" class="bg-amber-50 border border-amber-200 text-amber-700 py-3 rounded-xl font-medium text-sm transition hover:bg-amber-100 shadow-sm w-full">☕ เพิ่มสิทธิ์เครื่องดื่ม</button>
         </div>
@@ -246,7 +236,7 @@
         </div>
 
         <div id="formTopup" class="bg-white p-5 rounded-2xl card-shadow border border-slate-100 hidden w-full">
-          <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มแพ็กเกจ (เวลา)</h3>
+          <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มแพ็กเกจ (ชั่วโมง)</h3>
           <label class="block text-xs text-slate-500 mb-1">ชื่อแพ็กเกจ</label>
           <input type="text" id="topPkgName" placeholder="เช่น ELITE MEMBER" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
           <label class="block text-xs text-slate-500 mb-1">จำนวนชั่วโมง</label>
@@ -304,7 +294,7 @@
 
   <script>
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxz37v1y4Mn7b3RLuKDc5xq-vgWSCpDyTI-JCjYbDXPvV-aq1JJLYdM3c8gQvxJ2OJl/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwE8OuClhJkY-6WHSCyWYYZH5f3DtOKFlTzzjsteP9_18ls1CxY4iPg3wEm2xe81R5i/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -491,20 +481,8 @@
       let used = data.package ? parseFloat(data.package.used) : 0;
       let remain = data.package ? parseFloat(data.package.remain) : 0;
       
-      let remainPercent = total > 0 ? (remain / total) * 100 : 0;
-      if(remainPercent > 100) remainPercent = 100;
-      
       document.getElementById('dashRemain').innerText = remain;
       document.getElementById('dashExpDate').innerText = (data.package && data.package.expiry !== "-") ? `วันหมดอายุ: ${data.package.expiry}` : "วันหมดอายุ: -";
-
-      if(data.package) {
-        document.getElementById('progressSection').classList.remove('hide-me');
-        document.getElementById('dashTotal').innerText = total;
-        document.getElementById('dashUsed').innerText = used;
-        document.getElementById('dashProgressBar').style.width = `${remainPercent}%`;
-      } else {
-        document.getElementById('progressSection').classList.add('hide-me');
-      }
 
       let upHtml = "";
       if(data.bookings && data.bookings.length > 0) {
@@ -774,7 +752,7 @@
       const result = await res.json();
       Swal.close();
       if(result.success) {
-        Swal.fire('สำเร็จ', 'ทางคลับได้รับข้อมูลแล้ว จะรีบติดต่อกลับโดยเร็วที่สุดครับ', 'success').then(() => {
+        Swal.fire('สำเร็จ', 'ทางระบบได้รับข้อมูลแล้ว จะรีบติดต่อกลับโดยเร็วที่สุดครับ', 'success').then(() => {
           document.getElementById('applyDate').value = ''; document.getElementById('applyPax').value = '';
           navTo('viewMemberDash');
         });
