@@ -69,11 +69,10 @@
       </div>
 
       <div class="grid grid-cols-2 gap-3 mb-6" id="actionButtonsContainer">
-        <!-- เพิ่ม type="button" เพื่อป้องกันปุ่มเด้งรีเฟรชหน้า -->
-        <button type="button" id="bookBtn" onclick="navTo('viewBookingForm')" class="col-span-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
+        <button type="button" id="bookBtn" onclick="navTo('viewBookingForm')" class="col-span-1 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
           <span class="text-sm font-bold">จองห้อง</span>
         </button>
-        <button type="button" id="walkinBtn" onclick="navTo('viewWalkinForm')" class="col-span-1 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
+        <button type="button" id="walkinBtn" onclick="navTo('viewWalkinForm')" class="col-span-1 w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
           <span class="text-sm font-bold">Walk-in หน้าร้าน</span>
         </button>
       </div>
@@ -295,7 +294,7 @@
 
   <script>
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxTNDIJwYjY7NMUiceySxDQFW6KjAEs2n1gR7xI0YUAzzzX-OOspdIZKIZQmW3EJTVq/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyyxXYe_cMGfjanZNix_8-7fl7AqMryLPi_oWN5pt_OKYKezPKHUn4_yx_XkuZndUXt/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -352,8 +351,9 @@
         nameTxt.className = "text-base font-bold text-slate-800 leading-tight";
         creditBox.className = "bg-slate-800 p-6 rounded-2xl shadow-lg mb-5 text-white text-center relative overflow-hidden";
         timeBadge.className = "bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-full border border-slate-200";
-        if(walkinBtn) walkinBtn.classList.remove('hide-me');
-        if(bookBtn) bookBtn.className = "col-span-1 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1";
+        
+        if(walkinBtn) walkinBtn.classList.add('hide-me'); // ลูกค้าทั่วไปก็ซ่อน Walk-in
+        if(bookBtn) bookBtn.className = "col-span-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1"; // ขยายปุ่มจองให้เต็ม 2 คอลัมน์
       }
     }
 
