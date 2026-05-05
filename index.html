@@ -68,12 +68,9 @@
         <p id="dashExpDate" class="text-xs text-slate-400 font-medium">วันหมดอายุ: ...</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-3 mb-6" id="actionButtonsContainer">
-        <button type="button" id="bookBtn" onclick="navTo('viewBookingForm')" class="col-span-1 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
+      <div class="mb-6" id="actionButtonsContainer">
+        <button type="button" id="bookBtn" onclick="navTo('viewBookingForm')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
           <span class="text-sm font-bold">จองห้อง</span>
-        </button>
-        <button type="button" id="walkinBtn" onclick="navTo('viewWalkinForm')" class="col-span-1 w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1">
-          <span class="text-sm font-bold">Walk-in หน้าร้าน</span>
         </button>
       </div>
 
@@ -118,7 +115,7 @@
     </div>
   </div>
 
-  <!-- ==================== หน้า Walk-in Form ==================== -->
+  <!-- ==================== หน้า Walk-in Form (เก็บไว้เผื่ออนาคตแต่ออกจาก UI ลูกค้าแล้ว) ==================== -->
   <div id="viewWalkinForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-slate-50 shadow-md p-5 pb-20">
     <button type="button" onclick="navTo('viewCustomer')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
@@ -294,7 +291,7 @@
 
   <script>
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyyxXYe_cMGfjanZNix_8-7fl7AqMryLPi_oWN5pt_OKYKezPKHUn4_yx_XkuZndUXt/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyYKKmFxXj3MYhrTYBkd6dqFNar0LfeS0rvoHeg3av4dLvgh0LTYLGx_PqEF3mFMsE/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -335,7 +332,6 @@
       const header = document.getElementById('homeHeader');
       const nameTxt = document.getElementById('dashName');
       const creditBox = document.getElementById('creditBox');
-      const walkinBtn = document.getElementById('walkinBtn');
       const bookBtn = document.getElementById('bookBtn');
       const timeBadge = document.getElementById('homeTimeBadge');
 
@@ -344,16 +340,13 @@
         nameTxt.className = "text-base font-bold text-[#d4af37] leading-tight";
         creditBox.className = "bg-gradient-to-br from-slate-800 to-slate-900 border border-[#d4af37]/50 p-6 rounded-2xl shadow-xl mb-5 text-white text-center relative overflow-hidden";
         timeBadge.className = "bg-[#d4af37]/10 text-[#d4af37] text-xs font-medium px-3 py-1.5 rounded-full border border-[#d4af37]/30";
-        if(walkinBtn) walkinBtn.classList.add('hide-me');
-        if(bookBtn) bookBtn.className = "col-span-2 w-full bg-gradient-to-r from-[#d4af37] to-[#b48e24] hover:from-[#c29c29] hover:to-[#a17c1b] text-black font-bold py-4 rounded-xl shadow-md transition flex flex-col items-center justify-center gap-1";
+        if(bookBtn) bookBtn.className = "w-full bg-gradient-to-r from-[#d4af37] to-[#b48e24] hover:from-[#c29c29] hover:to-[#a17c1b] text-black font-bold py-4 rounded-xl shadow-md transition flex flex-col items-center justify-center gap-1";
       } else {
         header.className = "bg-white p-5 border-b border-slate-200 flex items-center justify-between";
         nameTxt.className = "text-base font-bold text-slate-800 leading-tight";
         creditBox.className = "bg-slate-800 p-6 rounded-2xl shadow-lg mb-5 text-white text-center relative overflow-hidden";
         timeBadge.className = "bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-full border border-slate-200";
-        
-        if(walkinBtn) walkinBtn.classList.add('hide-me'); // ลูกค้าทั่วไปก็ซ่อน Walk-in
-        if(bookBtn) bookBtn.className = "col-span-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1"; // ขยายปุ่มจองให้เต็ม 2 คอลัมน์
+        if(bookBtn) bookBtn.className = "w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1";
       }
     }
 
