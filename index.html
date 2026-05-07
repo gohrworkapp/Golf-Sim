@@ -23,10 +23,18 @@
     .admin-nav-active::after { background-color: #1e293b !important; }
     
     /* ธีม Elite Navigation */
-    .elite-nav-bg { background-color: #050d09 !important; border-top: 1px solid #d3b06320; }
+    .elite-nav-bg { background-color: #0d1610 !important; border-top: 1px solid #d3b06320; }
     .elite-nav-item { color: #64748b; }
     .elite-nav-active { color: #d3b063 !important; font-weight: 600; }
     .elite-nav-active::after { background-color: #d3b063 !important; }
+
+    /* คลาสสำหรับการไล่สีตัวหนังสือทอง (Gradient Text) */
+    .text-gold-gradient {
+        background: linear-gradient(135deg, #f5d78a 0%, #c19b45 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 
     input[type="date"], select, input[type="text"], input[type="tel"], input[type="number"] { width: 100%; min-width: 0; -webkit-appearance: none; appearance: none; }
   </style>
@@ -150,10 +158,9 @@
     </button>
     <div class="bg-white p-6 rounded-[24px] shadow-sm border border-slate-100 w-full">
       <h2 class="text-xl font-bold text-slate-800 mb-6 text-center">📩 สมัคร Elite Member</h2>
-      <label class="block text-sm font-medium text-slate-700 mb-1">วันที่สะดวกเริ่มใช้งาน</label>
-      <input type="date" id="applyDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all">
-      <label class="block text-sm font-medium text-slate-700 mb-1">ปกติมาใช้บริการกี่ท่าน</label>
-      <input type="number" id="applyPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all">
+      <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ต้องการเริ่มใช้งาน</label>
+      <input type="date" id="applyDate" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all">
+      
       <button type="button" onclick="submitApplyMemberForm()" class="w-full bg-[#69a06e] hover:bg-[#568a5b] text-white font-bold py-4 rounded-[16px] shadow-[0_4px_15px_rgb(105,160,110,0.3)] transition">ส่งคำขอสมัครสมาชิก</button>
     </div>
   </div>
@@ -173,7 +180,7 @@
          <option value="1">1 ชั่วโมง</option><option value="1.5">1.5 ชั่วโมง</option><option value="2">2 ชั่วโมง</option>
          <option value="2.5">2.5 ชั่วโมง</option><option value="3">3 ชั่วโมง</option><option value="4">4 ชั่วโมง</option><option value="5">5 ชั่วโมง</option>
       </select>
-      <button type="button" onclick="submitReporterForm()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-[16px] shadow-sm transition text-lg">ลูกค้าเข้าใช้บริการ</button>
+      <button type="button" onclick="submitReporterForm()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-xl shadow-sm transition text-lg">ลูกค้าเข้าใช้บริการ</button>
     </div>
   </div>
 
@@ -340,7 +347,7 @@
       const historyIcon = document.getElementById('historyIcon');
 
       if(isElite) {
-        body.style.backgroundColor = "#091811"; 
+        body.style.backgroundColor = "#1b251d"; 
         body.style.color = "#f8fafc";
         navContainer.classList.add('elite-nav-bg'); 
         
@@ -354,14 +361,14 @@
 
         header.className = "p-5 flex items-center justify-between pt-8 pb-4"; 
         nameTxt.className = "text-lg font-bold text-[#d3b063] leading-tight";
-        creditBox.className = "bg-[#112418] p-6 rounded-[24px] shadow-[0_10px_40px_rgb(0,0,0,0.5)] mb-6 border border-[#d3b063]/20 text-white relative overflow-hidden";
-        timeBadge.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#d3b063]/40 text-[#d3b063] bg-[#112418]/50 text-xs font-medium backdrop-blur-sm shadow-sm";
+        creditBox.className = "bg-[#0d1610] p-6 rounded-[24px] shadow-[0_10px_40px_rgb(0,0,0,0.5)] mb-6 border border-[#d3b063]/20 text-white relative overflow-hidden";
+        timeBadge.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#d3b063]/40 text-[#d3b063] bg-[#0d1610]/50 text-xs font-medium backdrop-blur-sm shadow-sm";
         if(divider) divider.className = "border-[#d3b063]/10 my-4 w-4/5 mx-auto relative z-10";
         if(upcomingTitle) upcomingTitle.className = "font-semibold text-[#d3b063] mb-3 text-[13px] px-1 tracking-wide";
         if(historyTitle) historyTitle.className = "font-semibold text-[#d3b063] text-[13px] tracking-wide";
         if(historyIcon) historyIcon.className = "w-4 h-4 text-[#d3b063]";
 
-        if(bookBtn) bookBtn.className = "w-full bg-gradient-to-r from-[#e3c983] to-[#c19b45] hover:from-[#d1b672] hover:to-[#a8863b] text-[#091811] font-bold py-4 rounded-[16px] shadow-[0_4px_20px_rgba(211,176,99,0.2)] transition flex flex-col items-center justify-center gap-1";
+        if(bookBtn) bookBtn.className = "w-full bg-gradient-to-r from-[#e3c983] to-[#c19b45] hover:from-[#d1b672] hover:to-[#a8863b] text-[#0d1610] font-bold py-4 rounded-[16px] shadow-[0_4px_20px_rgba(211,176,99,0.2)] transition flex flex-col items-center justify-center gap-1";
         
       } else {
         body.style.backgroundColor = "#f4f3ed"; 
@@ -530,19 +537,19 @@
          document.getElementById('dashExpDate').innerHTML = `
             <svg class="w-4 h-4 text-[#8c6f4a]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
             วันหมดอายุ: <span class="text-slate-700 font-bold ml-1">${expText}</span>`;
-         document.getElementById('dashRemain').className = "text-[4rem] font-bold text-[#8c6f4a] leading-none";
+         document.getElementById('dashRemain').className = "text-[4.5rem] font-bold text-[#8c6f4a] leading-none";
          document.getElementById('dashRemainLabel').className = "text-[13px] font-bold text-slate-600 mb-1 tracking-wide";
          document.getElementById('dashRemainUnit').className = "text-slate-500 text-[13px] font-medium";
       } else {
          document.getElementById('dashExpDate').innerHTML = `
             <svg class="w-4 h-4 text-[#d3b063]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
             วันหมดอายุ: <span class="text-[#d3b063] font-bold ml-1">${expText}</span>`;
-         document.getElementById('dashRemain').className = "text-[4rem] font-bold text-[#d3b063] leading-none";
+         document.getElementById('dashRemain').className = "text-[4.5rem] font-bold text-gold-gradient leading-none";
          document.getElementById('dashRemainLabel').className = "text-[13px] font-bold text-slate-300 mb-1 tracking-wide";
          document.getElementById('dashRemainUnit').className = "text-[#d3b063]/80 text-[13px] font-light";
       }
 
-      let cardBgClass = isElite ? "bg-[#112418] border-[#d3b063]/20" : "bg-white border-slate-100 shadow-sm";
+      let cardBgClass = isElite ? "bg-[#0d1610] border-[#d3b063]/20" : "bg-white border-slate-100 shadow-sm";
       let textMainClass = isElite ? "text-[#d3b063]" : "text-slate-800";
       let textSubClass = isElite ? "text-slate-400" : "text-slate-600";
       let textTitleClass = isElite ? "text-slate-200" : "text-slate-800";
@@ -639,7 +646,7 @@
           const data = await res.json();
           Swal.close();
           if(data.success) Swal.fire('ใช้สิทธิเรียบร้อย', data.message, 'success').then(() => loadDashboard());
-          else Swal.fire('ใช้สิทธิ์ไม่สำเร็จ', data.message, 'error');
+          else Swal.fire({title: 'ใช้สิทธิ์ไม่สำเร็จ', html: "วันนี้คุณได้ใช้สิทธิ์แล้ว<br>กรุณาใช้อีกครั้งในวันถัดไปครับ", icon: 'error'});
         }
       });
     }
@@ -654,8 +661,8 @@
       let html = "";
       if(isMember) {
         html = `
-        <div class="bg-[#091811] text-white rounded-[24px] p-8 mb-4 shadow-[0_10px_40px_rgb(0,0,0,0.5)] border border-[#d3b063]/10">
-          <p class="text-center text-[15px] font-bold text-[#d3b063] mb-1.5 tracking-[0.2em] uppercase">MEMBER PRIVILEGES</p>
+        <div class="bg-[#0d1610] text-white rounded-[24px] p-8 mb-4 shadow-[0_10px_40px_rgb(0,0,0,0.5)] border border-[#d3b063]/10">
+          <p class="text-center text-[15px] font-bold text-gold-gradient mb-1.5 tracking-[0.2em] uppercase">MEMBER PRIVILEGES</p>
           <div class="text-center mb-6">
             <p class="text-[10px] text-[#d3b063]/70 uppercase tracking-[0.15em] font-light">PRIORITY ACCESS PRIVILEGES</p>
             <div class="flex justify-center my-3 text-[#d3b063] opacity-80">
@@ -977,6 +984,7 @@
       const res = await fetch(`${GAS_WEB_APP_URL}?action=searchCustomer&keyword=${key}`);
       const result = await res.json();
       Swal.close();
+      
       if(result.success) {
         const cust = result.data;
         selectedCustomerUid = cust.uid;
@@ -986,22 +994,49 @@
         if (cust.nickname) {
           document.getElementById('resNickname').innerText = `📝 หมายเหตุ: ${cust.nickname}`;
           document.getElementById('resNickname').classList.remove('hidden');
-        } else { document.getElementById('resNickname').classList.add('hidden'); }
+        } else { 
+          document.getElementById('resNickname').classList.add('hidden'); 
+        }
 
         document.getElementById('resPkg').innerText = cust.package ? cust.package.name : "-";
         document.getElementById('resRemain').innerText = cust.package ? cust.package.remain : "0";
+        
+        // การคำนวณวันหมดอายุสำหรับการแจ้งเตือนสี (แดง/เหลือง)
+        let expTextHtml = "";
+        if (cust.package && cust.package.expiryRaw) {
+           let expDate = new Date(cust.package.expiryRaw);
+           expDate.setHours(0,0,0,0);
+           let today = new Date();
+           today.setHours(0,0,0,0);
+           
+           let diffDays = Math.ceil((expDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+           let expDateStr = cust.package.expiry;
+           
+           if (diffDays <= 0) {
+              expTextHtml = `<br><span class="text-xs text-red-500 font-bold">⚠️ หมดอายุแล้ว</span>`;
+           } else if (diffDays <= 15) {
+              expTextHtml = `<br><span class="text-xs text-red-500 font-bold">⚠️ หมดอายุ: ${expDateStr} (เหลือ ${diffDays} วัน)</span>`;
+           } else if (diffDays <= 30) {
+              expTextHtml = `<br><span class="text-xs text-yellow-600 font-bold">⚠️ หมดอายุ: ${expDateStr} (เหลือ ${diffDays} วัน)</span>`;
+           } else {
+              expTextHtml = `<br><span class="text-xs text-slate-500">หมดอายุ: ${expDateStr}</span>`;
+           }
+        }
         
         let isVIP = cust.memberType === "Yes";
         let statusText = isVIP 
           ? "👑 ลูกค้ารายนี้เป็น ELITE MEMBER (หักเวลา 1:1 ทุกช่วงเวลา)"
           : "👤 ลูกค้าทั่วไป (Peak time 17:00-22:00 น. ระวังหัก 1:1.5 เท่า)";
-        document.getElementById('adminVipStatus').innerText = statusText;
+          
+        document.getElementById('adminVipStatus').innerHTML = statusText + expTextHtml;
         document.getElementById('adminVipStatus').className = isVIP ? "mt-3 text-xs font-bold text-[#b48e24] bg-[#fcfaf5] p-2 rounded-lg border border-[#eee6d3]" : "mt-3 text-xs font-bold text-slate-600 bg-slate-100 p-2 rounded-lg border border-slate-200";
 
         document.getElementById('useDate').valueAsDate = new Date();
         document.getElementById('adminActionSection').classList.remove('hidden');
         toggleAction(''); 
-      } else { Swal.fire('แจ้งเตือน', result.message, 'warning'); }
+      } else { 
+        Swal.fire('แจ้งเตือน', result.message, 'warning'); 
+      }
     }
 
     async function adminRecordTime() {
