@@ -12,29 +12,31 @@
   
   <style>
     * { box-sizing: border-box; }
-    body { font-family: 'Kanit', sans-serif; background-color: #f4f3ed; padding-bottom: 70px; overflow-x: hidden; color: #334155; transition: background-color 0.3s, color 0.3s; }
+    body { font-family: 'Kanit', sans-serif; background-color: #f6f6f6; padding-bottom: 70px; overflow-x: hidden; color: #334155; transition: background-color 0.3s, color 0.3s; }
     .hide-me { display: none !important; }
-    .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01); }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; display: flex; justify-content: space-around; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.03); transition: background-color 0.3s; }
-    .nav-item { flex: 1; text-align: center; color: #94a3b8; cursor: pointer; transition: all 0.3s; padding: 16px 0; font-size: 0.9rem; font-weight: 500; position: relative; }
-    .nav-item.active { color: #69a06e; font-weight: 600; }
-    .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 3px; background-color: #69a06e; border-radius: 3px 3px 0 0; }
-    .admin-nav-active { color: #1e293b !important; font-weight: 600; }
-    .admin-nav-active::after { background-color: #1e293b !important; }
     
-    /* ธีม Elite Navigation */
-    .elite-nav-bg { background-color: #0d1610 !important; border-top: 1px solid #d3b06320; }
+    /* นำทางด้านล่าง */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; display: flex; justify-content: space-around; z-index: 50; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); transition: background-color 0.3s; }
+    .nav-item { flex: 1; text-align: center; color: #94a3b8; cursor: pointer; transition: all 0.3s; padding: 16px 0; font-size: 0.9rem; font-weight: 500; position: relative; }
+    .nav-item.active { color: #5fa861; font-weight: 600; }
+    .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 3px; background-color: #5fa861; border-radius: 3px 3px 0 0; }
+    
+    /* ธีม Elite */
+    .elite-nav-bg { background-color: #0f1f14 !important; border-top: 1px solid #dfbd6930; }
     .elite-nav-item { color: #64748b; }
-    .elite-nav-active { color: #d3b063 !important; font-weight: 600; }
-    .elite-nav-active::after { background-color: #d3b063 !important; }
+    .elite-nav-active { color: #dfbd69 !important; font-weight: 600; }
+    .elite-nav-active::after { background-color: #dfbd69 !important; }
 
-    /* คลาสสำหรับการไล่สีตัวหนังสือทอง (Gradient Text) */
-    .text-gold-gradient {
-        background: linear-gradient(135deg, #f5d78a 0%, #c19b45 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
+    /* โทนสีและ Gradient */
+    .text-elite-gold { color: #dfbd69; }
+    .bg-elite-gold { background-color: #dfbd69; color: #0f1f14; }
+    .text-normal-brown { color: #826644; }
+    
+    .bg-elite-card { background-color: #16281b; }
+    .border-elite { border-color: rgba(223, 189, 105, 0.2); }
+    
+    .gold-gradient-bg { background: linear-gradient(90deg, #e4cb8f 0%, #c49d48 100%); color: #0f1f14; }
+    .gold-gradient-text { background: linear-gradient(90deg, #f1db9e 0%, #c49d48 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
     input[type="date"], select, input[type="text"], input[type="tel"], input[type="number"] { width: 100%; min-width: 0; -webkit-appearance: none; appearance: none; }
   </style>
@@ -42,7 +44,7 @@
 <body class="antialiased">
 
   <div id="viewLoading" class="page-section flex flex-col items-center justify-center min-h-screen bg-white hide-me">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-[#69a06e] mb-4"></div>
+    <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-[#5fa861] mb-4"></div>
     <p class="text-slate-500 font-medium text-sm">กำลังประมวลผล...</p>
     <div id="errorLog" class="text-red-500 text-xs mt-4 text-center px-4 w-full"></div>
   </div>
@@ -51,121 +53,117 @@
     <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">ลงทะเบียนผู้ใช้งาน</h2>
     <p class="text-center text-slate-500 text-sm mb-6">กรุณาระบุข้อมูลเพื่อเข้าสู่ระบบ</p>
     <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อ-นามสกุล</label>
-    <input type="text" id="regName" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all">
+    <input type="text" id="regName" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#5fa861] bg-slate-50 focus:bg-white outline-none transition-all">
     <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์โทรศัพท์</label>
-    <input type="tel" id="regPhone" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all">
+    <input type="tel" id="regPhone" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#5fa861] bg-slate-50 focus:bg-white outline-none transition-all">
     <div class="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 mb-6 border border-slate-200 leading-relaxed">
       * ข้อมูลของท่านจะถูกเก็บเป็นความลับตามกฎหมาย PDPA การกดปุ่มด้านล่างถือเป็นการยอมรับเงื่อนไข
     </div>
-    <button type="button" onclick="submitRegister()" class="w-full bg-[#69a06e] hover:bg-[#568a5b] text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยอมรับเงื่อนไขและลงทะเบียน</button>
+    <button type="button" onclick="submitRegister()" class="w-full bg-[#5fa861] hover:bg-[#4d8f4f] text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยอมรับเงื่อนไขและลงทะเบียน</button>
   </div>
 
   <div id="viewCustomer" class="page-section hide-me max-w-md mx-auto min-h-screen relative transition-colors duration-300">
     
-    <div id="homeHeader" class="p-5 flex items-center justify-between transition-colors duration-500 pt-8 pb-4">
+    <div class="p-5 flex items-center justify-between pt-8 pb-4">
       <div class="flex items-center gap-3">
-        <img id="cusProfilePic" src="" class="w-14 h-14 rounded-full object-cover border-2 border-transparent shadow-sm bg-slate-100 transition-colors duration-300">
+        <img id="cusProfilePic" src="" class="w-14 h-14 rounded-full object-cover shadow-sm bg-slate-100 border-2 border-transparent">
         <div>
-          <h2 id="dashName" class="text-lg font-bold text-slate-800 leading-tight">กำลังโหลดข้อมูล...</h2>
-          <p id="dashRegDate" class="text-xs text-slate-500 mt-0.5 font-light">Member Since: ...</p>
+          <h2 id="dashName" class="text-lg font-bold leading-tight">กำลังโหลดข้อมูล...</h2>
+          <p id="dashRegDate" class="text-xs font-light mt-0.5 opacity-70">Member Since: ...</p>
         </div>
       </div>
     </div>
     
     <div class="p-4 w-full overflow-hidden">
       <div class="text-center mb-6">
-        <span id="homeTimeBadge" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#8c6f4a]/30 text-[#8c6f4a] bg-transparent text-xs font-medium">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v4l-6 6 6 6v4H4v-4l6-6-6-6V4z" /></svg>
-          เวลาทำการ: 08:00 - 22:00 น.
+        <span id="homeTimeBadge" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border text-xs font-medium backdrop-blur-sm">
+          ⏳ เวลาทำการ: 08:00 - 22:00 น.
         </span>
       </div>
 
-      <div id="creditBox" class="bg-white p-6 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-6 relative overflow-hidden transition-colors duration-500 border border-slate-100">
-        <svg class="absolute -right-4 -bottom-4 w-40 h-40 text-[#8c6f4a] opacity-[0.03] transform -rotate-12" fill="currentColor" viewBox="0 0 24 24"><path d="M5 21V3h12l-3 4 3 4H7v10H5z"/></svg>
+      <div id="creditBox" class="p-6 rounded-[24px] shadow-sm mb-6 relative overflow-hidden border">
+        <svg class="absolute -right-2 -bottom-2 w-32 h-32 opacity-10 transform -rotate-12" id="watermarkFlag" fill="currentColor" viewBox="0 0 24 24"><path d="M5 21V3h12l-3 4 3 4H7v10H5z"/></svg>
         
         <div class="text-center mb-4 relative z-10">
-          <p id="dashRemainLabel" class="text-[13px] font-bold text-slate-600 mb-1 tracking-wide">เวลาใช้งานคงเหลือ</p>
+          <p id="dashRemainLabel" class="text-[13px] font-bold mb-1 tracking-wide">เวลาใช้งานคงเหลือ</p>
           <div class="flex items-baseline justify-center gap-2">
-            <p id="dashRemain" class="text-[4rem] font-bold text-[#8c6f4a] leading-none">0</p>
-            <span id="dashRemainUnit" class="text-slate-500 text-sm font-medium">ชั่วโมง</span>
+            <p id="dashRemain" class="text-[4rem] font-bold leading-none">0</p>
+            <span id="dashRemainUnit" class="text-sm font-medium opacity-70">ชั่วโมง</span>
           </div>
         </div>
-        <hr id="creditBoxDivider" class="border-slate-100 my-4 w-4/5 mx-auto relative z-10">
+        <div class="flex justify-center w-full relative z-10"><hr id="creditBoxDivider" class="my-4 w-3/4 opacity-20"></div>
         <div class="text-center relative z-10">
-          <p id="dashExpDate" class="text-xs text-slate-500 font-medium flex items-center justify-center gap-1.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            วันหมดอายุ: ...
+          <p id="dashExpDate" class="text-xs font-medium flex items-center justify-center gap-1.5">
+            🗓️ วันหมดอายุ: ...
           </p>
         </div>
       </div>
 
       <div class="mb-8" id="actionButtonsContainer">
-        <button type="button" id="bookBtn" onclick="navTo('viewBookingForm')" class="w-full bg-[#69a06e] hover:bg-[#568a5b] text-white font-bold py-4 rounded-[16px] shadow-[0_4px_15px_rgb(105,160,110,0.3)] transition flex flex-col items-center justify-center">
-          <span class="text-[15px] font-bold tracking-wide">จองห้อง</span>
+        <button type="button" id="bookBtn" onclick="navTo('viewBookingForm')" class="w-full font-bold py-4 rounded-xl shadow-md transition flex justify-center items-center">
+          <span class="text-[15px] tracking-wide">จองห้อง</span>
         </button>
       </div>
 
-      <h3 id="upcomingTitle" class="font-semibold text-slate-700 mb-3 text-[13px] px-1 tracking-wide">การจองของคุณ</h3>
+      <h3 id="upcomingTitle" class="font-semibold mb-3 text-[14px] px-1">การจองของคุณ</h3>
       <div id="dashUpcomingBookings" class="mb-8 space-y-3"></div>
 
-      <div class="flex items-center gap-2 mb-3 px-1" id="historyTitleWrapper">
-        <svg id="historyIcon" class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-        <h3 id="historyTitle" class="font-semibold text-slate-700 text-[13px] tracking-wide">ประวัติการใช้บริการ</h3>
+      <div class="flex items-center gap-2 mb-3 px-1">
+        <h3 id="historyTitle" class="font-semibold text-[14px]">📋 ประวัติการใช้บริการ</h3>
       </div>
-      <div id="dashHistory" class="mb-6">
-        <p class="text-center text-xs text-slate-400 py-6">กำลังดึงข้อมูล...</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="viewBookingForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f4f3ed] shadow-md p-5 pb-20 pt-8">
-    <button type="button" onclick="navTo('viewCustomer')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
-    </button>
-    <div class="bg-white p-6 rounded-[24px] shadow-sm border border-slate-100 w-full">
-      <h2 class="text-xl font-bold text-slate-800 mb-2 text-center">จองห้อง</h2>
-      <p class="text-center text-xs text-slate-500 mb-6">⏰ เวลาทำการ: 08:00 - 22:00 น.</p>
-      
-      <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ต้องการจอง</label>
-      <input type="date" id="bookDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all">
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="w-full overflow-hidden">
-          <label class="block text-sm font-medium text-slate-700 mb-1">เวลาเริ่ม</label>
-          <select id="bookTimeIn" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all w-full"></select>
-        </div>
-        <div class="w-full overflow-hidden">
-          <label class="block text-sm font-medium text-slate-700 mb-1">เวลาสิ้นสุด</label>
-          <select id="bookTimeOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all w-full"><option value="" disabled selected>เลือกเวลาเริ่มก่อน</option></select>
-        </div>
-      </div>
-      <label class="block text-sm font-medium text-slate-700 mb-1">ผู้ใช้บริการ (ท่าน)</label>
-      <input type="number" id="bookPax" placeholder="ระบุจำนวนคน" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all">
-      <div class="bg-red-50 border border-red-100 p-4 rounded-xl mb-6 text-center">
-        <p class="text-xs text-red-600 font-bold mb-1">📌 เงื่อนไขการยกเลิก</p>
-        <p class="text-xs text-red-600 leading-relaxed">เพื่อให้สิทธิ์แก่ลูกค้าท่านอื่น กรุณาแจ้งยกเลิกก่อนเวลาจองอย่างน้อย 1 ชม. ขอบคุณครับ</p>
-      </div>
-      <button type="button" onclick="submitBookingForm('Advance')" class="w-full bg-[#69a06e] hover:bg-[#568a5b] text-white font-bold py-4 rounded-[16px] shadow-[0_4px_15px_rgb(105,160,110,0.3)] transition">ยืนยันการจอง</button>
+      <div id="dashHistory" class="mb-6"></div>
     </div>
   </div>
 
   <div id="viewMemberDash" class="page-section hide-me max-w-md mx-auto min-h-screen relative transition-colors duration-300 pt-8 pb-20">
-    <div id="vipContent" class="p-5"><p class="text-center text-xs text-slate-400 py-10">กำลังตรวจสอบสถานะ...</p></div>
+    <div id="vipContent" class="p-4"></div>
   </div>
 
-  <div id="viewApplyMemberForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f4f3ed] shadow-md p-5 pb-20 pt-8">
-    <button type="button" onclick="navTo('viewMemberDash')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
+  <div id="viewBookingForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f6f6f6] shadow-md p-5 pb-20 pt-8">
+    <button type="button" onclick="navTo('viewCustomer')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
     </button>
-    <div class="bg-white p-6 rounded-[24px] shadow-sm border border-slate-100 w-full">
-      <h2 class="text-xl font-bold text-slate-800 mb-6 text-center">📩 สมัคร Elite Member</h2>
-      <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ต้องการเริ่มใช้งาน</label>
-      <input type="date" id="applyDate" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-[#69a06e] bg-slate-50 focus:bg-white outline-none transition-all">
+    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 w-full">
+      <h2 class="text-xl font-bold text-slate-800 mb-2 text-center">จองห้อง</h2>
+      <p class="text-center text-xs text-slate-500 mb-6">⏳ เวลาทำการ: 08:00 - 22:00 น.</p>
       
-      <button type="button" onclick="submitApplyMemberForm()" class="w-full bg-[#69a06e] hover:bg-[#568a5b] text-white font-bold py-4 rounded-[16px] shadow-[0_4px_15px_rgb(105,160,110,0.3)] transition">ส่งคำขอสมัครสมาชิก</button>
+      <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ต้องการจอง</label>
+      <input type="date" id="bookDate" class="border border-slate-200 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#5fa861] bg-slate-50 outline-none">
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">เวลาเริ่ม</label>
+          <select id="bookTimeIn" class="border border-slate-200 rounded-xl p-3 bg-slate-50 w-full outline-none"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">เวลาสิ้นสุด</label>
+          <select id="bookTimeOut" class="border border-slate-200 rounded-xl p-3 bg-slate-50 w-full outline-none">
+            <option value="" disabled selected>เลือกเวลาเริ่มก่อน</option>
+          </select>
+        </div>
+      </div>
+      <label class="block text-sm font-medium text-slate-700 mb-1">ผู้ใช้บริการ (ท่าน)</label>
+      <input type="number" id="bookPax" placeholder="ระบุจำนวนคน" class="border border-slate-200 rounded-xl p-3 mb-6 bg-slate-50 outline-none">
+      <div class="bg-red-50 border border-red-100 p-4 rounded-xl mb-6 text-center">
+        <p class="text-xs text-red-600 font-bold mb-1">📌 เงื่อนไขการยกเลิก</p>
+        <p class="text-xs text-red-600">กรุณาแจ้งยกเลิกก่อนเวลาจองอย่างน้อย 1 ชม.</p>
+      </div>
+      <button type="button" onclick="submitBookingForm('Advance')" class="w-full bg-[#5fa861] text-white font-bold py-4 rounded-xl shadow-sm hover:bg-[#4d8f4f] transition">ยืนยันการจอง</button>
     </div>
   </div>
 
-  <div id="viewReporter" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f4f3ed] shadow-md p-5 pb-20 pt-8">
+  <div id="viewApplyMemberForm" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f6f6f6] shadow-md p-5 pb-20 pt-8">
+    <button type="button" onclick="navTo('viewMemberDash')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
+    </button>
+    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 w-full">
+      <h2 class="text-xl font-bold text-slate-800 mb-6 text-center">📩 สมัคร Elite Member</h2>
+      <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ต้องการเริ่มใช้งาน</label>
+      <input type="date" id="applyDate" class="border border-slate-200 rounded-xl p-3 mb-6 bg-slate-50 w-full outline-none">
+      <button type="button" onclick="submitApplyMemberForm()" class="w-full bg-[#5fa861] text-white font-bold py-4 rounded-xl shadow-sm hover:bg-[#4d8f4f] transition">ส่งคำขอสมัครสมาชิก</button>
+    </div>
+  </div>
+
+  <div id="viewReporter" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f6f6f6] shadow-md p-5 pb-20 pt-8">
     <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm rounded-t-[24px]">
       <div class="bg-white/20 p-2 rounded-full text-2xl">📋</div>
       <div><h2 class="text-base font-bold">ระบบบันทึกคิวหน้าร้าน</h2><p class="text-xs text-slate-300">สำหรับพนักงาน (Reporter)</p></div>
@@ -173,9 +171,9 @@
     <div class="bg-white p-6 rounded-b-[24px] card-shadow border border-slate-100 w-full">
       <p class="text-xs text-slate-500 mb-4 text-center">กรอกเบอร์โทรศัพท์และจำนวนชั่วโมงเพื่อแจ้งเปิดบิลลูกค้า</p>
       <label class="block text-sm font-medium text-slate-700 mb-1">เบอร์โทรศัพท์ลูกค้า (ที่ลงทะเบียนไว้)</label>
-      <input type="tel" id="repPhone" placeholder="099xxxxxxx" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full text-lg font-bold tracking-wider text-center">
+      <input type="tel" id="repPhone" placeholder="099xxxxxxx" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#5fa861] bg-slate-50 outline-none w-full text-lg font-bold tracking-wider text-center">
       <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนชั่วโมงที่ใช้งาน</label>
-      <select id="repHours" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full text-center font-bold">
+      <select id="repHours" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-[#5fa861] bg-slate-50 outline-none w-full text-center font-bold">
          <option value="" disabled selected>เลือกจำนวนชั่วโมง...</option>
          <option value="1">1 ชั่วโมง</option><option value="1.5">1.5 ชั่วโมง</option><option value="2">2 ชั่วโมง</option>
          <option value="2.5">2.5 ชั่วโมง</option><option value="3">3 ชั่วโมง</option><option value="4">4 ชั่วโมง</option><option value="5">5 ชั่วโมง</option>
@@ -184,29 +182,30 @@
     </div>
   </div>
 
-  <div id="viewAdminSearch" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f4f3ed] shadow-md pb-20">
-    <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm pt-8">
+  <div id="viewAdminSearch" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f6f6f6] shadow-md pb-20">
+    <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm pt-10">
       <img id="adminProfilePic1" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500 bg-slate-700">
       <div><h2 class="text-base font-bold">Admin Tool สำหรับผู้ดูแล</h2><p id="adminDisplayName1" class="text-xs text-slate-300">...</p></div>
     </div>
     <div class="p-4 w-full mt-2">
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mb-4">
         <h3 class="font-medium text-slate-700 mb-2 text-sm">🔍 ค้นหาข้อมูลลูกค้า</h3>
-        <input type="text" id="searchKey" placeholder="ระบุชื่อ เบอร์โทร หรือ ชื่อเล่น" class="border border-slate-300 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+        <input type="text" id="searchKey" placeholder="ระบุชื่อ เบอร์โทร หรือ ชื่อเล่น" class="border border-slate-300 rounded-xl p-3 mb-3 focus:ring-2 focus:ring-[#5fa861] bg-slate-50 outline-none w-full">
         <button type="button" onclick="adminSearch()" class="w-full bg-slate-800 text-white font-medium py-3 rounded-xl text-sm transition hover:bg-slate-900">ค้นหา</button>
       </div>
 
       <div id="adminActionSection" class="hidden">
-        <div class="bg-[#fcfaf5] border border-[#eee6d3] p-5 rounded-2xl mb-4 text-sm shadow-sm w-full">
+        <div class="bg-[#fcfaf5] border border-[#eee6d3] p-5 rounded-2xl mb-4 text-sm shadow-sm w-full" id="adminInfoBox">
           <p id="resName" class="font-bold text-slate-800 text-base"></p>
           <p id="resPhone" class="text-slate-600 mb-1"></p>
           <p id="resNickname" class="text-xs text-slate-500 mb-3"></p>
           <div class="flex justify-between items-center pt-3 border-t border-[#eee6d3]">
             <span class="text-slate-600">แพ็กเกจ: <span id="resPkg" class="font-semibold text-slate-800"></span></span>
-            <span class="text-slate-600">ชั่วโมงคงเหลือ: <span id="resRemain" class="font-bold text-[#69a06e] text-lg"></span> ชม.</span>
+            <span class="text-slate-600">ชั่วโมงคงเหลือ: <span id="resRemain" class="font-bold text-[#5fa861] text-lg"></span> ชม.</span>
           </div>
-          <p id="adminVipStatus" class="mt-3 text-xs font-bold text-slate-700 bg-white/50 p-2 rounded"></p>
+          <div id="adminVipStatus" class="mt-3"></div>
         </div>
+        
         <div class="grid grid-cols-2 gap-3 mb-4">
           <button type="button" onclick="toggleAction('usage')" class="bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-medium text-sm transition hover:bg-slate-50 shadow-sm w-full">ตัดเวลาใช้บริการ</button>
           <button type="button" onclick="toggleAction('topup')" class="bg-slate-800 text-white py-3 rounded-xl font-medium text-sm transition hover:bg-slate-900 shadow-sm w-full">เพิ่มแพ็กเกจ/ชั่วโมง</button>
@@ -217,51 +216,51 @@
         <div id="formUsage" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hidden w-full">
           <h3 class="font-semibold text-slate-800 mb-4 text-sm">⛳ บันทึกตัดเวลาทันที</h3>
           <label class="block text-xs text-slate-500 mb-1">วันที่ใช้บริการ</label>
-          <input type="date" id="useDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+          <input type="date" id="useDate" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 outline-none w-full">
           <div class="grid grid-cols-2 gap-3 mb-4">
             <div class="w-full overflow-hidden">
               <label class="block text-xs text-slate-500 mb-1">เวลาเข้า</label>
-              <select id="useIn" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"></select>
+              <select id="useIn" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 outline-none w-full"></select>
             </div>
             <div class="w-full overflow-hidden">
               <label class="block text-xs text-slate-500 mb-1">เวลาออก</label>
-              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full"><option value="" disabled selected>เลือกเวลาเริ่มก่อน</option></select>
+              <select id="useOut" class="border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-500 bg-slate-50 outline-none w-full"><option value="" disabled selected>เลือกเวลาเริ่มก่อน</option></select>
             </div>
           </div>
           <label class="block text-xs font-bold text-red-600 mb-1 mt-2">จำนวนชั่วโมงที่ต้องการหัก (กรอกเอง)</label>
-          <input type="number" step="0.5" id="useDeduct" placeholder="เช่น 1.5, 2" class="bg-red-50 border border-red-200 text-slate-800 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-red-500 focus:bg-white outline-none transition-all w-full">
-          <button type="button" onclick="adminRecordTime()" class="w-full bg-[#69a06e] hover:bg-[#568a5b] text-white font-medium py-3.5 rounded-[16px] shadow-sm transition">บันทึกและตัดเวลาทันที</button>
+          <input type="number" step="0.5" id="useDeduct" placeholder="เช่น 1.5, 2" class="bg-red-50 border border-red-200 text-slate-800 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-red-500 outline-none w-full font-bold">
+          <button type="button" onclick="adminRecordTime()" class="w-full bg-[#5fa861] hover:bg-[#4d8f4f] text-white font-medium py-3.5 rounded-xl shadow-sm transition">บันทึกและตัดเวลาทันที</button>
         </div>
 
         <div id="formTopup" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hidden w-full">
           <h3 class="font-semibold text-slate-800 mb-4 text-sm">เพิ่มแพ็กเกจ (ชั่วโมง)</h3>
           <label class="block text-xs text-slate-500 mb-1">ชื่อแพ็กเกจ</label>
-          <input type="text" id="topPkgName" placeholder="เช่น ELITE MEMBER" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
+          <input type="text" id="topPkgName" placeholder="เช่น ELITE MEMBER" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 outline-none w-full">
           <label class="block text-xs text-slate-500 mb-1">จำนวนชั่วโมง</label>
-          <input type="number" id="topHours" placeholder="ระบุตัวเลขชั่วโมง" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
-          <label class="block text-xs font-bold text-[#69a06e] mb-1">วันหมดอายุ (Elite ต้องระบุ)</label>
-          <input type="date" id="topExpDate" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
-          <button type="button" onclick="adminTopup()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-[16px] shadow-sm transition">บันทึกข้อมูล</button>
+          <input type="number" id="topHours" placeholder="ระบุตัวเลขชั่วโมง" class="border border-slate-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-slate-500 bg-slate-50 outline-none w-full">
+          <label class="block text-xs font-bold text-[#5fa861] mb-1">วันหมดอายุ (Elite ต้องระบุ)</label>
+          <input type="date" id="topExpDate" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-slate-500 bg-slate-50 outline-none w-full">
+          <button type="button" onclick="adminTopup()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3.5 rounded-xl shadow-sm transition">บันทึกข้อมูล</button>
         </div>
 
         <div id="formAddCarWash" class="bg-white p-5 rounded-2xl shadow-sm border border-blue-100 hidden w-full">
           <h3 class="font-bold text-blue-700 mb-4 text-sm">🚗 เพิ่มสิทธิ์ล้างรถ</h3>
           <label class="block text-xs text-slate-500 mb-1">จำนวนสิทธิ์ที่ต้องการเพิ่ม (ครั้ง)</label>
-          <input type="number" id="addCarWashAmount" placeholder="จำนวนครั้ง" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-blue-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
-          <button type="button" onclick="adminAddPrivilege('CarWash')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 rounded-[16px] shadow-sm transition">ยืนยันการเพิ่มสิทธิ์</button>
+          <input type="number" id="addCarWashAmount" placeholder="จำนวนครั้ง" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-blue-500 bg-slate-50 outline-none w-full">
+          <button type="button" onclick="adminAddPrivilege('CarWash')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยืนยันการเพิ่มสิทธิ์</button>
         </div>
 
         <div id="formAddDrink" class="bg-white p-5 rounded-2xl shadow-sm border border-yellow-100 hidden w-full">
           <h3 class="font-bold text-yellow-700 mb-4 text-sm">☕ เพิ่มสิทธิ์เครื่องดื่ม</h3>
           <label class="block text-xs text-slate-500 mb-1">จำนวนสิทธิ์ที่ต้องการเพิ่ม (แก้ว)</label>
-          <input type="number" id="addDrinkAmount" placeholder="จำนวนแก้ว" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-yellow-500 bg-slate-50 focus:bg-white outline-none transition-all w-full">
-          <button type="button" onclick="adminAddPrivilege('Drink')" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-3.5 rounded-[16px] shadow-sm transition">ยืนยันการเพิ่มสิทธิ์</button>
+          <input type="number" id="addDrinkAmount" placeholder="จำนวนแก้ว" class="border border-slate-300 rounded-xl p-3 mb-6 focus:ring-2 focus:ring-yellow-500 bg-slate-50 outline-none w-full">
+          <button type="button" onclick="adminAddPrivilege('Drink')" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-3.5 rounded-xl shadow-sm transition">ยืนยันการเพิ่มสิทธิ์</button>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="viewAdminManageBookings" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f4f3ed] shadow-md pb-20 pt-8">
+  <div id="viewAdminManageBookings" class="page-section hide-me max-w-md mx-auto min-h-screen bg-[#f6f6f6] shadow-md pb-20 pt-8">
     <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm">
       <img id="adminProfilePic2" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500 bg-slate-700">
       <div><h2 class="text-base font-bold">จัดการคำขอจองห้อง</h2><p id="adminDisplayName2" class="text-xs text-slate-300">...</p></div>
@@ -336,18 +335,23 @@
     function applyEliteTheme(isElite) {
       const body = document.body;
       const navContainer = document.getElementById('customerBottomNav');
-      const header = document.getElementById('homeHeader');
       const nameTxt = document.getElementById('dashName');
+      const regTxt = document.getElementById('dashRegDate');
       const creditBox = document.getElementById('creditBox');
       const bookBtn = document.getElementById('bookBtn');
       const timeBadge = document.getElementById('homeTimeBadge');
       const divider = document.getElementById('creditBoxDivider');
       const upcomingTitle = document.getElementById('upcomingTitle');
       const historyTitle = document.getElementById('historyTitle');
-      const historyIcon = document.getElementById('historyIcon');
+      
+      const dashRemainLabel = document.getElementById('dashRemainLabel');
+      const dashRemain = document.getElementById('dashRemain');
+      const dashRemainUnit = document.getElementById('dashRemainUnit');
+      const dashExpDate = document.getElementById('dashExpDate');
+      const watermarkFlag = document.getElementById('watermarkFlag');
 
       if(isElite) {
-        body.style.backgroundColor = "#1b251d"; 
+        body.style.backgroundColor = "#0f1f14"; 
         body.style.color = "#f8fafc";
         navContainer.classList.add('elite-nav-bg'); 
         
@@ -359,19 +363,25 @@
             }
         });
 
-        header.className = "p-5 flex items-center justify-between pt-8 pb-4"; 
-        nameTxt.className = "text-lg font-bold text-[#d3b063] leading-tight";
-        creditBox.className = "bg-[#0d1610] p-6 rounded-[24px] shadow-[0_10px_40px_rgb(0,0,0,0.5)] mb-6 border border-[#d3b063]/20 text-white relative overflow-hidden";
-        timeBadge.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#d3b063]/40 text-[#d3b063] bg-[#0d1610]/50 text-xs font-medium backdrop-blur-sm shadow-sm";
-        if(divider) divider.className = "border-[#d3b063]/10 my-4 w-4/5 mx-auto relative z-10";
-        if(upcomingTitle) upcomingTitle.className = "font-semibold text-[#d3b063] mb-3 text-[13px] px-1 tracking-wide";
-        if(historyTitle) historyTitle.className = "font-semibold text-[#d3b063] text-[13px] tracking-wide";
-        if(historyIcon) historyIcon.className = "w-4 h-4 text-[#d3b063]";
+        nameTxt.className = "text-lg font-bold text-elite-gold leading-tight";
+        regTxt.className = "text-[11px] font-light mt-0.5 text-slate-400";
+        creditBox.className = "bg-elite-card p-6 rounded-[24px] shadow-lg mb-6 border border-elite relative overflow-hidden";
+        timeBadge.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-elite text-elite-gold bg-transparent text-xs font-medium";
+        divider.className = "my-4 w-3/4 border-elite opacity-30";
+        
+        upcomingTitle.className = "font-semibold text-elite-gold mb-3 text-[14px] px-1";
+        historyTitle.className = "font-semibold text-elite-gold text-[14px]";
 
-        if(bookBtn) bookBtn.className = "w-full bg-gradient-to-r from-[#e3c983] to-[#c19b45] hover:from-[#d1b672] hover:to-[#a8863b] text-[#0d1610] font-bold py-4 rounded-[16px] shadow-[0_4px_20px_rgba(211,176,99,0.2)] transition flex flex-col items-center justify-center gap-1";
+        dashRemainLabel.className = "text-[13px] font-light text-slate-300 mb-1 tracking-wide";
+        dashRemain.className = "text-[4.5rem] font-bold text-elite-gold leading-none";
+        dashRemainUnit.className = "text-slate-400 text-[13px] font-light";
+        dashExpDate.className = "text-xs font-light text-slate-300 flex items-center justify-center gap-1.5";
+        watermarkFlag.classList.replace('text-[#826644]', 'text-elite-gold');
+
+        if(bookBtn) bookBtn.className = "w-full gold-gradient-bg font-bold py-4 rounded-[16px] shadow-md transition flex flex-col items-center justify-center gap-1";
         
       } else {
-        body.style.backgroundColor = "#f4f3ed"; 
+        body.style.backgroundColor = "#f6f6f6"; 
         body.style.color = "#334155";
         navContainer.classList.remove('elite-nav-bg');
         
@@ -383,16 +393,22 @@
             }
         });
 
-        header.className = "p-5 flex items-center justify-between pt-8 pb-4";
         nameTxt.className = "text-lg font-bold text-slate-800 leading-tight";
-        creditBox.className = "bg-white p-6 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-6 border border-slate-100 relative overflow-hidden";
-        timeBadge.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#8c6f4a]/30 text-[#8c6f4a] bg-transparent text-xs font-medium";
-        if(divider) divider.className = "border-slate-100 my-4 w-4/5 mx-auto relative z-10";
-        if(upcomingTitle) upcomingTitle.className = "font-semibold text-slate-700 mb-3 text-[13px] px-1 tracking-wide";
-        if(historyTitle) historyTitle.className = "font-semibold text-slate-700 text-[13px] tracking-wide";
-        if(historyIcon) historyIcon.className = "w-4 h-4 text-slate-500";
+        regTxt.className = "text-[11px] font-light mt-0.5 text-slate-500";
+        creditBox.className = "bg-white p-6 rounded-[24px] shadow-sm mb-6 border border-slate-100 relative overflow-hidden";
+        timeBadge.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-slate-200 text-normal-brown bg-white text-xs font-medium shadow-sm";
+        divider.className = "my-4 w-3/4 border-slate-100 opacity-50";
 
-        if(bookBtn) bookBtn.className = "w-full bg-[#69a06e] hover:bg-[#568a5b] text-white font-bold py-4 rounded-[16px] shadow-[0_4px_15px_rgb(105,160,110,0.3)] transition flex flex-col items-center justify-center gap-1";
+        upcomingTitle.className = "font-semibold text-slate-800 mb-3 text-[14px] px-1";
+        historyTitle.className = "font-semibold text-slate-800 text-[14px]";
+
+        dashRemainLabel.className = "text-[13px] font-medium text-slate-500 mb-1 tracking-wide";
+        dashRemain.className = "text-[4.5rem] font-bold text-normal-brown leading-none";
+        dashRemainUnit.className = "text-slate-400 text-[13px] font-medium";
+        dashExpDate.className = "text-xs font-medium text-slate-500 flex items-center justify-center gap-1.5";
+        watermarkFlag.classList.replace('text-elite-gold', 'text-[#826644]');
+
+        if(bookBtn) bookBtn.className = "w-full bg-[#5fa861] hover:bg-[#4d8f4f] text-white font-bold py-4 rounded-[16px] shadow-sm transition flex flex-col items-center justify-center gap-1";
       }
     }
 
@@ -413,9 +429,6 @@
         
         setSrc('cusProfilePic', profilePicUrl); setSrc('adminProfilePic1', profilePicUrl); setSrc('adminProfilePic2', profilePicUrl);
         setText('dashName', profile.displayName); setText('adminDisplayName1', profile.displayName); setText('adminDisplayName2', profile.displayName);
-
-        let dateEl = document.getElementById('adminViewDate');
-        if(dateEl) dateEl.valueAsDate = new Date();
 
         switchView('viewCustomer');
         document.getElementById('customerBottomNav').classList.remove('hide-me');
@@ -441,16 +454,11 @@
         if(navContainer) {
           const isEliteMode = navContainer.classList.contains('elite-nav-bg');
           navContainer.querySelectorAll('.nav-item').forEach(nav => {
-             nav.classList.remove('active');
-             nav.classList.remove('elite-nav-active');
-             nav.classList.remove('admin-nav-active'); 
+             nav.classList.remove('active', 'elite-nav-active', 'admin-nav-active'); 
           });
           
-          if(isEliteMode) {
-              el.classList.add('elite-nav-active');
-          } else {
-              el.classList.add('active');
-          }
+          if(isEliteMode) el.classList.add('elite-nav-active');
+          else el.classList.add('active');
         }
         if(navContainerId === 'adminBottomNav') el.classList.add('admin-nav-active');
       }
@@ -483,9 +491,6 @@
           applyEliteTheme(isElite);
           renderCustomerDashboard(data);
           renderMemberDashboard(data);
-          if(document.getElementById('viewCustomer').classList.contains('hide-me') === false) {
-            switchView('viewCustomer');
-          }
         }
       } catch (err) { 
         Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้: ' + err.message, 'error'); 
@@ -528,76 +533,59 @@
       
       let remain = data.package ? parseFloat(data.package.remain) : 0;
       let expText = (data.package && data.package.expiry !== "-") ? data.package.expiry : "-";
+      let isElite = data.memberType === "Yes";
       
       document.getElementById('dashRemain').innerText = remain;
       
-      let isElite = data.memberType === "Yes";
-      
       if (!isElite) {
-         document.getElementById('dashExpDate').innerHTML = `
-            <svg class="w-4 h-4 text-[#8c6f4a]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            วันหมดอายุ: <span class="text-slate-700 font-bold ml-1">${expText}</span>`;
-         document.getElementById('dashRemain').className = "text-[4.5rem] font-bold text-[#8c6f4a] leading-none";
-         document.getElementById('dashRemainLabel').className = "text-[13px] font-bold text-slate-600 mb-1 tracking-wide";
-         document.getElementById('dashRemainUnit').className = "text-slate-500 text-[13px] font-medium";
+         document.getElementById('dashExpDate').innerHTML = `🗓️ วันหมดอายุ: <span class="text-slate-700 font-bold ml-1">${expText}</span>`;
       } else {
-         document.getElementById('dashExpDate').innerHTML = `
-            <svg class="w-4 h-4 text-[#d3b063]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            วันหมดอายุ: <span class="text-[#d3b063] font-bold ml-1">${expText}</span>`;
-         document.getElementById('dashRemain').className = "text-[4.5rem] font-bold text-gold-gradient leading-none";
-         document.getElementById('dashRemainLabel').className = "text-[13px] font-bold text-slate-300 mb-1 tracking-wide";
-         document.getElementById('dashRemainUnit').className = "text-[#d3b063]/80 text-[13px] font-light";
+         document.getElementById('dashExpDate').innerHTML = `🗓️ วันหมดอายุ: <span class="text-elite-gold font-bold ml-1">${expText}</span>`;
       }
 
-      let cardBgClass = isElite ? "bg-[#0d1610] border-[#d3b063]/20" : "bg-white border-slate-100 shadow-sm";
-      let textMainClass = isElite ? "text-[#d3b063]" : "text-slate-800";
-      let textSubClass = isElite ? "text-slate-400" : "text-slate-600";
-      let textTitleClass = isElite ? "text-slate-200" : "text-slate-800";
+      let cardBgClass = isElite ? "bg-elite-card border-elite" : "bg-white border-slate-100";
+      let textMainClass = isElite ? "text-slate-200" : "text-slate-800";
+      let textSubClass = isElite ? "text-slate-400" : "text-slate-500";
 
       let upHtml = "";
       if(data.bookings && data.bookings.length > 0) {
         data.bookings.forEach(b => {
           upHtml += `
-          <div class="${cardBgClass} p-5 rounded-[20px] border flex flex-col gap-3">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="font-bold ${textMainClass} text-[13px] mb-2 tracking-wide">${b.date}</p>
-                <div class="flex items-start gap-2 mt-1 text-xs ${textSubClass}"><span class="w-10">เวลา:</span><span class="font-bold ${textTitleClass}">${b.timeIn} - ${b.timeOut}</span></div>
-                <div class="flex items-start gap-2 mt-1 text-xs ${textSubClass}"><span class="w-10">จำนวน:</span><span class="${textTitleClass}">ผู้ใช้บริการ ${b.pax} ท่าน</span></div>
-              </div>
-            </div>
-            <div class="mt-2">
-              <button type="button" onclick="requestCancelBooking(${b.row})" class="w-full text-xs font-bold text-[#ef4444] bg-red-50/10 border border-red-500/30 py-2.5 rounded-xl hover:bg-red-500/20 transition tracking-wide">ยกเลิกการจอง</button>
-            </div>
+          <div class="${cardBgClass} p-5 rounded-[20px] border shadow-sm flex flex-col gap-3">
+            <p class="font-bold ${textMainClass} text-[14px]">${b.date}</p>
+            <div class="flex items-start gap-2 text-xs ${textSubClass}"><span class="w-10">เวลา:</span><span class="font-bold ${textMainClass}">${b.timeIn} - ${b.timeOut}</span></div>
+            <div class="flex items-start gap-2 text-xs ${textSubClass}"><span class="w-10">จำนวน:</span><span class="${textMainClass}">ผู้ใช้บริการ ${b.pax} ท่าน</span></div>
+            <div class="mt-2"><button type="button" onclick="requestCancelBooking(${b.row})" class="w-full text-xs font-bold text-red-500 bg-transparent border border-red-500/30 py-2.5 rounded-xl hover:bg-red-500/10 transition tracking-wide">ยกเลิกการจอง</button></div>
           </div>`;
         });
       } else {
-        upHtml = `<div class="${cardBgClass} p-4 rounded-[20px] border text-center"><p class="text-[13px] ${textSubClass} font-medium">ยังไม่มีการจองล่วงหน้า</p></div>`;
+        upHtml = `<div class="${cardBgClass} p-4 rounded-[20px] border text-center"><p class="text-[13px] ${textSubClass}">ยังไม่มีการจองล่วงหน้า</p></div>`;
       }
       document.getElementById('dashUpcomingBookings').innerHTML = upHtml;
 
       let historyHtml = "";
       if(data.history.length === 0) {
-        historyHtml = `<div class="text-center py-6"><p class="text-[13px] ${textSubClass}">ยังไม่มีประวัติการใช้บริการ</p></div>`;
+        historyHtml = `<div class="${cardBgClass} rounded-[20px] border text-center py-6"><p class="text-[13px] ${textSubClass}">ยังไม่มีประวัติการใช้บริการ</p></div>`;
       } else {
+        let hContent = "";
         data.history.forEach(h => {
           let typeLabel = h.type === "ชั่วโมง" ? "ใช้ไป" : "คูปอง";
           let unitLabel = h.type === "ชั่วโมง" ? "ชม." : (h.type === "ล้างรถ" ? "ครั้ง" : "แก้ว");
           let timeText = h.timeIn === "-" ? h.type : `เวลา: ${h.timeIn} - ${h.timeOut}`;
+          let borderClass = isElite ? "border-elite" : "border-slate-100";
           
-          let borderClass = isElite ? "border-[#d3b063]/10" : "border-slate-200";
-          
-          historyHtml += `
+          hContent += `
           <div class="flex justify-between items-center py-3 px-1 border-b ${borderClass} last:border-0">
             <div>
-              <p class="text-[13px] font-semibold ${textMainClass}">${h.date}</p>
-              <p class="text-[11px] ${textSubClass} mt-1 font-light">${timeText}</p>
+              <p class="text-[14px] font-bold ${textMainClass}">${h.date}</p>
+              <p class="text-[11px] ${textSubClass} mt-1">${timeText}</p>
             </div>
-            <div class="${textTitleClass} font-bold text-[13px] text-right">
-              <span class="text-[10px] ${textSubClass} block mb-0.5 font-light tracking-wide">${typeLabel}</span>${h.amount} <span class="font-light text-xs">${unitLabel}</span>
+            <div class="${textMainClass} font-bold text-[14px] text-right">
+              <span class="text-[10px] ${textSubClass} block mb-0.5 font-light">${typeLabel}</span>${h.amount} <span class="font-normal text-xs">${unitLabel}</span>
             </div>
           </div>`;
         });
+        historyHtml = `<div class="${cardBgClass} rounded-[20px] border shadow-sm p-4">${hContent}</div>`;
       }
       document.getElementById('dashHistory').innerHTML = historyHtml;
     }
@@ -635,7 +623,7 @@
         text: "กรุณาแสดงหน้านี้ต่อพนักงานก่อนยืนยัน (ใช้ได้ 1 ครั้ง/วัน)",
         icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: '#c19b45',
+        confirmButtonColor: '#c49d48',
         cancelButtonColor: '#94a3b8',
         confirmButtonText: 'ยืนยันการใช้สิทธิ์',
         cancelButtonText: 'กลับ'
@@ -661,65 +649,49 @@
       let html = "";
       if(isMember) {
         html = `
-        <div class="bg-[#0d1610] text-white rounded-[24px] p-8 mb-4 shadow-[0_10px_40px_rgb(0,0,0,0.5)] border border-[#d3b063]/10">
-          <p class="text-center text-[15px] font-bold text-gold-gradient mb-1.5 tracking-[0.2em] uppercase">MEMBER PRIVILEGES</p>
-          <div class="text-center mb-6">
-            <p class="text-[10px] text-[#d3b063]/70 uppercase tracking-[0.15em] font-light">PRIORITY ACCESS PRIVILEGES</p>
-            <div class="flex justify-center my-3 text-[#d3b063] opacity-80">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.5l2.2 6.5h6.8l-5.5 4 2.1 6.5-5.6-4.1-5.6 4.1 2.1-6.5-5.5-4h6.8z"/></svg>
-            </div>
-            <p class="text-[9px] text-[#d3b063]/50 uppercase tracking-[0.2em] font-light">EXCLUSIVE MEMBER BENEFITS</p>
+        <div class="bg-elite-card text-white rounded-[24px] p-6 mb-4 shadow-lg border border-elite">
+          <p class="text-center text-[16px] font-bold gold-gradient-text mb-1 tracking-widest uppercase">MEMBER PRIVILEGES</p>
+          <div class="text-center mb-5">
+            <p class="text-[10px] text-elite-gold opacity-70 uppercase tracking-[0.1em] font-light">PRIORITY ACCESS PRIVILEGES</p>
+            <div class="flex justify-center my-2 text-elite-gold opacity-80"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.5l2.2 6.5h6.8l-5.5 4 2.1 6.5-5.6-4.1-5.6 4.1 2.1-6.5-5.5-4h6.8z"/></svg></div>
+            <p class="text-[9px] text-slate-400 uppercase tracking-widest">EXCLUSIVE MEMBER BENEFITS</p>
           </div>
           
-          <div class="border-y border-[#d3b063]/10 py-5 mb-8 space-y-4 text-[13px]">
-            <div class="flex justify-between items-center">
-              <span class="text-slate-300/80">สถานะ</span>
-              <span class="font-bold text-[#091811] bg-gradient-to-r from-[#e3c983] to-[#c19b45] px-3.5 py-1.5 rounded-md text-[10px] shadow-sm tracking-widest flex items-center gap-1">
-                 <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18v-2H3v2zm4.5-4h9l1.5-9-4 3-2-5-2 5-4-3 1.5 9z"/></svg>
-                 ELITE MEMBER
-              </span>
-            </div>
-            <div class="flex justify-between items-center"><span class="text-slate-300/80">เวลาใช้งานคงเหลือ</span><span class="font-bold text-white text-[15px]">${remainHr} <span class="font-normal text-xs text-slate-400">ชั่วโมง</span></span></div>
-            <div class="flex justify-between items-center"><span class="text-slate-300/80">วันหมดอายุ</span><span class="font-bold text-white text-[15px]">${exp}</span></div>
+          <div class="border-y border-elite py-4 mb-6 space-y-3 text-[13px]">
+            <div class="flex justify-between items-center"><span class="text-slate-300">สถานะ</span><span class="font-bold bg-elite-gold px-3 py-1 rounded-full text-[11px] shadow-sm tracking-wide">👑 ELITE MEMBER</span></div>
+            <div class="flex justify-between items-center"><span class="text-slate-300">เวลาใช้งานคงเหลือ</span><span class="font-bold text-white text-[14px]">${remainHr} <span class="font-normal text-xs text-slate-300">ชั่วโมง</span></span></div>
+            <div class="flex justify-between items-center"><span class="text-slate-300">วันหมดอายุ</span><span class="font-bold text-white text-[14px]">${exp}</span></div>
           </div>
           
-          <div class="grid grid-cols-2 gap-4 mb-8">
-             <div class="bg-[#112418] border border-[#d3b063]/20 p-5 rounded-[18px] text-center shadow-md relative overflow-hidden">
-               <div class="absolute inset-0 bg-gradient-to-b from-[#d3b063]/5 to-transparent pointer-events-none"></div>
-               <p class="text-[13px] text-[#d3b063] font-bold mb-3 flex items-center justify-center gap-2">
-                 <svg class="w-4 h-4 opacity-80" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8l3 4v6H5v-6l3-4z M5 11h14 M8 14h1 M15 14h1"/></svg>
-                 สิทธิ์ล้างรถ
-               </p>
-               <p class="text-2xl font-bold text-white mb-4">${remainWash} <span class="text-[11px] text-slate-400 font-normal">ครั้ง</span></p>
-               <button type="button" onclick="redeemCoupon('CarWash', ${remainWash})" class="w-full bg-transparent hover:bg-[#d3b063]/10 border border-[#d3b063]/40 text-[#d3b063] text-[11px] tracking-wide font-medium py-2.5 rounded-lg transition" ${remainWash<=0?'disabled opacity-30':''}>ใช้สิทธิ์ตอนนี้</button>
+          <div class="grid grid-cols-2 gap-4 mb-6">
+             <div class="border border-elite p-4 rounded-2xl text-center">
+               <p class="text-[13px] text-elite-gold font-bold mb-2">🚗 สิทธิ์ล้างรถ</p>
+               <p class="text-xl font-bold text-white mb-3">${remainWash} <span class="text-[11px] text-slate-400 font-normal">ครั้ง</span></p>
+               <button type="button" onclick="redeemCoupon('CarWash', ${remainWash})" class="w-full bg-transparent hover:bg-[#dfbd6910] border border-elite text-elite-gold text-[12px] font-medium py-2 rounded-xl transition" ${remainWash<=0?'disabled opacity-50':''}>ใช้สิทธิ์ตอนนี้</button>
              </div>
-             <div class="bg-[#112418] border border-[#d3b063]/20 p-5 rounded-[18px] text-center shadow-md relative overflow-hidden">
-               <div class="absolute inset-0 bg-gradient-to-b from-[#d3b063]/5 to-transparent pointer-events-none"></div>
-               <p class="text-[13px] text-[#d3b063] font-bold mb-3 flex items-center justify-center gap-2">
-                 <svg class="w-4 h-4 opacity-80" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 5h10l-1 12H8L7 5z M10 2v3 M14 2v3"/></svg>
-                 สิทธิ์เครื่องดื่ม
-               </p>
-               <p class="text-2xl font-bold text-white mb-4">${remainDrink} <span class="text-[11px] text-slate-400 font-normal">แก้ว</span></p>
-               <button type="button" onclick="redeemCoupon('Drink', ${remainDrink})" class="w-full bg-transparent hover:bg-[#d3b063]/10 border border-[#d3b063]/40 text-[#d3b063] text-[11px] tracking-wide font-medium py-2.5 rounded-lg transition" ${remainDrink<=0?'disabled opacity-30':''}>ใช้สิทธิ์ตอนนี้</button>
+             <div class="border border-elite p-4 rounded-2xl text-center">
+               <p class="text-[13px] text-elite-gold font-bold mb-2">☕ สิทธิ์เครื่องดื่ม</p>
+               <p class="text-xl font-bold text-white mb-3">${remainDrink} <span class="text-[11px] text-slate-400 font-normal">แก้ว</span></p>
+               <button type="button" onclick="redeemCoupon('Drink', ${remainDrink})" class="w-full bg-transparent hover:bg-[#dfbd6910] border border-elite text-elite-gold text-[12px] font-medium py-2 rounded-xl transition" ${remainDrink<=0?'disabled opacity-50':''}>ใช้สิทธิ์ตอนนี้</button>
              </div>
           </div>
 
-          <div class="space-y-7">
-            <div class="flex items-start gap-4">
-              <span class="text-2xl mt-0.5">🏌️‍♂️</span>
+          <div class="space-y-6">
+            <div class="flex items-start gap-3">
+              <span class="text-xl mt-0.5">🏌️‍♂️</span>
               <div>
-                <p class="font-bold text-[#d3b063] text-[13px] mb-1.5 tracking-wide">Private Suite with Spacious Comfort</p>
-                <ul class="list-disc pl-4 text-xs space-y-1.5 text-slate-300 font-light">
+                <p class="font-bold text-elite-gold text-[13px] mb-1">Private Suite with Spacious Comfort</p>
+                <ul class="list-disc pl-4 text-[11px] space-y-1 text-slate-300 font-light">
                   <li>Seamless Play & Relaxation Experience</li>
                   <li>ห้องกอล์ฟส่วนตัวขนาดใหญ่ พื้นที่กว้างขวาง นั่งสบาย</li>
                 </ul>
               </div>
             </div>
-            <div class="flex items-start gap-4">
-              <span class="text-2xl mt-0.5">🎤</span>
+            <div class="flex items-start gap-3">
+              <span class="text-xl mt-0.5">🎤</span>
               <div>
-                <p class="font-bold text-[#d3b063] text-[13px] mb-1.5 tracking-wide">Private Entertainment Access</p>
-                <ul class="list-disc pl-4 text-xs space-y-1.5 text-slate-300 font-light">
+                <p class="font-bold text-elite-gold text-[13px] mb-1">Private Entertainment Access</p>
+                <ul class="list-disc pl-4 text-[11px] space-y-1 text-slate-300 font-light">
                   <li>รองรับผู้ติดตามได้สูงสุด 3 ท่าน</li>
                   <li>คาราโอเกะภายในห้องส่วนตัว</li>
                 </ul>
@@ -728,74 +700,62 @@
           </div>
           
           <div class="space-y-3 mt-8">
-            <div class="bg-[#112418] border border-[#d3b063]/10 rounded-2xl p-4 flex gap-4 items-center shadow-sm">
-              <div class="bg-[#091811] p-2.5 rounded-full shadow-[inset_0_2px_4px_rgb(0,0,0,0.3)]">
-                <svg class="w-4 h-4 text-[#d3b063]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-              </div>
+            <div class="border border-elite rounded-2xl p-4 flex gap-4 items-center">
+              <span class="text-elite-gold text-lg bg-[#0f1f14] w-8 h-8 flex items-center justify-center rounded-full border border-elite">⭐</span>
               <div>
-                <p class="font-bold text-[#d3b063] text-[13px] mb-0.5 tracking-wide">Unlimited Access Across All Time Slots</p>
-                <p class="text-slate-400 text-[11px] font-light">ใช้งานได้ทุกช่วงเวลา (ไม่หัก Peak Time)</p>
+                <p class="font-bold text-elite-gold text-[12px] mb-0.5">Unlimited Access Across All Time Slots</p>
+                <p class="text-slate-400 text-[10px] font-light">ใช้งานได้ทุกช่วงเวลา (ไม่หัก Peak Time)</p>
               </div>
             </div>
-            <div class="bg-[#112418] border border-[#d3b063]/10 rounded-2xl p-4 flex gap-4 items-center shadow-sm">
-              <div class="bg-[#091811] p-2.5 rounded-full shadow-[inset_0_2px_4px_rgb(0,0,0,0.3)]">
-                <svg class="w-4 h-4 text-[#d3b063]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-              </div>
+            <div class="border border-elite rounded-2xl p-4 flex gap-4 items-center">
+              <span class="text-elite-gold text-lg bg-[#0f1f14] w-8 h-8 flex items-center justify-center rounded-full border border-elite">⭐</span>
               <div>
-                <p class="font-bold text-[#d3b063] text-[13px] mb-0.5 tracking-wide">Extended Play Rate</p>
-                <p class="text-slate-400 text-[11px] font-light">Only 400 THB / Hour</p>
+                <p class="font-bold text-elite-gold text-[12px] mb-0.5">Extended Play Rate</p>
+                <p class="text-slate-400 text-[10px] font-light">Only 400 THB / Hour</p>
               </div>
             </div>
           </div>
         </div>`;
       } else {
         html = `
-        <div class="bg-white rounded-[24px] p-8 mb-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-slate-700">
-          <p class="text-center text-[15px] font-bold text-[#8c6f4a] mb-2 tracking-widest uppercase">MEMBER PRIVILEGES</p>
-          <div class="flex justify-center mb-5 text-[#8c6f4a]">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18v-2H3v2zm4.5-4h9l1.5-9-4 3-2-5-2 5-4-3 1.5 9z"/></svg>
-          </div>
+        <div class="bg-white rounded-[24px] p-6 mb-4 shadow-sm border border-slate-100">
+          <p class="text-center text-[16px] font-bold text-normal-brown mb-1 tracking-widest uppercase">MEMBER PRIVILEGES</p>
+          <div class="flex justify-center mb-5 text-normal-brown"><span class="text-xl">👑</span></div>
           
           <div class="text-center mb-6">
             <p class="text-xs text-slate-500 mb-1">สถานะปัจจุบัน</p>
-            <p class="font-bold text-slate-800 text-xl mb-4">ยังไม่ได้เป็นสมาชิก</p>
-            <span class="text-[11px] text-[#8c6f4a] font-medium bg-[#f5f0e6] py-2 px-5 rounded-full inline-block tracking-wide">อัปเกรดเป็น Elite Member เพื่อสิทธิพิเศษ</span>
+            <p class="font-bold text-slate-800 text-xl mb-3">ยังไม่ได้เป็นสมาชิก</p>
+            <span class="text-[11px] text-normal-brown font-medium bg-[#fcfaf5] border border-[#eee6d3] py-2 px-5 rounded-full inline-block tracking-wide">อัปเกรดเป็น Elite Member เพื่อสิทธิพิเศษ</span>
           </div>
           
-          <hr class="border-slate-100 my-6">
+          <hr class="border-slate-100 my-6 w-3/4 mx-auto">
           
           <div class="space-y-6 mt-6">
             <div class="flex items-start gap-4">
               <span class="text-2xl mt-0.5">🏌️‍♂️</span>
               <div>
-                <p class="font-bold text-slate-800 text-[13px] mb-1 tracking-wide">Private Suite with Spacious Comfort</p>
-                <ul class="list-disc pl-4 text-xs space-y-1.5 text-slate-500 font-light">
+                <p class="font-bold text-slate-800 text-[13px] mb-1">Private Suite with Spacious Comfort</p>
+                <ul class="list-disc pl-4 text-xs space-y-1 text-slate-500 font-light">
                   <li>Seamless Play & Relaxation Experience</li>
                   <li>ห้องส่วนตัวกว้างขวาง นั่งสบาย</li>
                 </ul>
               </div>
             </div>
-            
-            <hr class="border-slate-50 my-2">
-            
             <div class="flex items-start gap-4">
               <span class="text-2xl mt-0.5">🎤</span>
               <div>
-                <p class="font-bold text-slate-800 text-[13px] mb-1 tracking-wide">Private Entertainment Access</p>
-                <ul class="list-disc pl-4 text-xs space-y-1.5 text-slate-500 font-light">
+                <p class="font-bold text-slate-800 text-[13px] mb-1">Private Entertainment Access</p>
+                <ul class="list-disc pl-4 text-xs space-y-1 text-slate-500 font-light">
                   <li>รองรับผู้ติดตามได้สูงสุด 3 ท่าน</li>
                   <li>คาราโอเกะภายในห้องส่วนตัว</li>
                 </ul>
               </div>
             </div>
-            
-            <hr class="border-slate-50 my-2">
-            
             <div class="flex items-start gap-4">
               <span class="text-2xl mt-0.5">🚗</span>
               <div>
-                <p class="font-bold text-slate-800 text-[13px] mb-1 tracking-wide">Car Care & Drinks</p>
-                <ul class="list-disc pl-4 text-xs space-y-1.5 text-slate-500 font-light">
+                <p class="font-bold text-slate-800 text-[13px] mb-1">Car Care & Drinks</p>
+                <ul class="list-disc pl-4 text-xs space-y-1 text-slate-500 font-light">
                   <li>สิทธิ์ล้างรถฟรี และส่วนลดคาร์แคร์ 20%</li>
                   <li>รับเครื่องดื่มฟรีแบบพิเศษ</li>
                 </ul>
@@ -803,15 +763,15 @@
             </div>
           </div>
           
-          <div class="bg-[#fcfaf5] border border-[#eee6d3] rounded-[16px] p-5 text-sm text-center mt-8 mb-6 shadow-sm">
-            <div class="flex items-center justify-center gap-2 mb-1.5">
-               <svg class="w-4 h-4 text-[#d3b063]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-               <p class="font-bold text-slate-800 text-[13px] tracking-wide">Extended Play Rate:</p>
+          <div class="bg-[#fcfaf5] border border-[#eee6d3] rounded-[16px] p-5 text-sm text-center mt-8 mb-6">
+            <div class="flex items-center justify-center gap-2 mb-1">
+               <span class="text-normal-brown text-base">⭐</span>
+               <p class="font-bold text-slate-800 text-[13px]">Extended Play Rate:</p>
             </div>
-            <p class="text-[#8c6f4a] text-[13px] font-medium">Only 400 THB / Hour</p>
+            <p class="text-normal-brown text-[13px]">Only 400 THB / Hour</p>
           </div>
           
-          <button type="button" onclick="navTo('viewApplyMemberForm')" class="w-full bg-[#69a06e] hover:bg-[#568a5b] text-white font-bold py-4 rounded-[16px] shadow-[0_4px_15px_rgb(105,160,110,0.3)] transition flex justify-between items-center px-6">
+          <button type="button" onclick="navTo('viewApplyMemberForm')" class="w-full bg-[#5fa861] text-white font-bold py-4 rounded-[16px] shadow-sm flex justify-between items-center px-6">
             <span class="w-5"></span>
             <span class="tracking-wide">สมัคร Elite Member</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
@@ -843,16 +803,16 @@
 
     async function submitApplyMemberForm() {
       const date = document.getElementById('applyDate').value;
-      const pax = document.getElementById('applyPax').value;
-      if(!date || !pax) return Swal.fire('แจ้งเตือน', 'กรุณาระบุข้อมูลให้ครบถ้วน', 'warning');
-      const payload = { uid: currentUserUid, date: date, pax: pax };
+      if(!date) return Swal.fire('แจ้งเตือน', 'กรุณาระบุข้อมูลให้ครบถ้วน', 'warning');
+      
+      const payload = { uid: currentUserUid, date: date, pax: 1 }; // บังคับส่ง 1 เนื่องจากเอา input ออกไปแล้ว
       Swal.showLoading();
       const res = await fetch(`${GAS_WEB_APP_URL}?action=applyMember&data=${encodeURIComponent(JSON.stringify(payload))}`);
       const result = await res.json();
       Swal.close();
       if(result.success) {
         Swal.fire('สำเร็จ', 'ทางระบบได้รับข้อมูลแล้ว จะรีบติดต่อกลับโดยเร็วที่สุดครับ', 'success').then(() => {
-          document.getElementById('applyDate').value = ''; document.getElementById('applyPax').value = '';
+          document.getElementById('applyDate').value = ''; 
           navTo('viewMemberDash');
         });
       }
@@ -922,7 +882,7 @@
         if(b.status === "กำลังตรวจสอบ") {
           actionButtons = `
           <div class="flex gap-2 mt-3 pt-3 border-t border-slate-100">
-            <button type="button" onclick="adminConfirmBookingStatus(${b.row}, 'ยืนยันแล้ว')" class="flex-1 bg-[#69a06e] text-white text-xs font-bold py-2 rounded shadow-sm hover:bg-[#568a5b]">✅ ยืนยัน</button>
+            <button type="button" onclick="adminConfirmBookingStatus(${b.row}, 'ยืนยันแล้ว')" class="flex-1 bg-[#5fa861] text-white text-xs font-bold py-2 rounded shadow-sm hover:bg-[#4d8f4f]">✅ ยืนยัน</button>
             <button type="button" onclick="adminConfirmBookingStatus(${b.row}, 'ยกเลิก')" class="flex-1 bg-white border border-red-200 text-red-600 text-xs font-bold py-2 rounded hover:bg-red-50">❌ ปฏิเสธ</button>
           </div>`;
         }
@@ -953,7 +913,7 @@
       let title = newStatus === 'ยืนยันแล้ว' ? 'อนุมัติการจอง?' : 'ปฏิเสธ/ยกเลิก การจอง?';
       let text = newStatus === 'ยืนยันแล้ว' ? 'คุณแน่ใจหรือไม่ว่าต้องการอนุมัติคิวนี้ ลูกค้าจะได้รับข้อความยืนยันทางแชท' : 'คุณแน่ใจหรือไม่ว่าต้องการปฏิเสธคิวนี้ ลูกค้าจะได้รับข้อความแจ้งเตือนทางแชท';
       let confirmBtn = newStatus === 'ยืนยันแล้ว' ? 'ใช่, อนุมัติคิว' : 'ใช่, ปฏิเสธคิว';
-      let color = newStatus === 'ยืนยันแล้ว' ? '#69a06e' : '#dc2626';
+      let color = newStatus === 'ยืนยันแล้ว' ? '#5fa861' : '#dc2626';
 
       Swal.fire({
         title: title,
@@ -1003,6 +963,8 @@
         
         // การคำนวณวันหมดอายุสำหรับการแจ้งเตือนสี (แดง/เหลือง)
         let expTextHtml = "";
+        let infoBox = document.getElementById('adminInfoBox');
+        
         if (cust.package && cust.package.expiryRaw) {
            let expDate = new Date(cust.package.expiryRaw);
            expDate.setHours(0,0,0,0);
@@ -1013,14 +975,20 @@
            let expDateStr = cust.package.expiry;
            
            if (diffDays <= 0) {
-              expTextHtml = `<br><span class="text-xs text-red-500 font-bold">⚠️ หมดอายุแล้ว</span>`;
+              expTextHtml = `<br><span class="text-[13px] text-red-600 font-bold">⚠️ หมดอายุแล้ว</span>`;
+              infoBox.className = "bg-red-50 border border-red-200 p-5 rounded-2xl mb-4 text-sm shadow-sm w-full transition-colors duration-300";
            } else if (diffDays <= 15) {
-              expTextHtml = `<br><span class="text-xs text-red-500 font-bold">⚠️ หมดอายุ: ${expDateStr} (เหลือ ${diffDays} วัน)</span>`;
+              expTextHtml = `<br><span class="text-[13px] text-red-600 font-bold">⚠️ หมดอายุ: ${expDateStr} (เหลือ ${diffDays} วัน)</span>`;
+              infoBox.className = "bg-red-50 border border-red-200 p-5 rounded-2xl mb-4 text-sm shadow-sm w-full transition-colors duration-300";
            } else if (diffDays <= 30) {
-              expTextHtml = `<br><span class="text-xs text-yellow-600 font-bold">⚠️ หมดอายุ: ${expDateStr} (เหลือ ${diffDays} วัน)</span>`;
+              expTextHtml = `<br><span class="text-[13px] text-yellow-600 font-bold">⚠️ หมดอายุ: ${expDateStr} (เหลือ ${diffDays} วัน)</span>`;
+              infoBox.className = "bg-yellow-50 border border-yellow-200 p-5 rounded-2xl mb-4 text-sm shadow-sm w-full transition-colors duration-300";
            } else {
-              expTextHtml = `<br><span class="text-xs text-slate-500">หมดอายุ: ${expDateStr}</span>`;
+              expTextHtml = `<br><span class="text-[13px] text-slate-500 font-medium">หมดอายุ: ${expDateStr}</span>`;
+              infoBox.className = "bg-[#fcfaf5] border border-[#eee6d3] p-5 rounded-2xl mb-4 text-sm shadow-sm w-full transition-colors duration-300";
            }
+        } else {
+           infoBox.className = "bg-[#fcfaf5] border border-[#eee6d3] p-5 rounded-2xl mb-4 text-sm shadow-sm w-full transition-colors duration-300";
         }
         
         let isVIP = cust.memberType === "Yes";
@@ -1029,7 +997,7 @@
           : "👤 ลูกค้าทั่วไป (Peak time 17:00-22:00 น. ระวังหัก 1:1.5 เท่า)";
           
         document.getElementById('adminVipStatus').innerHTML = statusText + expTextHtml;
-        document.getElementById('adminVipStatus').className = isVIP ? "mt-3 text-xs font-bold text-[#b48e24] bg-[#fcfaf5] p-2 rounded-lg border border-[#eee6d3]" : "mt-3 text-xs font-bold text-slate-600 bg-slate-100 p-2 rounded-lg border border-slate-200";
+        document.getElementById('adminVipStatus').className = isVIP ? "mt-4 text-xs font-bold text-[#b48e24] bg-white/60 p-2.5 rounded-lg border border-[#eee6d3]" : "mt-4 text-xs font-bold text-slate-600 bg-white/60 p-2.5 rounded-lg border border-slate-200";
 
         document.getElementById('useDate').valueAsDate = new Date();
         document.getElementById('adminActionSection').classList.remove('hidden');
