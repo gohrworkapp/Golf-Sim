@@ -15,7 +15,7 @@
       box-sizing: border-box; 
     }
     
-    /* ธีมหลัก (Default) เป็นสีเหลืองตุ่นที่เข้มขึ้นตามรีเควส */
+    /* ธีมหลัก (Default) เป็นสีเหลืองตุ่นที่เข้มขึ้น */
     body { 
       font-family: 'Kanit', sans-serif; 
       background-color: #e8e6d9; 
@@ -171,7 +171,7 @@
 
   <div id="viewCustomer" class="page-section hide-me max-w-md mx-auto min-h-screen relative transition-colors duration-300">
     
-    <div id="homeHeader" class="p-5 flex items-center justify-between pt-10 pb-4 border-b border-transparent">
+    <div id="homeHeader" class="p-5 flex items-center justify-between pt-10 pb-4">
       <div class="flex items-center gap-3">
         <img id="cusProfilePic" src="" class="w-14 h-14 rounded-full object-cover shadow-sm bg-slate-100 border-2 border-transparent">
         <div>
@@ -182,11 +182,10 @@
     </div>
     
     <div class="p-4 w-full overflow-hidden relative z-10">
-      <div class="text-center mb-6 mt-2">
+      <div class="text-center mb-6">
         <span id="homeTimeBadge" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border text-xs font-medium transition-all shadow-sm">
-          <svg id="clockIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
+          <svg id="clockIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           เวลาทำการ: 08:00 - 22:00 น.
         </span>
@@ -527,7 +526,7 @@
       const dashRemainUnit = document.getElementById('dashRemainUnit');
 
       if(isElite) {
-        // --- ธีม Elite เขียวเข้ม ล้วนไร้รอยต่อ ---
+        // --- ธีม Elite เขียวเข้ม ---
         document.body.style.backgroundColor = "#0f1f14"; 
         document.body.style.color = "#f8fafc";
         
@@ -541,7 +540,7 @@
             }
         });
 
-        // เส้นคั่นโปรไฟล์แบบบางๆ
+        // จุดแก้ไข: เพิ่มเส้นใต้โปรไฟล์สีทองจางๆ
         if(header) header.className = "p-5 flex items-center justify-between pt-10 pb-4 border-b border-[#dfbd69]/20";
         nameTxt.className = "text-lg font-bold text-[#dfbd69] leading-tight";
         regTxt.className = "text-[11px] font-light mt-0.5 text-slate-300 opacity-80";
@@ -555,7 +554,7 @@
         
         if(bookBtn) bookBtn.className = "w-full gold-gradient-bg font-bold py-4 rounded-2xl shadow-md transition flex items-center justify-center";
         
-        // ตัวหนังสือส่วนรายการจอง/ประวัติ ให้เป็นสีทอง
+        // จุดแก้ไข: เปลี่ยนสีหัวข้อให้เป็นสีทอง
         if(upcomingTitle) upcomingTitle.className = "font-semibold text-[#dfbd69] mb-3 text-[14px] px-1";
         if(historyTitle) historyTitle.className = "font-semibold text-[#dfbd69] text-[14px]";
         if(historyIcon) historyIcon.className = "w-4 h-4 text-[#dfbd69]";
@@ -704,6 +703,7 @@
           renderCustomerDashboard(data);
           renderMemberDashboard(data);
           
+          // Set nav colors correctly on load
           document.querySelectorAll('#customerBottomNav .nav-item').forEach(nav => {
              if(nav.classList.contains('active') && isElite) {
                  nav.classList.remove('active');
@@ -728,31 +728,33 @@
       
       document.getElementById('dashRemain').innerText = remain;
       
+      // แทรกไอคอนปฏิทินในวันหมดอายุ
       if (isElite) {
          document.getElementById('dashExpDate').innerHTML = `
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#dfbd69]">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#dfbd69]">
             <rect x="3" y="4" width="18" h="18" rx="2" ry="2"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <span class="text-[#dfbd69] font-bold ml-1">${expText}</span>`;
+          <span class="text-[#dfbd69] ml-1">วันหมดอายุ: <span class="font-bold">${expText}</span></span>`;
       } else {
          document.getElementById('dashExpDate').innerHTML = `
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#826644]">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#826644]">
             <rect x="3" y="4" width="18" h="18" rx="2" ry="2"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <span class="text-slate-700 font-bold ml-1">${expText}</span>`;
+          <span class="text-slate-600 ml-1">วันหมดอายุ: <span class="font-bold text-slate-700">${expText}</span></span>`;
       }
 
       let cardBgClass = isElite ? "bg-[#16281b] border-[#dfbd69]/20" : "bg-white border-slate-100";
-      // กำหนดสีข้อความการจองและประวัติให้เป็นสีทอง (ถ้าเป็น Elite) 
+      // จุดแก้ไข: เปลี่ยนสีตัวหนังสือภายในประวัติให้เป็นสีทองเวลาเป็น Elite
       let textMainClass = isElite ? "text-[#dfbd69]" : "text-slate-800";
       let textSubClass = isElite ? "text-[#dfbd69]/70" : "text-slate-500";
 
+      // Render การจอง
       let upHtml = "";
       if(data.bookings && data.bookings.length > 0) {
         data.bookings.forEach(b => {
@@ -779,6 +781,7 @@
       }
       document.getElementById('dashUpcomingBookings').innerHTML = upHtml;
 
+      // Render ประวัติ
       let historyHtml = "";
       if(data.history.length > 0) {
         let content = "";
@@ -792,7 +795,7 @@
           <div class="flex justify-between items-center py-3 px-1 border-b ${borderClass} last:border-0">
             <div>
               <p class="text-[13px] font-bold ${textMainClass}">${h.date}</p>
-              <p class="text-[11px] ${textSubClass} mt-1">${timeText}</p>
+              <p class="text-[11px] opacity-60 ${textSubClass} mt-1">${timeText}</p>
             </div>
             <div class="${textMainClass} font-bold text-[13px] text-right">
               <span class="text-[10px] block font-light mb-0.5 ${textSubClass}">${typeLabel}</span>
@@ -849,7 +852,7 @@
                <div class="absolute inset-0 bg-gradient-to-b from-[#dfbd69]/5 to-transparent pointer-events-none"></div>
                <div class="flex items-center justify-center gap-2 mb-2">
                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5 text-[#dfbd69]">
-                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l1.5-4.5h11L19 11M3 11h18v6a2 2 0 002-2H5a2 2 0 01-2 2v-6zm3 4h2v2H6v-2zm10 0h2v2h-2v-2z"/>
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 11l1.5-4.5h11L19 11M3 11h18v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6zm3 4h2v2H6v-2zm10 0h2v2h-2v-2z"/>
                  </svg>
                  <p class="text-[13px] text-[#dfbd69] font-bold tracking-wide">สิทธิ์ล้างรถ</p>
                </div>
@@ -996,6 +999,68 @@
       document.getElementById('vipContent').innerHTML = html;
     }
 
+    async function requestCancelBooking(rowIdx) {
+      Swal.fire({
+        title: 'ยืนยันการยกเลิก?',
+        text: "คุณต้องการยกเลิกการจองนี้ใช่หรือไม่?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: 'ยืนยันการยกเลิก',
+        cancelButtonText: 'กลับ'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.showLoading();
+          const res = await fetch(`${GAS_WEB_APP_URL}?action=cancelBooking&uid=${currentUserUid}&row=${rowIdx}`);
+          const data = await res.json();
+          Swal.close();
+          if(data.success) {
+            Swal.fire('สำเร็จ', 'ระบบได้ทำการยกเลิกห้องของคุณเรียบร้อยแล้ว', 'success').then(() => loadDashboard());
+          } else {
+            Swal.fire(data.title || 'ไม่สามารถยกเลิกผ่านระบบได้', data.message, 'error');
+          }
+        }
+      });
+    }
+
+    function redeemCoupon(type, remain) {
+      if(remain <= 0) return Swal.fire({title:'ใช้สิทธิ์ไม่สำเร็จ', text:'สิทธิ์ของคุณหมดแล้ว', icon:'warning'});
+      
+      let typeName = type === 'CarWash' ? 'ล้างรถ' : 'เครื่องดื่ม';
+      
+      Swal.fire({
+        title: `ยืนยันการใช้สิทธิ์${typeName}`,
+        text: "กรุณาแสดงหน้านี้ต่อพนักงานก่อนยืนยัน (ใช้ได้ 1 ครั้ง/วัน)",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#c19b45',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: 'ยืนยันการใช้สิทธิ์',
+        cancelButtonText: 'กลับ'
+      }).then(async (result) => {
+        if(result.isConfirmed) {
+          Swal.showLoading();
+          const res = await fetch(`${GAS_WEB_APP_URL}?action=redeemCoupon&data=${encodeURIComponent(JSON.stringify({uid: currentUserUid, type: type}))}`);
+          const data = await res.json();
+          Swal.close();
+          
+          if(data.success) {
+            Swal.fire('ใช้สิทธิเรียบร้อย', data.message, 'success').then(() => loadDashboard());
+          } else {
+            Swal.fire({
+              title: 'ใช้สิทธิ์ไม่สำเร็จ', 
+              html: "วันนี้คุณได้ใช้สิทธิ์แล้ว<br>กรุณาใช้อีกครั้งในวันถัดไปครับ", 
+              icon: 'error'
+            });
+          }
+        }
+      });
+    }
+
+    // ==========================================
+    // ฟอร์ม Submit การจอง และ สมัครสมาชิก
+    // ==========================================
     async function submitBookingForm(type) {
       const date = document.getElementById('bookDate').value;
       const timeIn = document.getElementById('bookTimeIn').value;
@@ -1203,6 +1268,7 @@
         
         let expTextHtml = "";
         let infoBox = document.getElementById('adminInfoBox');
+        let expEl = document.getElementById('resExpiryAdmin');
         
         if (cust.package && cust.package.expiryRaw) {
            let expDate = new Date(cust.package.expiryRaw);
