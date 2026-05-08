@@ -15,10 +15,10 @@
       box-sizing: border-box; 
     }
     
-    /* ธีมหลัก (Default) เป็นสีเหลืองตุ่นเข้ม (#edebe1) ทั่วแอป */
+    /* ธีมหลัก (Default) เป็นสีเหลืองตุ่นที่เข้มขึ้นตามรีเควส */
     body { 
       font-family: 'Kanit', sans-serif; 
-      background-color: #edebe1; 
+      background-color: #e8e6d9; 
       padding-bottom: 70px; 
       overflow-x: hidden; 
       color: #334155; 
@@ -33,7 +33,7 @@
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01); 
     }
     
-    /* Navigation Styles (แถบเมนูด้านล่าง พื้นหลังขาว) */
+    /* Navigation Styles (แถบเมนูด้านล่าง) */
     .bottom-nav { 
       position: fixed; 
       bottom: 0; 
@@ -131,7 +131,7 @@
       color: #0f1f14; 
     }
 
-    /* ซ่อนลูกศรใน input */
+    /* ซ่อนลูกศรใน input type number และ date */
     input[type="date"], select, input[type="text"], input[type="tel"], input[type="number"] { 
       width: 100%; 
       min-width: 0; 
@@ -171,7 +171,7 @@
 
   <div id="viewCustomer" class="page-section hide-me max-w-md mx-auto min-h-screen relative transition-colors duration-300">
     
-    <div id="homeHeader" class="p-5 flex items-center justify-between pt-10 pb-4">
+    <div id="homeHeader" class="p-5 flex items-center justify-between pt-10 pb-4 border-b border-transparent">
       <div class="flex items-center gap-3">
         <img id="cusProfilePic" src="" class="w-14 h-14 rounded-full object-cover shadow-sm bg-slate-100 border-2 border-transparent">
         <div>
@@ -182,10 +182,11 @@
     </div>
     
     <div class="p-4 w-full overflow-hidden relative z-10">
-      <div class="text-center mb-6">
+      <div class="text-center mb-6 mt-2">
         <span id="homeTimeBadge" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border text-xs font-medium transition-all shadow-sm">
-          <svg id="clockIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg id="clockIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
           </svg>
           เวลาทำการ: 08:00 - 22:00 น.
         </span>
@@ -210,10 +211,7 @@
         
         <div class="text-center relative z-10">
           <p id="dashExpDate" class="text-xs font-medium flex items-center justify-center gap-1.5">
-            <svg id="calendarIconStatic" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-            </svg>
-            <span id="dashExpDateText">วันหมดอายุ: ...</span>
+            กำลังตรวจสอบ...
           </p>
         </div>
       </div>
@@ -454,7 +452,7 @@
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
-    let isUserElite = false; // ตัวแปรสำหรับเก็บสถานะ Elite ไว้ใช้งานข้ามหน้า
+    let isUserElite = false; 
 
     const timeSlots = [];
     for(let h=8; h<=22; h++) {
@@ -465,33 +463,53 @@
 
     function initDropdowns() {
       let inHtml = '<option value="" disabled selected>เลือกเวลาเริ่ม...</option>';
-      for(let i=0; i<timeSlots.length-1; i++) { inHtml += `<option value="${timeSlots[i]}">${timeSlots[i]}</option>`; }
-      const setHTML = (id, html) => { let el = document.getElementById(id); if(el) el.innerHTML = html; }
-      setHTML('bookTimeIn', inHtml); setHTML('useIn', inHtml);
+      for(let i=0; i<timeSlots.length-1; i++) { 
+        inHtml += `<option value="${timeSlots[i]}">${timeSlots[i]}</option>`; 
+      }
+      const setHTML = (id, html) => { 
+        let el = document.getElementById(id); 
+        if(el) el.innerHTML = html; 
+      }
+      setHTML('bookTimeIn', inHtml); 
+      setHTML('useIn', inHtml);
     }
 
     function updateOutDropdown(inElementId, outElementId) {
       const el = document.getElementById(inElementId);
       if(!el) return;
+      
       const val = el.value;
       let outHtml = '<option value="" disabled selected>เลือกเวลาสิ้นสุด...</option>';
+      
       if(val) {
         let startIndex = timeSlots.indexOf(val) + 1;
-        for(let i = startIndex; i < timeSlots.length; i++) { outHtml += `<option value="${timeSlots[i]}">${timeSlots[i]}</option>`; }
+        for(let i = startIndex; i < timeSlots.length; i++) { 
+          outHtml += `<option value="${timeSlots[i]}">${timeSlots[i]}</option>`; 
+        }
       }
+      
       let outEl = document.getElementById(outElementId);
-      if(outEl) outEl.innerHTML = outHtml;
+      if(outEl) {
+        outEl.innerHTML = outHtml;
+      }
     }
 
-    document.getElementById('bookTimeIn')?.addEventListener('change', () => updateOutDropdown('bookTimeIn', 'bookTimeOut'));
-    document.getElementById('useIn')?.addEventListener('change', () => updateOutDropdown('useIn', 'useOut'));
+    document.getElementById('bookTimeIn')?.addEventListener('change', () => {
+      updateOutDropdown('bookTimeIn', 'bookTimeOut');
+    });
+    
+    document.getElementById('useIn')?.addEventListener('change', () => {
+      updateOutDropdown('useIn', 'useOut');
+    });
 
     // =====================================
     // ระบบเปลี่ยนธีม (Elite vs Non-Elite)
     // =====================================
     function applyEliteTheme(isElite) {
-      isUserElite = isElite; // เก็บสถานะไว้ใช้งานตอนเปลี่ยนหน้า (switchView)
+      isUserElite = isElite; 
       const navContainer = document.getElementById('customerBottomNav');
+      
+      const header = document.getElementById('homeHeader');
       const nameTxt = document.getElementById('dashName');
       const regTxt = document.getElementById('dashRegDate');
       const creditBox = document.getElementById('creditBox');
@@ -509,7 +527,12 @@
       const dashRemainUnit = document.getElementById('dashRemainUnit');
 
       if(isElite) {
+        // --- ธีม Elite เขียวเข้ม ล้วนไร้รอยต่อ ---
+        document.body.style.backgroundColor = "#0f1f14"; 
+        document.body.style.color = "#f8fafc";
+        
         navContainer.classList.add('elite-nav-bg'); 
+        
         navContainer.querySelectorAll('.nav-item').forEach(nav => {
             nav.classList.add('elite-nav-item');
             if(nav.classList.contains('active')) {
@@ -518,6 +541,8 @@
             }
         });
 
+        // เส้นคั่นโปรไฟล์แบบบางๆ
+        if(header) header.className = "p-5 flex items-center justify-between pt-10 pb-4 border-b border-[#dfbd69]/20";
         nameTxt.className = "text-lg font-bold text-[#dfbd69] leading-tight";
         regTxt.className = "text-[11px] font-light mt-0.5 text-slate-300 opacity-80";
         creditBox.className = "bg-[#16281b] p-6 rounded-[24px] shadow-lg mb-6 border border-[#dfbd69]/20 text-white relative overflow-hidden card-shadow";
@@ -530,16 +555,22 @@
         
         if(bookBtn) bookBtn.className = "w-full gold-gradient-bg font-bold py-4 rounded-2xl shadow-md transition flex items-center justify-center";
         
-        if(upcomingTitle) upcomingTitle.className = "font-semibold text-white mb-3 text-[14px] px-1";
-        if(historyTitle) historyTitle.className = "font-semibold text-white text-[14px]";
-        if(historyIcon) historyIcon.className = "w-4 h-4 text-white";
+        // ตัวหนังสือส่วนรายการจอง/ประวัติ ให้เป็นสีทอง
+        if(upcomingTitle) upcomingTitle.className = "font-semibold text-[#dfbd69] mb-3 text-[14px] px-1";
+        if(historyTitle) historyTitle.className = "font-semibold text-[#dfbd69] text-[14px]";
+        if(historyIcon) historyIcon.className = "w-4 h-4 text-[#dfbd69]";
 
         dashRemainLabel.className = "text-[13px] font-light text-slate-300 mb-1 tracking-wide";
         dashRemain.className = "text-[4.5rem] font-bold text-elite-gold leading-none gold-gradient-text";
         dashRemainUnit.className = "text-[#dfbd69]/80 text-[13px] font-light";
         
       } else {
+        // --- ธีมลูกค้าทั่วไป เหลืองตุ่น (#e8e6d9) ---
+        document.body.style.backgroundColor = "#e8e6d9"; 
+        document.body.style.color = "#334155";
+        
         navContainer.classList.remove('elite-nav-bg');
+        
         navContainer.querySelectorAll('.nav-item').forEach(nav => {
             nav.classList.remove('elite-nav-item');
             if(nav.classList.contains('elite-nav-active')) {
@@ -548,6 +579,7 @@
             }
         });
 
+        if(header) header.className = "p-5 flex items-center justify-between pt-10 pb-4 border-b border-slate-200/60";
         nameTxt.className = "text-lg font-bold text-slate-800 leading-tight";
         regTxt.className = "text-[11px] font-medium mt-0.5 text-slate-500";
         creditBox.className = "bg-white p-6 rounded-[24px] shadow-sm mb-6 border border-slate-100 relative overflow-hidden card-shadow";
@@ -576,6 +608,7 @@
     async function main() {
       try {
         initDropdowns(); 
+        
         await liff.init({ liffId: MY_LIFF_ID });
         
         if (!liff.isLoggedIn()) { 
@@ -585,15 +618,18 @@
         
         const profile = await liff.getProfile();
         currentUserUid = profile.userId;
+        
         const profilePicUrl = profile.pictureUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.displayName)}&background=random`;
         
         document.getElementById('cusProfilePic').src = profilePicUrl;
+        
         if(document.getElementById('adminProfilePic1')) {
            document.getElementById('adminProfilePic1').src = profilePicUrl;
            document.getElementById('adminProfilePic2').src = profilePicUrl;
            document.getElementById('adminDisplayName1').innerText = profile.displayName;
            document.getElementById('adminDisplayName2').innerText = profile.displayName;
         }
+        
         document.getElementById('dashName').innerText = profile.displayName;
         
         switchView('viewCustomer');
@@ -606,20 +642,22 @@
     }
 
     function switchView(viewId) {
-      document.querySelectorAll('.page-section').forEach(el => el.classList.add('hide-me'));
+      document.querySelectorAll('.page-section').forEach(el => {
+        el.classList.add('hide-me');
+      });
+      
       const targetView = document.getElementById(viewId);
-      if(targetView) targetView.classList.remove('hide-me');
+      if(targetView) {
+        targetView.classList.remove('hide-me');
+      }
       
       window.scrollTo(0, 0);
 
-      // จัดการสีพื้นหลังแยกตามหน้า (ตอบโจทย์ข้อ 4)
       if (viewId === 'viewCustomer' && isUserElite) {
-          // หน้า Profile Elite ให้เป็นสีเขียวเข้มทั้งหน้า
           document.body.style.backgroundColor = "#0f1f14";
           document.body.style.color = "#f8fafc";
       } else {
-          // หน้าอื่นๆ (รวมถึง Privileges Elite) ให้เป็นสีเหลืองตุ่น #edebe1
-          document.body.style.backgroundColor = "#edebe1";
+          document.body.style.backgroundColor = "#e8e6d9";
           document.body.style.color = "#334155";
       }
     }
@@ -666,11 +704,6 @@
           renderCustomerDashboard(data);
           renderMemberDashboard(data);
           
-          // เพื่อให้พื้นหลังแสดงผลถูกต้องหลังจากโหลดข้อมูลเสร็จ
-          if(document.getElementById('viewCustomer').classList.contains('hide-me') === false) {
-             switchView('viewCustomer');
-          }
-          
           document.querySelectorAll('#customerBottomNav .nav-item').forEach(nav => {
              if(nav.classList.contains('active') && isElite) {
                  nav.classList.remove('active');
@@ -678,11 +711,14 @@
              }
           });
         }
-      } catch (err) { console.error(err); }
+      } catch (err) { 
+        console.error(err); 
+      }
     }
 
     function renderCustomerDashboard(data) {
       document.getElementById('dashName').innerText = data.nickname || data.name;
+      
       let regDateText = data.regDate ? data.regDate : "-";
       document.getElementById('dashRegDate').innerText = `Member Since: ${regDateText}`;
       
@@ -692,26 +728,31 @@
       
       document.getElementById('dashRemain').innerText = remain;
       
-      // แทรกไอคอนปฏิทินในวันหมดอายุ
       if (isElite) {
          document.getElementById('dashExpDate').innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-[#dfbd69]">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#dfbd69]">
+            <rect x="3" y="4" width="18" h="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
           <span class="text-[#dfbd69] font-bold ml-1">${expText}</span>`;
       } else {
          document.getElementById('dashExpDate').innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-[#826644]">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#826644]">
+            <rect x="3" y="4" width="18" h="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
           <span class="text-slate-700 font-bold ml-1">${expText}</span>`;
       }
 
       let cardBgClass = isElite ? "bg-[#16281b] border-[#dfbd69]/20" : "bg-white border-slate-100";
-      let textMainClass = isElite ? "text-slate-200" : "text-slate-800";
-      let textSubClass = isElite ? "text-slate-400" : "text-slate-500";
+      // กำหนดสีข้อความการจองและประวัติให้เป็นสีทอง (ถ้าเป็น Elite) 
+      let textMainClass = isElite ? "text-[#dfbd69]" : "text-slate-800";
+      let textSubClass = isElite ? "text-[#dfbd69]/70" : "text-slate-500";
 
-      // Render การจอง
       let upHtml = "";
       if(data.bookings && data.bookings.length > 0) {
         data.bookings.forEach(b => {
@@ -734,11 +775,10 @@
           </div>`;
         });
       } else {
-        upHtml = `<div class="${cardBgClass} p-4 rounded-[20px] border text-center text-xs opacity-50 shadow-sm ${textMainClass}">ยังไม่มีการจองล่วงหน้า</div>`;
+        upHtml = `<div class="${cardBgClass} p-4 rounded-[20px] border text-center text-xs shadow-sm ${textSubClass}">ยังไม่มีการจองล่วงหน้า</div>`;
       }
       document.getElementById('dashUpcomingBookings').innerHTML = upHtml;
 
-      // Render ประวัติ
       let historyHtml = "";
       if(data.history.length > 0) {
         let content = "";
@@ -746,23 +786,23 @@
           let typeLabel = h.type === "ชั่วโมง" ? "ใช้ไป" : "คูปอง";
           let unitLabel = h.type === "ชั่วโมง" ? "ชม." : (h.type === "ล้างรถ" ? "ครั้ง" : "แก้ว");
           let timeText = h.timeIn === "-" ? h.type : `เวลา: ${h.timeIn} - ${h.timeOut}`;
-          let borderClass = isElite ? "border-white/5" : "border-slate-100";
+          let borderClass = isElite ? "border-[#dfbd69]/10" : "border-slate-100";
           
           content += `
           <div class="flex justify-between items-center py-3 px-1 border-b ${borderClass} last:border-0">
             <div>
               <p class="text-[13px] font-bold ${textMainClass}">${h.date}</p>
-              <p class="text-[11px] opacity-60 ${textSubClass} mt-1">${timeText}</p>
+              <p class="text-[11px] ${textSubClass} mt-1">${timeText}</p>
             </div>
             <div class="${textMainClass} font-bold text-[13px] text-right">
-              <span class="text-[10px] block opacity-50 font-light mb-0.5">${typeLabel}</span>
+              <span class="text-[10px] block font-light mb-0.5 ${textSubClass}">${typeLabel}</span>
               ${h.amount} <span class="font-normal text-xs">${unitLabel}</span>
             </div>
           </div>`;
         });
         historyHtml = `<div class="${cardBgClass} p-4 rounded-[20px] border shadow-sm">${content}</div>`;
       } else {
-        historyHtml = `<div class="${cardBgClass} rounded-[20px] border shadow-sm text-center py-6 text-xs text-slate-400">ยังไม่มีประวัติการใช้บริการ</div>`;
+        historyHtml = `<div class="${cardBgClass} rounded-[20px] border shadow-sm text-center py-6 text-xs ${textSubClass}">ยังไม่มีประวัติการใช้บริการ</div>`;
       }
       document.getElementById('dashHistory').innerHTML = historyHtml;
     }
@@ -773,12 +813,11 @@
       let html = "";
       
       if(isElite) {
-        // UI Elite (ภาพดราฟ 1000014079 สีเขียวเข้ม)
         html = `
-        <div class="bg-[#0f1f14] text-white rounded-[24px] p-6 mb-4 shadow-xl border border-[#dfbd69]/20 relative overflow-hidden card-shadow">
+        <div class="bg-[#16281b] text-white rounded-[24px] p-6 mb-4 shadow-xl border border-[#dfbd69]/20 relative overflow-hidden card-shadow">
           <p class="text-center text-[16px] font-bold gold-gradient-text mb-1 tracking-widest uppercase">MEMBER PRIVILEGES</p>
           <div class="text-center mb-5 relative">
-            <p class="text-[10px] text-[#dfbd69] opacity-80 uppercase tracking-[0.1em] font-light">PRIORITY ACCESS PRIVILEGES</p>
+            <p class="text-[10px] text-[#dfbd69] opacity-70 uppercase tracking-[0.1em] font-light">PRIORITY ACCESS PRIVILEGES</p>
             <div class="flex justify-center my-3">
               <svg class="w-5 h-5 text-[#dfbd69] opacity-90" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C8 6 4 10 4 15a8 8 0 0016 0c0-5-4-9-8-13zm0 18a6 6 0 01-6-6c0-3 2.5-6 6-9 3.5 3 6 6 6 9a6 6 0 01-6 6z"/>
@@ -806,7 +845,7 @@
           </div>
           
           <div class="grid grid-cols-2 gap-4 mb-8">
-             <div class="border border-[#dfbd69]/40 bg-[#16281b] p-4 rounded-[18px] text-center shadow-md relative overflow-hidden card-shadow">
+             <div class="border border-[#dfbd69]/40 bg-[#0f1f14] p-4 rounded-[18px] text-center shadow-md relative overflow-hidden card-shadow">
                <div class="absolute inset-0 bg-gradient-to-b from-[#dfbd69]/5 to-transparent pointer-events-none"></div>
                <div class="flex items-center justify-center gap-2 mb-2">
                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5 text-[#dfbd69]">
@@ -817,7 +856,7 @@
                <p class="text-2xl font-bold text-white mb-3">${p.carWash} <span class="text-[11px] text-slate-400 font-normal">ครั้ง</span></p>
                <button type="button" onclick="redeemCoupon('CarWash', ${p.carWash})" class="w-full bg-transparent hover:bg-[#dfbd69]/10 border border-[#dfbd69] text-[#dfbd69] text-[11px] tracking-wide font-medium py-2 rounded-lg transition" ${p.carWash<=0?'disabled opacity-30':''}>ใช้สิทธิ์ตอนนี้</button>
              </div>
-             <div class="border border-[#dfbd69]/40 bg-[#16281b] p-4 rounded-[18px] text-center shadow-md relative overflow-hidden card-shadow">
+             <div class="border border-[#dfbd69]/40 bg-[#0f1f14] p-4 rounded-[18px] text-center shadow-md relative overflow-hidden card-shadow">
                <div class="absolute inset-0 bg-gradient-to-b from-[#dfbd69]/5 to-transparent pointer-events-none"></div>
                <div class="flex items-center justify-center gap-2 mb-2">
                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5 text-[#dfbd69]">
@@ -854,8 +893,8 @@
           </div>
           
           <div class="space-y-3 mt-8">
-            <div class="border border-[#dfbd69]/20 bg-[#16281b] rounded-2xl p-4 flex gap-4 items-center shadow-sm">
-              <div class="bg-[#0c1a11] w-9 h-9 rounded-full flex items-center justify-center border border-[#dfbd69]/30 shadow-inner">
+            <div class="border border-[#dfbd69]/20 bg-[#0f1f14] rounded-2xl p-4 flex gap-4 items-center shadow-sm">
+              <div class="bg-[#16281b] w-9 h-9 rounded-full flex items-center justify-center border border-[#dfbd69]/30 shadow-inner">
                 <svg class="w-4 h-4 text-[#dfbd69]" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
@@ -865,8 +904,8 @@
                 <p class="text-slate-400 text-[10px] font-light opacity-80">ใช้งานได้ทุกช่วงเวลา (ไม่หัก Peak Time)</p>
               </div>
             </div>
-            <div class="border border-[#dfbd69]/20 bg-[#16281b] rounded-2xl p-4 flex gap-4 items-center shadow-sm">
-              <div class="bg-[#0c1a11] w-9 h-9 rounded-full flex items-center justify-center border border-[#dfbd69]/30 shadow-inner">
+            <div class="border border-[#dfbd69]/20 bg-[#0f1f14] rounded-2xl p-4 flex gap-4 items-center shadow-sm">
+              <div class="bg-[#16281b] w-9 h-9 rounded-full flex items-center justify-center border border-[#dfbd69]/30 shadow-inner">
                 <svg class="w-4 h-4 text-[#dfbd69]" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
@@ -879,7 +918,6 @@
           </div>
         </div>`;
       } else {
-        // UI Non-Elite
         html = `
         <div class="bg-white rounded-[24px] p-8 mb-4 shadow-sm border border-slate-100 text-slate-700 card-shadow">
           <p class="text-center text-[15px] font-bold text-[#826644] mb-2 tracking-widest uppercase">MEMBER PRIVILEGES</p>
@@ -958,9 +996,6 @@
       document.getElementById('vipContent').innerHTML = html;
     }
 
-    // ==========================================
-    // ฟอร์ม Submit การจอง และ สมัครสมาชิก
-    // ==========================================
     async function submitBookingForm(type) {
       const date = document.getElementById('bookDate').value;
       const timeIn = document.getElementById('bookTimeIn').value;
@@ -1168,7 +1203,6 @@
         
         let expTextHtml = "";
         let infoBox = document.getElementById('adminInfoBox');
-        let expEl = document.getElementById('resExpiryAdmin');
         
         if (cust.package && cust.package.expiryRaw) {
            let expDate = new Date(cust.package.expiryRaw);
