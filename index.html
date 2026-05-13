@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ratcharak Golf Sim</title>
   
+  <!-- Libraries -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -15,7 +16,7 @@
       box-sizing: border-box; 
     }
     
-    /* ธีมหลัก (Default) เป็นสีเหลืองตุ่นที่เข้มขึ้น */
+    /* ธีมหลัก (Default) เป็นสีเหลืองตุ่นที่เข้มขึ้นตามต้นแบบ */
     body { 
       font-family: 'Kanit', sans-serif; 
       background-color: #e8e6d9; 
@@ -142,12 +143,14 @@
 </head>
 <body class="antialiased">
 
+  <!-- ==================== Loading View ==================== -->
   <div id="viewLoading" class="page-section flex flex-col items-center justify-center min-h-screen bg-white hide-me">
     <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-[#5fa861] mb-4"></div>
     <p class="text-slate-500 font-medium text-sm">กำลังประมวลผล...</p>
     <div id="errorLog" class="text-red-500 text-xs mt-4 text-center px-4 w-full"></div>
   </div>
 
+  <!-- ==================== Registration View ==================== -->
   <div id="viewRegister" class="page-section hide-me max-w-md mx-auto min-h-screen p-6 flex flex-col justify-center">
     <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
       <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">ลงทะเบียนผู้ใช้งาน</h2>
@@ -169,9 +172,10 @@
     </div>
   </div>
 
+  <!-- ==================== หน้า Customer Dashboard (Home) ==================== -->
   <div id="viewCustomer" class="page-section hide-me max-w-md mx-auto min-h-screen relative transition-colors duration-300">
     
-    <div id="homeHeader" class="p-5 flex items-center justify-between pt-10 pb-4">
+    <div id="homeHeader" class="p-5 flex items-center justify-between pt-10 pb-4 border-b border-transparent">
       <div class="flex items-center gap-3">
         <img id="cusProfilePic" src="" class="w-14 h-14 rounded-full object-cover shadow-sm bg-slate-100 border-2 border-transparent">
         <div>
@@ -182,16 +186,19 @@
     </div>
     
     <div class="p-4 w-full overflow-hidden relative z-10">
-      <div class="text-center mb-6">
+      <div class="text-center mb-6 mt-2">
         <span id="homeTimeBadge" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border text-xs font-medium transition-all shadow-sm">
+          <!-- SVG ไอคอนนาฬิกา -->
           <svg id="clockIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
           </svg>
           เวลาทำการ: 08:00 - 22:00 น.
         </span>
       </div>
 
       <div id="creditBox" class="p-6 rounded-[24px] mb-6 relative overflow-hidden transition-all duration-500 border border-transparent shadow-sm">
+        <!-- ลายน้ำธงกอล์ฟ -->
         <svg class="absolute -right-2 -bottom-2 w-36 h-32 opacity-10 transform -rotate-12" id="watermarkFlag" fill="currentColor" viewBox="0 0 24 24">
           <path d="M5 21V3h12l-3 4 3 4H7v10H5z"/>
         </svg>
@@ -225,8 +232,9 @@
       <div id="dashUpcomingBookings" class="mb-8 space-y-3"></div>
 
       <div class="flex items-center gap-2 mb-3 px-1">
-        <svg id="historyIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        <!-- SVG ไอคอนประวัติการใช้งาน -->
+        <svg id="historyIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
         </svg>
         <h3 id="historyTitle" class="font-semibold text-[14px]">ประวัติการใช้บริการ</h3>
       </div>
@@ -235,13 +243,15 @@
     </div>
   </div>
 
+  <!-- ==================== หน้า Privileges ==================== -->
   <div id="viewMemberDash" class="page-section hide-me max-w-md mx-auto min-h-screen relative pt-8 pb-20">
     <div id="vipContent" class="p-5"></div>
   </div>
 
+  <!-- ==================== หน้า Booking Form ==================== -->
   <div id="viewBookingForm" class="page-section hide-me max-w-md mx-auto min-h-screen p-5 pb-20 pt-8">
     <button type="button" onclick="navTo('viewCustomer')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"></path></svg> กลับ
     </button>
     
     <div class="bg-white p-6 rounded-[24px] shadow-sm border border-slate-100 w-full">
@@ -278,9 +288,10 @@
     </div>
   </div>
 
+  <!-- ==================== หน้า Apply Member ==================== -->
   <div id="viewApplyMemberForm" class="page-section hide-me max-w-md mx-auto min-h-screen p-5 pb-20 pt-8">
     <button type="button" onclick="navTo('viewMemberDash')" class="mb-5 text-slate-500 flex items-center gap-1 font-medium text-sm hover:text-slate-700">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> กลับ
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"></path></svg> กลับ
     </button>
     
     <div class="bg-white p-6 rounded-[24px] shadow-sm border border-slate-100 w-full">
@@ -295,6 +306,7 @@
     </div>
   </div>
 
+  <!-- ==================== หน้า REPORTER (พนักงาน) ==================== -->
   <div id="viewReporter" class="page-section hide-me max-w-md mx-auto min-h-screen p-5 pb-20 pt-8">
     <div class="bg-slate-800 text-white p-5 flex items-center gap-3 shadow-sm rounded-t-[24px]">
       <div class="bg-white/20 p-2 rounded-full text-2xl">📋</div>
@@ -328,6 +340,7 @@
     </div>
   </div>
 
+  <!-- ==================== หน้า ADMIN PANEL ==================== -->
   <div id="viewAdminSearch" class="page-section hide-me max-w-md mx-auto min-h-screen pb-20">
     <div class="bg-slate-800 text-white p-5 flex items-center gap-3 pt-10">
       <img id="adminProfilePic1" src="" class="w-10 h-10 rounded-full object-cover border border-slate-500 bg-slate-700">
@@ -364,6 +377,7 @@
           <button type="button" onclick="toggleAction('addDrink')" class="bg-[#fcfaf5] text-[#8c6f4a] py-3 rounded-xl font-medium text-sm transition hover:bg-[#f2eadc] shadow-sm w-full border border-[#eee6d3]">☕ เพิ่มสิทธิ์เครื่องดื่ม</button>
         </div>
 
+        <!-- ฟอร์มใช้งานของ Admin -->
         <div id="formUsage" class="bg-white p-5 rounded-2xl border border-slate-100 hidden w-full shadow-sm">
           <h3 class="font-semibold text-slate-800 mb-4 text-sm">⛳ บันทึกตัดเวลาทันที</h3>
           <input type="date" id="useDate" class="border border-slate-200 rounded-xl p-3 mb-4 outline-none w-full bg-slate-50">
@@ -415,16 +429,19 @@
     </div>
   </div>
 
+  <!-- ==================== Bottom Navigation ==================== -->
   <div id="customerBottomNav" class="bottom-nav hide-me">
     <div id="navHome" class="nav-item active flex flex-col items-center justify-center gap-1" onclick="navTo('viewCustomer', this, 'customerBottomNav')">
-      <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+      <!-- ไอคอน Home -->
+      <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
+        <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
       </svg>
       Home
     </div>
     <div id="navMember" class="nav-item flex flex-col items-center justify-center gap-1" onclick="navTo('viewMemberDash', this, 'customerBottomNav')">
-      <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+      <!-- ไอคอน Privileges (มงกุฎ) -->
+      <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
+        <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
       </svg>
       Privileges
     </div>
@@ -432,22 +449,23 @@
 
   <div id="adminBottomNav" class="bottom-nav hide-me">
     <div id="navAdminSearch" class="nav-item active admin-nav-active flex flex-col items-center justify-center gap-1" onclick="navTo('viewAdminSearch', this, 'adminBottomNav')">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
         <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
       </svg>
       ค้นหาลูกค้า
     </div>
     <div id="navAdminManage" class="nav-item flex flex-col items-center justify-center gap-1" onclick="navTo('viewAdminManageBookings', this, 'adminBottomNav'); loadAdminAllBookings();">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
         <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
       </svg>
       จัดการคิว
     </div>
   </div>
 
+  <!-- ==================== JavaScript ==================== -->
   <script>
     const MY_LIFF_ID = "2009708459-aHFsBA00"; 
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycby6LOzwGMDxYE_sicXp5CdiK9B_s16F3qEppoPkYoGCLUAt23fPja8EydwxUClfq3Hs/exec";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxhSjvytBCUEEfDFTSiPJV9aWw2pHQjiIQqTyCry_7dpen10aBgoL-nuOi34dBtbAbG/exec";
 
     let currentUserUid = "";
     let selectedCustomerUid = "";
@@ -703,7 +721,6 @@
           renderCustomerDashboard(data);
           renderMemberDashboard(data);
           
-          // Set nav colors correctly on load
           document.querySelectorAll('#customerBottomNav .nav-item').forEach(nav => {
              if(nav.classList.contains('active') && isElite) {
                  nav.classList.remove('active');
@@ -728,7 +745,7 @@
       
       document.getElementById('dashRemain').innerText = remain;
       
-      // แทรกไอคอนปฏิทินในวันหมดอายุ
+      // จุดแก้ไข: แทรกไอคอนปฏิทินแบบสมบูรณ์ และเพิ่มคำว่า "วันหมดอายุ:"
       if (isElite) {
          document.getElementById('dashExpDate').innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#dfbd69]">
